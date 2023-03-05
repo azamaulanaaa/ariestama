@@ -17,7 +17,7 @@ interface SignUpData {
     password: string;
 }
 
-function signup() {
+function SignUp() {
     const router = useRouter();
 
     const { session } = useSessionContext();
@@ -50,7 +50,7 @@ function signup() {
                     }
                 });
         }
-    }, [signUpData]);
+    }, [supabaseClient, signUpData]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -127,4 +127,4 @@ function signup() {
     );
 }
 
-export default signup;
+export default SignUp;

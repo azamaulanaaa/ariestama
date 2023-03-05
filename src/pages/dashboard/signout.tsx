@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { AuthError } from '@supabase/supabase-js';
 
-function signout() {
+function SignOut() {
     const router = useRouter();
 
     const supabaseClient = useSupabaseClient();
@@ -17,9 +17,9 @@ function signout() {
                     return;
                 }
             });
-    });
+    }, [router, supabaseClient]);
 
     return null;
 }
 
-export default signout;
+export default SignOut;
