@@ -16,11 +16,11 @@ interface SignInData {
 
 function SignIn() {
     const router = useRouter();
-
     const user = useUser();
-    if (user) {
-        router.push('/dashboard');
-    }
+
+    useEffect(() => {
+        if (user) router.push('/dashboard');
+    }, [router, user]);
 
     const supabaseClient = useSupabaseClient<Database>();
 
