@@ -1,10 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
-import {
-    useSessionContext,
-    useSupabaseClient,
-} from '@supabase/auth-helpers-react';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { AuthResponse } from '@supabase/supabase-js';
 
 import Alert, { AlertProps } from '../components/Alert';
@@ -20,8 +17,8 @@ interface SignUpData {
 function SignUp() {
     const router = useRouter();
 
-    const { session } = useSessionContext();
-    if (session) {
+    const user = useUser();
+    if (user) {
         router.push('/dashboard');
     }
 
