@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { AuthResponse } from '@supabase/supabase-js';
 
@@ -9,45 +9,14 @@ import Input from '../components/Input';
 import local from '../locals/en';
 import Database from '../types/database';
 
-interface SignUpData {
-    email: string;
-    password: string;
-}
-
 function SignUp() {
     const router = useRouter();
     const user = useUser();
 
-    useEffect(() => {
-        if (user) router.push('/dashboard');
-    }, [router, user]);
+    if (user) router.push('/dashboard');
 
     const supabaseClient = useSupabaseClient<Database>();
-
-    const [signUpData, setSignUpData] = useState<null | SignUpData>(null);
     const [alertProps, setAlertProps] = useState<null | AlertProps>(null);
-
-    useEffect(() => {
-        if (signUpData) {
-            supabaseClient.auth
-                .signUp({
-                    ...signUpData,
-                })
-                .then((res: AuthResponse) => {
-                    if (res.error) {
-                        setAlertProps({
-                            title: local.auth.signup_error_general_title,
-                            message: res.error.message,
-                        });
-                    } else {
-                        setAlertProps({
-                            title: local.auth.signup_success_title,
-                            message: local.auth.signup_success_message,
-                        });
-                    }
-                });
-        }
-    }, [supabaseClient, signUpData]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -59,21 +28,34 @@ function SignUp() {
         const password_form = form_data.get('password');
         const confirm_password_form = form_data.get('confirm_password');
 
-        if (password_form && confirm_password_form) {
-            if (password_form.toString() != confirm_password_form.toString()) {
-                setAlertProps({
-                    title: local.auth.signup_error_confirm_password_title,
-                    message: local.auth.signup_error_confirm_password_message,
-                });
-            }
+        if (!password_form || !confirm_password_form || !email_form) return;
 
-            if (email_form) {
-                setSignUpData({
-                    email: email_form.toString(),
-                    password: password_form.toString(),
-                });
-            }
+        if (password_form.toString() != confirm_password_form.toString()) {
+            setAlertProps({
+                title: local.auth.signup_error_confirm_password_title,
+                message: local.auth.signup_error_confirm_password_message,
+            });
+            return;
         }
+
+        supabaseClient.auth
+            .signUp({
+                email: email_form.toString(),
+                password: password_form.toString(),
+            })
+            .then((res: AuthResponse) => {
+                if (res.error) {
+                    setAlertProps({
+                        title: local.auth.signup_error_general_title,
+                        message: res.error.message,
+                    });
+                } else {
+                    setAlertProps({
+                        title: local.auth.signup_success_title,
+                        message: local.auth.signup_success_message,
+                    });
+                }
+            });
     };
 
     const SignUpAlert = () => {

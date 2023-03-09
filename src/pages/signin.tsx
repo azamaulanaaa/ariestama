@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { AuthResponse } from '@supabase/supabase-js';
 
@@ -9,39 +9,14 @@ import Input from '../components/Input';
 import local from '../locals/en';
 import Database from '../types/database';
 
-interface SignInData {
-    email: string;
-    password: string;
-}
-
 function SignIn() {
     const router = useRouter();
     const user = useUser();
 
-    useEffect(() => {
-        if (user) router.push('/dashboard');
-    }, [router, user]);
+    if (user) router.push('/dashboard');
 
     const supabaseClient = useSupabaseClient<Database>();
-
-    const [signInData, setSignInData] = useState<null | SignInData>(null);
     const [alertProps, setAlertProps] = useState<null | AlertProps>(null);
-
-    useEffect(() => {
-        if (signInData) {
-            supabaseClient.auth
-                .signInWithPassword(signInData)
-                .then((res: AuthResponse) => {
-                    if (res.error) {
-                        setAlertProps({
-                            title: local.auth.signin_error_general_title,
-                            message: res.error.message,
-                        });
-                        return;
-                    }
-                });
-        }
-    }, [supabaseClient, signInData]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -52,12 +27,22 @@ function SignIn() {
         const email_form = form_data.get('email');
         const password_form = form_data.get('password');
 
-        if (email_form && password_form) {
-            setSignInData({
+        if (!email_form || !password_form) return;
+
+        supabaseClient.auth
+            .signInWithPassword({
                 email: email_form.toString(),
                 password: password_form.toString(),
+            })
+            .then((res: AuthResponse) => {
+                if (res.error) {
+                    setAlertProps({
+                        title: local.auth.signin_error_general_title,
+                        message: res.error.message,
+                    });
+                    return;
+                }
             });
-        }
     };
 
     const SignInAlert = () => {
