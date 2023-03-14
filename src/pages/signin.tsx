@@ -7,7 +7,7 @@ import { AuthResponse } from '@supabase/supabase-js';
 import Alert, { AlertProps } from '../components/Alert';
 import Input from '../components/Input';
 import local from '../locals/en';
-import Database from '../types/database';
+import { Database } from '../types/supabase';
 
 function SignIn() {
     const router = useRouter();
@@ -76,7 +76,7 @@ function SignIn() {
                         required
                     />
                     <div>
-                        <Link href="/register">{local.auth.signup_link}</Link>
+                        <Link href="/signup">{local.auth.signup_link}</Link>
                     </div>
                     <button
                         type="submit"
