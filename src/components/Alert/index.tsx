@@ -4,19 +4,15 @@ export interface AlertProps {
 }
 
 function Alert(props: AlertProps) {
-    if (props.title) {
-        return (
-            <div className="border rounded p-4">
-                <p>
-                    <span className="font-bold">{props.title}</span>{' '}
-                    {props.message}
-                </p>
-            </div>
-        );
-    }
+    const Title = () => {
+        if (!props.title) return null;
+
+        return <h5 className="font-bold">{props.title}</h5>;
+    };
 
     return (
-        <div className="border rounded p-4">
+        <div role="alert" className="border rounded p-4">
+            <Title />
             <p>{props.message}</p>
         </div>
     );
