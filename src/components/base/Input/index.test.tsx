@@ -1,5 +1,5 @@
+import Input from '.';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
-import Input from '@/components/Input';
 
 afterEach(() => {
     cleanup();
@@ -7,24 +7,46 @@ afterEach(() => {
 
 describe('Input Component', () => {
     test('Rendering', () => {
-        render(<Input />);
-        const input = screen.getByRole('textbox');
+        const propses = [
+            {},
+            { name: 'name' },
+            { type: 'text' },
+            { type: 'email' },
+            { type: 'password' },
+            { type: 'number' },
+        ];
 
-        expect(input).toBeInTheDocument();
+        propses.forEach((props) => {
+            render(<Input {...props} />);
+            const input = screen.getByRole('textbox');
+
+            expect(input).not.toBeNull();
+            cleanup();
+        });
     });
 
-    test('Name and Value', () => {
-        render(<input name="input" />);
+    test('Value Input', () => {
+        render(<Input />);
         const input = screen.getByRole('textbox');
-
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAttribute('name', 'input');
 
         fireEvent.input(input, {
             target: { value: 'input' },
         });
 
         expect(input).toHaveValue('input');
+    });
+
+    test('Html Attributes', () => {
+        const propses = [{ name: 'name' }];
+
+        propses.forEach((props) => {
+            render(<Input {...props} />);
+            const input = screen.getByRole('textbox');
+
+            Object.entries(props).forEach(([key, value]) => {
+                expect(input).toHaveAttribute(key, value);
+            });
+        });
     });
 
     test('onChange', () => {
@@ -38,7 +60,7 @@ describe('Input Component', () => {
             });
         }
 
-        expect(input).toBeInTheDocument();
+        expect(input).not.toBeNull();
         expect(onChange.mock.calls).toHaveLength(5);
     });
 
@@ -67,5 +89,16 @@ describe('Input Component', () => {
             fireEvent.click(sugestionItem);
             expect(input).toHaveValue(value);
         });
+    });
+
+    test('Placeholder', () => {
+        const placeholder = 'placeholder';
+        render(<Input placeholder={placeholder} />);
+        const input_textbox = screen.getByRole('textbox');
+        const input_placeholder = screen.getByPlaceholderText(placeholder);
+
+        expect(input_textbox).toBeInTheDocument();
+        expect(input_placeholder).toBeInTheDocument();
+        expect(input_textbox).toEqual(input_placeholder);
     });
 });

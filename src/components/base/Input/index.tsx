@@ -32,6 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
                 className="w-full border rounded p-2"
                 {...(props as InputHTMLAttributes<HTMLInputElement>)}
                 ref={innerRef}
+                role="textbox"
             />
             <Sugestion
                 sugestionitems={props.sugestionitems}
