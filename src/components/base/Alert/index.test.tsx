@@ -6,7 +6,7 @@ afterEach(() => {
 });
 
 describe('Alert Component', () => {
-    test('Rendering', () => {
+    it('render properly', () => {
         const propses = [
             { message: 'message' },
             { message: 'message', title: 'title' },
@@ -14,14 +14,14 @@ describe('Alert Component', () => {
 
         propses.forEach((props) => {
             render(<Alert {...props} />);
-            const alert = screen.getByRole('alert');
+            const alert = screen.queryByRole('alert');
+            const heading = screen.queryByRole('heading');
 
-            expect(alert).not.toBeNull();
+            expect(alert).toBeInTheDocument();
             expect(alert).toHaveTextContent(props.message);
 
             if (props.title) {
-                const heading = screen.getByRole('heading');
-                expect(heading).not.toBeNull();
+                expect(heading).toBeInTheDocument();
                 expect(heading).toHaveTextContent(props.title);
             }
 
