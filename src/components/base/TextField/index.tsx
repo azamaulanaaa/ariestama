@@ -1,19 +1,21 @@
 import {
-    DetailedHTMLProps,
-    InputHTMLAttributes,
     forwardRef,
     MouseEventHandler,
     MouseEvent,
     useRef,
     useImperativeHandle,
+    ChangeEventHandler,
 } from 'react';
 
-export interface InputProps
-    extends DetailedHTMLProps<
-        InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-    > {
+export interface InputProps {
+    id?: string;
+    name?: string;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
+    placeholder?: string;
+    required?: boolean;
     sugestionitems?: SugestionItemData[];
+    type?: 'text' | 'email' | 'password' | 'numeric';
+    value?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -30,9 +32,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         <span className="relative inline-block">
             <input
                 className="w-full border rounded p-2"
-                {...(props as InputHTMLAttributes<HTMLInputElement>)}
                 ref={innerRef}
                 role="textbox"
+                id={props.id}
+                name={props.name}
+                onChange={props.onChange}
+                placeholder={props.placeholder}
+                readOnly={(props.value && !props.onChange) === true}
+                required={props.required}
+                type={props.type}
+                value={props.value}
             />
             <Sugestion
                 sugestionitems={props.sugestionitems}
