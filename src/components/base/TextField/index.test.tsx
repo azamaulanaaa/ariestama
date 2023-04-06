@@ -17,7 +17,10 @@ describe('TextField Component', () => {
     const user = userEvent.setup();
     it('render properly', () => {
         render(<TextField />);
-        screen.getByRole('textbox');
+        const textfield = screen.getByRole('textbox');
+
+        expect(textfield).toHaveValue('');
+        expect(textfield).toHaveDisplayValue('');
     });
 
     it('support value primitive attribute', () => {
