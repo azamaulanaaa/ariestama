@@ -6,10 +6,10 @@ export interface ButtonProps {
 }
 
 const Button = (props: ButtonProps) => {
-    let classNames = ["border", "rounded", "p-2"]
-    if(props.fullWidth) classNames.push("w-full")
+    let classNames = ['border', 'rounded', 'p-2'];
+    if (props.fullWidth) classNames.push('w-full');
 
-    return <button className={classNames.join(" ")}>{props.children}</button>;
+    return <button className={classNames.join(' ')}>{props.children}</button>;
 };
 
 export default Button;
