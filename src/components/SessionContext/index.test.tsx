@@ -19,6 +19,8 @@ describe('Session Component', () => {
         </SessionContextProvider>
     );
 
+    const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
+
     it('initialize properly', async () => {
         const { result } = renderHook(useSessionContext, {
             wrapper: wrapper,
@@ -35,7 +37,6 @@ describe('Session Component', () => {
     });
 
     it('ready with given session', async () => {
-        const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
         getSession.mockResolvedValue({
             data: { session: {} as any },
             error: null,
@@ -55,7 +56,6 @@ describe('Session Component', () => {
     });
 
     it('ready with given error', async () => {
-        const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
         getSession.mockResolvedValue({
             data: { session: null },
             error: {} as any,
@@ -74,8 +74,7 @@ describe('Session Component', () => {
         expect(supabaseClient.auth.getSession).toBeCalledTimes(1);
     });
 
-    it('has no session when signout', async () => {
-        const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
+    it('has no session after signout', async () => {
         getSession.mockResolvedValue({
             data: { session: {} as any },
             error: null,
