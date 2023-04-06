@@ -1,4 +1,5 @@
 import Alert from '@/components/base/Alert';
+import Button from '@/components/base/Button';
 import TextField from '@/components/base/TextField';
 import Typography from '@/components/base/Typography';
 import { FormEvent } from 'react';
@@ -36,9 +37,7 @@ const SignIn = (props: SignInProps) => {
     return (
         <form role="form" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
-                <div>
-                    <Typography.Heading level={2}>Sign in</Typography.Heading>
-                </div>
+                <Typography.Heading level={2}>Sign in</Typography.Heading>
                 <ErrorAlert errorMessage={props.errorMessage} />
                 <TextField
                     id="email"
@@ -54,12 +53,9 @@ const SignIn = (props: SignInProps) => {
                     placeholder="Password"
                     required
                 />
-                <button
-                    type="submit"
-                    className="border w-full rounded col-span-2 p-2"
-                >
-                    Submit
-                </button>
+                <div className="col-span-2">
+                    <Button fullWidth>Submit</Button>
+                </div>
             </div>
         </form>
     );
