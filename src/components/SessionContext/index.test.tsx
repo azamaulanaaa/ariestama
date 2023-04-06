@@ -19,14 +19,14 @@ describe('Session Component', () => {
         </SessionContextProvider>
     );
 
-    test('Loading Initialization', async () => {
+    it('initialize properly', async () => {
         const { result } = renderHook(useSessionContext, {
             wrapper: wrapper,
         });
 
         await waitFor(() => {
             expect(result.current).toEqual({
-                isLoading: true,
+                isReady: false,
                 session: null,
                 error: null,
                 supabaseClient: supabaseClient,
@@ -34,7 +34,7 @@ describe('Session Component', () => {
         });
     });
 
-    test('Success Initialization', async () => {
+    it('ready with given session', async () => {
         const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
         getSession.mockResolvedValue({
             data: { session: {} as any },
@@ -46,7 +46,7 @@ describe('Session Component', () => {
         });
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBeFalsy();
+            expect(result.current.isReady).toBeTruthy();
             expect(result.current.session).toEqual({});
             expect(result.current.error).toBeNull();
         });
@@ -54,7 +54,7 @@ describe('Session Component', () => {
         expect(supabaseClient.auth.getSession).toBeCalledTimes(1);
     });
 
-    test('Error Initialization', async () => {
+    it('ready with given error', async () => {
         const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
         getSession.mockResolvedValue({
             data: { session: null },
@@ -66,7 +66,7 @@ describe('Session Component', () => {
         });
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBeFalsy();
+            expect(result.current.isReady).toBeTruthy();
             expect(result.current.session).toBeNull();
             expect(result.current.error).toEqual({});
         });
@@ -74,36 +74,25 @@ describe('Session Component', () => {
         expect(supabaseClient.auth.getSession).toBeCalledTimes(1);
     });
 
-    test('On Session Change', async () => {
+    it('has no session when signout', async () => {
         const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
         getSession.mockResolvedValue({
             data: { session: {} as any },
             error: null,
         });
 
-        const unsubscribe = jest.fn();
-        const onAuthStateChange = jest.spyOn(
-            supabaseClient.auth,
-            'onAuthStateChange'
-        );
-        onAuthStateChange.mockImplementation((callback) => {
-            return {
-                data: {
-                    subscription: {
-                        id: '',
-                        callback: callback,
-                        unsubscribe: unsubscribe,
-                    },
-                },
-            };
-        });
-
-        renderHook(useSessionContext, {
+        const { result } = renderHook(useSessionContext, {
             wrapper: wrapper,
         });
 
         await waitFor(() => {
-            expect(onAuthStateChange).toBeCalledTimes(1);
+            expect(result.current.session).not.toBeNull();
+        });
+
+        result.current.supabaseClient.auth.signOut();
+
+        await waitFor(() => {
+            expect(result.current.session).toBeNull();
         });
     });
 });

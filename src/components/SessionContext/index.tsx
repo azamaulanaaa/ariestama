@@ -8,14 +8,14 @@ import {
 import { Session, SupabaseClient, AuthError } from '@supabase/supabase-js';
 
 export interface SessionContext {
-    isLoading: boolean;
+    isReady: boolean;
     session: Session | null;
     error: AuthError | null;
     supabaseClient: SupabaseClient;
 }
 
 const SessionContext = createContext<SessionContext>({
-    isLoading: true,
+    isReady: false,
     session: null,
     error: null,
     supabaseClient: {} as any,
@@ -27,7 +27,7 @@ export interface SessionProviderProps {
 }
 
 export const SessionContextProvider = (props: SessionProviderProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isReady, setIsReady] = useState<boolean>(false);
     const [session, setSession] = useState<Session | null>(null);
     const [error, setError] = useState<AuthError | null>(null);
 
@@ -36,7 +36,7 @@ export const SessionContextProvider = (props: SessionProviderProps) => {
             const result = await props.supabaseClient.auth.getSession();
             setSession(result.data.session);
             setError(result.error);
-            setIsLoading(false);
+            setIsReady(true);
         };
 
         getSession();
@@ -54,7 +54,7 @@ export const SessionContextProvider = (props: SessionProviderProps) => {
     }, []);
 
     const value = {
-        isLoading,
+        isReady,
         session,
         error,
         supabaseClient: props.supabaseClient,
