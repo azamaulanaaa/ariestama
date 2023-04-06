@@ -13,7 +13,7 @@ describe('SignIn Form', () => {
         render(<SignIn />);
         screen.getByRole('form');
         const heading = screen.getByRole('heading');
-        expect(heading).toHaveTextContent('SignIn');
+        expect(heading).toHaveTextContent('Sign in');
         screen.getByPlaceholderText('Email');
         screen.getByPlaceholderText('Password');
         screen.getByRole('button');

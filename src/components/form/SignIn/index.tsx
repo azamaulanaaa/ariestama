@@ -1,5 +1,6 @@
 import Alert from '@/components/base/Alert';
 import TextField from '@/components/base/TextField';
+import Typography from '@/components/base/Typography';
 import { FormEvent } from 'react';
 
 interface SignInProps {
@@ -36,7 +37,7 @@ const SignIn = (props: SignInProps) => {
         <form role="form" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-4">
                 <div>
-                    <h1 className="font-bold">SignIn</h1>
+                    <Typography.Heading level={2}>Sign in</Typography.Heading>
                 </div>
                 <ErrorAlert errorMessage={props.errorMessage} />
                 <TextField

@@ -6,7 +6,7 @@ export interface LoadingProps {
 }
 
 const Loading = (props: LoadingProps) => {
-    if (props.isLoading || props.children=== undefined)
+    if (props.isLoading || props.children === undefined)
         return (
             <div className="grid h-full place-items-center">
                 <svg
