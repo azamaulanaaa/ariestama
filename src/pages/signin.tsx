@@ -1,10 +1,10 @@
 import { AuthError } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import SignInForm from '@/components/form/SignIn';
 import { useSessionContext } from '@/components/SessionContext';
-import Loading from '@/components/base/Loading';
+import Loading from '@/components/Loading';
 
 function SignIn() {
     const { isReady, session, supabaseClient } = useSessionContext();
@@ -12,11 +12,9 @@ function SignIn() {
     const [loading, setLoading] = useState<boolean>(false);
 
     const router = useRouter();
-    useEffect(() => {
-        if (session) {
-            router.push('/dashboard');
-        }
-    }, [session]);
+    if (session) {
+        router.push('/dashboard');
+    }
 
     const handleSubmit = async ({
         email,
@@ -25,6 +23,7 @@ function SignIn() {
         email: string;
         password: string;
     }) => {
+        setError(null);
         setLoading(true);
         const { error } = await supabaseClient.auth.signInWithPassword({
             email,
@@ -40,15 +39,15 @@ function SignIn() {
     };
 
     return (
-        <div className="grid h-screen place-items-center">
-            <div className="border w-[400px] p-4 m-4">
-                <Loading isLoading={!isReady || !router.isReady || loading}>
+        <div className="grid h-screen place-items-center m-4">
+            <Loading isLoading={loading || !router.isReady || !isReady}>
+                <div className="border rounded w-[350px] p-4">
                     <SignInForm
                         onSubmit={handleSubmit}
                         errorMessage={error?.message}
                     />
-                </Loading>
-            </div>
+                </div>
+            </Loading>
         </div>
     );
 }

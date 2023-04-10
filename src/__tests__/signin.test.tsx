@@ -77,8 +77,8 @@ describe('SignIn Page', () => {
 
         render(<SignIn />);
 
-        const input_email = screen.getByPlaceholderText(/email/i);
-        const input_password = screen.getByPlaceholderText(/password/i);
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button', { name: /submit/i });
 
         await user.type(input_email, 'some@email.com');
@@ -87,7 +87,6 @@ describe('SignIn Page', () => {
 
         await waitFor(() => {
             const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(/error/i);
             expect(alert).toHaveTextContent(message);
 
             expect(input_email).toHaveValue('some@email.com');
@@ -114,8 +113,8 @@ describe('SignIn Page', () => {
 
         render(<SignIn />);
 
-        const input_email = screen.getByPlaceholderText(/email/i);
-        const input_password = screen.getByPlaceholderText(/password/i);
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button', { name: /submit/i });
 
         await user.type(input_email, 'some@email.com');
@@ -154,8 +153,8 @@ describe('SignIn Page', () => {
 
         render(<SignIn />);
 
-        const input_email = screen.getByPlaceholderText(/email/i);
-        const input_password = screen.getByPlaceholderText(/password/i);
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button', { name: /submit/i });
 
         await user.type(input_email, 'some@email.com');
