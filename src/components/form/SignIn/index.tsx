@@ -1,8 +1,5 @@
-import Alert from '@/components/base/Alert';
-import Button from '@/components/base/Button';
-import TextField from '@/components/base/TextField';
-import Typography from '@/components/base/Typography';
 import { FormEvent } from 'react';
+import { Alert, Button, Input, Typography } from '@material-tailwind/react';
 
 interface SignInProps {
     onSubmit?: (data: SignInData) => void;
@@ -36,27 +33,38 @@ const SignIn = (props: SignInProps) => {
 
     return (
         <form role="form" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-4">
-                <Typography.Heading level={2}>Sign in</Typography.Heading>
+            <Typography variant="h4" component="h1">
+                Sign in
+            </Typography>
+            <Typography color="gray" className="mt-1 font-ormal">
+                to continue to Ariestama System
+            </Typography>
+            <div className="flex flex-col gap-6 mt-8">
                 <ErrorAlert errorMessage={props.errorMessage} />
-                <TextField
+                <Input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="Email"
+                    label="Email"
+                    labelProps={{ htmlFor: 'email' }}
                     required
+                    size="lg"
+                    error={props.errorMessage !== undefined}
                 />
-                <TextField
+                <Input
                     id="password"
                     name="password"
                     type="password"
-                    placeholder="Password"
+                    label="Password"
+                    labelProps={{ htmlFor: 'password' }}
                     required
+                    size="lg"
+                    error={props.errorMessage !== undefined}
                 />
-                <div className="col-span-2">
-                    <Button fullWidth>Submit</Button>
-                </div>
             </div>
+            <Button type="submit" className="mt-8" ripple={false}>
+                Submit
+            </Button>
         </form>
     );
 };
@@ -64,7 +72,7 @@ const SignIn = (props: SignInProps) => {
 const ErrorAlert = ({ errorMessage }: { errorMessage?: string }) => {
     if (!errorMessage) return null;
 
-    return <Alert title="Error" message={errorMessage} />;
+    return <Alert color="red">{errorMessage}</Alert>;
 };
 
 export default SignIn;

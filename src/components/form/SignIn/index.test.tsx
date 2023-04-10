@@ -14,8 +14,8 @@ describe('SignIn Form', () => {
         screen.getByRole('form');
         const heading = screen.getByRole('heading');
         expect(heading).toHaveTextContent('Sign in');
-        screen.getByPlaceholderText('Email');
-        screen.getByPlaceholderText('Password');
+        screen.getByLabelText(/email/i);
+        screen.getByLabelText(/password/i);
         screen.getByRole('button');
     });
 
@@ -27,8 +27,8 @@ describe('SignIn Form', () => {
         };
         render(<SignIn onSubmit={handleSubmit} />);
         const form = screen.getByRole('form');
-        const input_email = screen.getByPlaceholderText('Email');
-        const input_password = screen.getByPlaceholderText('Password');
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button');
 
         await user.type(input_email, data.email);
@@ -49,8 +49,8 @@ describe('SignIn Form', () => {
 
         render(<SignIn onSubmit={handleSubmit} />);
         const form = screen.getByRole('form');
-        const input_email = screen.getByPlaceholderText('Email');
-        const input_password = screen.getByPlaceholderText('Password');
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button');
 
         await user.type(input_password, 'some');

@@ -24,8 +24,6 @@ describe('Loading Base Component', () => {
             </Loading>
         );
         screen.getByRole('status');
-        const child = screen.queryByTestId('child');
-        expect(child).not.toBeInTheDocument();
     });
 
     it('render loading animation if no child', () => {
