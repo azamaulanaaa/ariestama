@@ -39,7 +39,7 @@ const SignIn = (props: SignInProps) => {
             <Typography color="gray" className="mt-1 font-ormal">
                 to continue to Ariestama System
             </Typography>
-            <div className="flex flex-col gap-6 mt-8">
+            <div className="flex flex-col gap-6 mt-6">
                 <ErrorAlert errorMessage={props.errorMessage} />
                 <Input
                     id="email"
@@ -62,7 +62,7 @@ const SignIn = (props: SignInProps) => {
                     error={props.errorMessage !== undefined}
                 />
             </div>
-            <Button type="submit" className="mt-8" ripple={false}>
+            <Button type="submit" fullWidth className="mt-8" ripple={false}>
                 Submit
             </Button>
         </form>
