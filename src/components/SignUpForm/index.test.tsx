@@ -1,6 +1,6 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SignUp from '.';
+import SignUpForm from '.';
 
 describe('SignUp Form Component', () => {
     const user = userEvent.setup();
@@ -10,7 +10,7 @@ describe('SignUp Form Component', () => {
     });
 
     it('default render', () => {
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const title = screen.getByRole('heading');
         screen.getByRole('form');
@@ -30,7 +30,7 @@ describe('SignUp Form Component', () => {
             password: 'somesome',
         };
 
-        render(<SignUp onSubmit={handleSubmit} />);
+        render(<SignUpForm onSubmit={handleSubmit} />);
 
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/^password/i);
@@ -52,7 +52,7 @@ describe('SignUp Form Component', () => {
     it('support error message', async () => {
         const message = 'some';
 
-        render(<SignUp alertProps={{ color: 'red', children: message }} />);
+        render(<SignUpForm alertProps={{ color: 'red', children: message }} />);
 
         await waitFor(() => {
             const alert = screen.getByRole('alert');
@@ -63,7 +63,9 @@ describe('SignUp Form Component', () => {
     it('support success message', async () => {
         const message = 'some';
 
-        render(<SignUp alertProps={{ color: 'green', children: message }} />);
+        render(
+            <SignUpForm alertProps={{ color: 'green', children: message }} />
+        );
 
         await waitFor(() => {
             const alert = screen.getByRole('alert');
@@ -72,7 +74,7 @@ describe('SignUp Form Component', () => {
     });
 
     it('everytimes password change make sure password and confirm password are the same', async () => {
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
         const input_confirm_password =
@@ -91,7 +93,7 @@ describe('SignUp Form Component', () => {
     });
 
     it('everytimes confirm password change make sure password and confirm password are the same', async () => {
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
         const input_confirm_password =
@@ -110,7 +112,7 @@ describe('SignUp Form Component', () => {
     });
 
     it('valid password should have minimum char of 6', async () => {
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
         expect(input_password).toBeInvalid();
@@ -136,7 +138,7 @@ describe('SignUp Form Component', () => {
             'some @email.com',
         ];
 
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const input_email = screen.getByLabelText(/email/i);
 
@@ -159,7 +161,7 @@ describe('SignUp Form Component', () => {
             'n4m3_e@domain.wow',
         ];
 
-        render(<SignUp />);
+        render(<SignUpForm />);
 
         const input_email = screen.getByLabelText(/email/i);
 

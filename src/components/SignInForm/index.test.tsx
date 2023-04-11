@@ -1,4 +1,4 @@
-import SignIn from '.';
+import SignInForm from '.';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -10,7 +10,7 @@ describe('SignIn Form', () => {
     const user = userEvent.setup();
 
     it('render properly', () => {
-        render(<SignIn />);
+        render(<SignInForm />);
         screen.getByRole('form');
         const heading = screen.getByRole('heading');
         expect(heading).toHaveTextContent('Sign in');
@@ -25,7 +25,7 @@ describe('SignIn Form', () => {
             email: 'name@example.com',
             password: 'password',
         };
-        render(<SignIn onSubmit={handleSubmit} />);
+        render(<SignInForm onSubmit={handleSubmit} />);
         const form = screen.getByRole('form');
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/password/i);
@@ -47,7 +47,7 @@ describe('SignIn Form', () => {
     it('support error message', async () => {
         const message = 'some';
 
-        render(<SignIn errorMessage={message} />);
+        render(<SignInForm errorMessage={message} />);
         const alert = screen.getByRole('alert');
         expect(alert).toHaveTextContent(message);
     });

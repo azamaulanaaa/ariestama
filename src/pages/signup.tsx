@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
-import SignUpForm, { SignUpData } from '@/components/form/SignUp';
+import SignUpForm, { SignUpFormData } from '@/components/SignUpForm';
 import { AlertProps } from '@material-tailwind/react';
 
 function SignUp() {
@@ -18,7 +18,7 @@ function SignUp() {
         router.push('/dashboard');
     }
 
-    const handleSubmit = async (data: SignUpData) => {
+    const handleSubmit = async (data: SignUpFormData) => {
         setAlertProps(undefined);
         setLoading(true);
         const { error } = await supabaseClient.auth.signUp({

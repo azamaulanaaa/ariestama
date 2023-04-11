@@ -7,17 +7,17 @@ import {
 } from '@material-tailwind/react';
 import { FormEvent, ChangeEvent, useRef, useState } from 'react';
 
-export interface SignUpProps {
-    onSubmit?: (data: SignUpData) => void;
+export interface SignUpFormProps {
+    onSubmit?: (data: SignUpFormData) => void;
     alertProps?: AlertProps;
 }
 
-export interface SignUpData {
+export interface SignUpFormData {
     email: string;
     password: string;
 }
 
-const SignUp = (props: SignUpProps) => {
+const SignUpForm = (props: SignUpFormProps) => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -134,4 +134,4 @@ const SignUp = (props: SignUpProps) => {
     );
 };
 
-export default SignUp;
+export default SignUpForm;

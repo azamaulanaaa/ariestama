@@ -1,17 +1,17 @@
 import { FormEvent } from 'react';
 import { Alert, Button, Input, Typography } from '@material-tailwind/react';
 
-interface SignInProps {
-    onSubmit?: (data: SignInData) => void;
+interface SignInFormProps {
+    onSubmit?: (data: SignInFormData) => void;
     errorMessage?: string;
 }
 
-interface SignInData {
+interface SignInFormData {
     email: string;
     password: string;
 }
 
-const SignIn = (props: SignInProps) => {
+const SignInForm = (props: SignInFormProps) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!props.onSubmit) return;
@@ -74,4 +74,4 @@ const ErrorAlert = ({ errorMessage }: { errorMessage?: string }) => {
     return <Alert color="red">{errorMessage}</Alert>;
 };
 
-export default SignIn;
+export default SignInForm;

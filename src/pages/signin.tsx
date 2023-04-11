@@ -2,7 +2,7 @@ import { AuthError } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import SignInForm from '@/components/form/SignIn';
+import SignInForm, { SignInFormData } from '@/components/SignInForm';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 
@@ -16,18 +16,12 @@ function SignIn() {
         router.push('/dashboard');
     }
 
-    const handleSubmit = async ({
-        email,
-        password,
-    }: {
-        email: string;
-        password: string;
-    }) => {
+    const handleSubmit = async (data: SignInFormData) => {
         setError(null);
         setLoading(true);
         const { error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
+            email: data.email,
+            password: data.password,
         });
         if (error) {
             setError(error);
