@@ -28,7 +28,7 @@ describe('SignUp Page', () => {
         cleanup;
     });
 
-    it('render signup form', () => {
+    it('render signup form when all ready', () => {
         useRouter.mockReturnValue({
             isReady: true,
         });
@@ -160,6 +160,37 @@ describe('SignUp Page', () => {
                 password: data.password,
             });
             screen.getByRole('alert');
+        });
+    });
+
+    it('render loading animation while process sending signup data to server', async () => {
+        useRouter.mockReturnValue({ isReady: true });
+        useSessionContext.mockReturnValue({
+            isReady: true,
+            session: null,
+            supabaseClient: supabaseClient,
+        });
+        const signUpFn = jest.spyOn(supabaseClient.auth, 'signUp');
+        signUpFn.mockResolvedValue({
+            data: {} as any,
+            error: null,
+        });
+
+        render(<SignUp />);
+
+        const input_email = screen.getByLabelText(/email/i);
+        const input_password = screen.getByLabelText(/^password/i);
+        const input_confirm_password =
+            screen.getByLabelText(/confirm password/i);
+        const btn_submit = screen.getByRole('button');
+
+        await user.type(input_email, 'some@exmplain.com');
+        await user.type(input_password, 'somesome');
+        await user.type(input_confirm_password, 'somesome');
+        user.click(btn_submit);
+
+        await waitFor(() => {
+            screen.getByRole('status');
         });
     });
 });

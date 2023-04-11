@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { AuthError, AuthResponse } from '@supabase/supabase-js';
 
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
