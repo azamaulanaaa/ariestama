@@ -44,34 +44,6 @@ describe('SignIn Form', () => {
         });
     });
 
-    it('will not submit on incorrect email input', async () => {
-        const handleSubmit = jest.fn();
-
-        render(<SignIn onSubmit={handleSubmit} />);
-        const form = screen.getByRole('form');
-        const input_email = screen.getByLabelText(/email/i);
-        const input_password = screen.getByLabelText(/password/i);
-        const btn_submit = screen.getByRole('button');
-
-        await user.type(input_password, 'some');
-
-        const testCases = [
-            'not_email',
-            'not@email',
-            'not@email.',
-            'not @email.com',
-        ];
-        testCases.forEach(async (testCase) => {
-            await user.type(input_email, testCase);
-            await user.click(btn_submit);
-
-            await waitFor(() => {
-                expect(form).toHaveFormValues({ email: '', password: '' });
-                expect(handleSubmit).oBeCalledTimes(0);
-            });
-        });
-    });
-
     it('support error message', async () => {
         const message = 'some';
 

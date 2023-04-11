@@ -13,9 +13,8 @@ interface SignInData {
 
 const SignIn = (props: SignInProps) => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        if (!props.onSubmit) return;
-
         event.preventDefault();
+        if (!props.onSubmit) return;
 
         const form = event.currentTarget;
         const form_data = new FormData(form);
@@ -36,7 +35,7 @@ const SignIn = (props: SignInProps) => {
             <Typography variant="h4" component="h1">
                 Sign in
             </Typography>
-            <Typography color="gray" className="mt-1 font-ormal">
+            <Typography color="gray" className="mt-1 font-normal">
                 to continue to Ariestama System
             </Typography>
             <div className="flex flex-col gap-6 mt-6">
@@ -48,8 +47,8 @@ const SignIn = (props: SignInProps) => {
                     label="Email"
                     labelProps={{ htmlFor: 'email' }}
                     required
-                    size="lg"
                     error={props.errorMessage !== undefined}
+                    size="lg"
                 />
                 <Input
                     id="password"
@@ -58,8 +57,8 @@ const SignIn = (props: SignInProps) => {
                     label="Password"
                     labelProps={{ htmlFor: 'password' }}
                     required
-                    size="lg"
                     error={props.errorMessage !== undefined}
+                    size="lg"
                 />
             </div>
             <Button type="submit" fullWidth className="mt-8" ripple={false}>
