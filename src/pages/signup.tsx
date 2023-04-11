@@ -1,107 +1,54 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { AuthResponse } from '@supabase/supabase-js';
+import { useState } from 'react';
+import { AuthError, AuthResponse } from '@supabase/supabase-js';
 
-import Alert, { AlertProps } from '../components/Alert';
-import Input from '../components/Input';
-import local from '../locals/en';
-import { Database } from '../types/supabase';
+import { useSessionContext } from '@/components/SessionContext';
+import Loading from '@/components/Loading';
+import SignUpForm, { SignUpData } from '@/components/form/SignUp';
+import { AlertProps } from '@material-tailwind/react';
 
 function SignUp() {
+    const { isReady, session, supabaseClient } = useSessionContext();
+    const [alertProps, setAlertProps] = useState<AlertProps | undefined>(
+        undefined
+    );
+    const [loading, setLoading] = useState<boolean>(false);
+
     const router = useRouter();
-    const user = useUser();
+    if (session) {
+        router.push('/dashboard');
+    }
 
-    if (user) router.push('/dashboard');
-
-    const supabaseClient = useSupabaseClient<Database>();
-    const [alertProps, setAlertProps] = useState<null | AlertProps>(null);
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const form = e.currentTarget;
-        const form_data = new FormData(form);
-
-        const email_form = form_data.get('email');
-        const password_form = form_data.get('password');
-        const confirm_password_form = form_data.get('confirm_password');
-
-        if (!password_form || !confirm_password_form || !email_form) return;
-
-        if (password_form.toString() != confirm_password_form.toString()) {
-            setAlertProps({
-                title: local.auth.signup_error_confirm_password_title,
-                message: local.auth.signup_error_confirm_password_message,
-            });
+    const handleSubmit = async (data: SignUpData) => {
+        setAlertProps(undefined);
+        setLoading(true);
+        const { error } = await supabaseClient.auth.signUp({
+            email: data.email,
+            password: data.password,
+        });
+        if (error) {
+            setAlertProps({ color: 'red', children: error.message });
+            setLoading(false);
             return;
         }
-
-        supabaseClient.auth
-            .signUp({
-                email: email_form.toString(),
-                password: password_form.toString(),
-            })
-            .then((res: AuthResponse) => {
-                if (res.error) {
-                    setAlertProps({
-                        title: local.auth.signup_error_general_title,
-                        message: res.error.message,
-                    });
-                } else {
-                    setAlertProps({
-                        title: local.auth.signup_success_title,
-                        message: local.auth.signup_success_message,
-                    });
-                }
-            });
-    };
-
-    const SignUpAlert = () => {
-        if (!alertProps) return null;
-
-        return <Alert {...alertProps} />;
+        setAlertProps({
+            color: 'green',
+            children: 'Sign up successful. Check your email for verification.',
+        });
+        setLoading(false);
+        return;
     };
 
     return (
-        <div className="border w-[400px] p-4 m-auto mt-4">
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-4">
-                    <h1 className="font-bold">{local.auth.signup_header}</h1>
-                    <SignUpAlert />
-                    <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder={local.auth.email}
-                        required
+        <div className="grid h-screen place-items-center m-4">
+            <Loading isLoading={loading || !router.isReady || !isReady}>
+                <div className="border border-gray-300 rounded w-[350px] p-4">
+                    <SignUpForm
+                        onSubmit={handleSubmit}
+                        alertProps={alertProps}
                     />
-                    <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder={local.auth.password}
-                        required
-                    />
-                    <Input
-                        id="confirm_password"
-                        name="confirm_password"
-                        type="password"
-                        placeholder={local.auth.confirm_password}
-                        required
-                    />
-                    <div>
-                        <Link href="/signin">{local.auth.signin_link}</Link>
-                    </div>
-                    <button
-                        type="submit"
-                        className="border w-full rounded col-span-2 p-2"
-                    >
-                        Submit
-                    </button>
                 </div>
-            </form>
+            </Loading>
         </div>
     );
 }
