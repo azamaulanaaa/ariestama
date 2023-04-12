@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { Typography } from '@material-tailwind/react';
 
 export interface TableHeader {
@@ -12,6 +12,7 @@ export interface TableData {
 export interface TableProps {
     headers: TableHeader;
     items: TableData[];
+    onClick?: (data: TableData) => void;
 }
 
 const Table = (props: TableProps) => {
@@ -21,6 +22,7 @@ const Table = (props: TableProps) => {
             <TableBody
                 data={props.items}
                 dataKey={Object.keys(props.headers)}
+                onClick={props.onClick}
             />
         </table>
     );
@@ -52,13 +54,25 @@ const TableHeader = (props: TableHeaderProps) => {
 interface TableBodyProps {
     data: TableData[];
     dataKey: string[];
+    onClick?: (data: TableData) => void;
 }
 
 const TableBody = (props: TableBodyProps) => {
+    const genHandleClick = (data: TableData) => {
+        return (_: MouseEvent<HTMLTableRowElement>) => {
+            if (!props.onClick) return;
+            props.onClick(data);
+        };
+    };
+
     return (
-        <tbody>
+        <tbody className="mouse-pointer">
             {props.data.map((data, index) => (
-                <tr key={index} className="border-y hover:bg-gray-50">
+                <tr
+                    key={index}
+                    className="border-y hover:bg-gray-50"
+                    onClick={genHandleClick(data)}
+                >
                     {props.dataKey.map((key) => (
                         <td key={key} className="p-4 first:pl-6 last:pr-6">
                             {data[key]}
