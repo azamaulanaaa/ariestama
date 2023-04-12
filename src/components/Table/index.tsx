@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Typography } from '@material-tailwind/react';
 
 export interface TableHeader {
     [key: string]: string;
@@ -15,7 +16,7 @@ export interface TableProps {
 
 const Table = (props: TableProps) => {
     return (
-        <table>
+        <table className="table-auto border-collapse w-full">
             <TableHeader data={props.headers} />
             <TableBody
                 data={props.items}
@@ -31,10 +32,17 @@ interface TableHeaderProps {
 
 const TableHeader = (props: TableHeaderProps) => {
     return (
-        <thead>
-            <tr>
+        <thead className="bg-gray-200 text-gray-700">
+            <tr className="border-b">
                 {Object.entries(props.data).map(([key, value]) => (
-                    <th key={key}>{value}</th>
+                    <th
+                        key={key}
+                        className="p-4 first:pl-6 last:pr-6 text-left"
+                    >
+                        <Typography variant="h6" as="span">
+                            {value}
+                        </Typography>
+                    </th>
                 ))}
             </tr>
         </thead>
@@ -50,9 +58,11 @@ const TableBody = (props: TableBodyProps) => {
     return (
         <tbody>
             {props.data.map((data, index) => (
-                <tr key={index}>
+                <tr key={index} className="border-y hover:bg-gray-50">
                     {props.dataKey.map((key) => (
-                        <td key={key}>{data[key]}</td>
+                        <td key={key} className="p-4 first:pl-6 last:pr-6">
+                            {data[key]}
+                        </td>
                     ))}
                 </tr>
             ))}
