@@ -1,38 +1,38 @@
 import { MouseEvent, ReactNode } from 'react';
 import { Typography } from '@material-tailwind/react';
 
-export interface TableHeader {
-    [key: string]: string;
+export type TableHeader<K extends string> = {
+    [key in K]?: string;
+};
+
+export type TableData<K extends string> = {
+    [key in K]: ReactNode;
+};
+
+export interface TableProps<K extends string> {
+    headers: TableHeader<K>;
+    items: TableData<K>[];
+    onClick?: (data: TableData<K>) => void;
 }
 
-export interface TableData {
-    [key: string]: ReactNode;
-}
-
-export interface TableProps {
-    headers: TableHeader;
-    items: TableData[];
-    onClick?: (data: TableData) => void;
-}
-
-const Table = (props: TableProps) => {
+const Table = <K extends string>(props: TableProps<K>) => {
     return (
         <table className="table-auto border-collapse w-full">
             <TableHeader data={props.headers} />
             <TableBody
                 data={props.items}
-                dataKey={Object.keys(props.headers)}
+                dataKey={Object.keys(props.headers) as K[]}
                 onClick={props.onClick}
             />
         </table>
     );
 };
 
-interface TableHeaderProps {
-    data: TableHeader;
-}
+type TableHeaderProps<K extends string> = {
+    data: TableHeader<K>;
+};
 
-const TableHeader = (props: TableHeaderProps) => {
+const TableHeader = <K extends string>(props: TableHeaderProps<K>) => {
     return (
         <thead className="bg-gray-200 text-gray-700">
             <tr className="border-b">
@@ -51,14 +51,14 @@ const TableHeader = (props: TableHeaderProps) => {
     );
 };
 
-interface TableBodyProps {
-    data: TableData[];
-    dataKey: string[];
-    onClick?: (data: TableData) => void;
+interface TableBodyProps<K extends string> {
+    data: TableData<K>[];
+    dataKey: K[];
+    onClick?: (data: TableData<K>) => void;
 }
 
-const TableBody = (props: TableBodyProps) => {
-    const genHandleClick = (data: TableData) => {
+const TableBody = <K extends string>(props: TableBodyProps<K>) => {
+    const genHandleClick = (data: TableData<K>) => {
         return (_: MouseEvent<HTMLTableRowElement>) => {
             if (!props.onClick) return;
             props.onClick(data);
