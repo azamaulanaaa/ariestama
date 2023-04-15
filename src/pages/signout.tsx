@@ -3,6 +3,7 @@ import { AuthError } from '@supabase/supabase-js';
 
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
+import Config from '@/config';
 
 const SignOut = () => {
     const router = useRouter();
@@ -14,7 +15,7 @@ const SignOut = () => {
             .signOut()
             .then((res: { error: AuthError | null }) => {
                 if (res.error) return;
-                router.push('/signin');
+                router.push(Config.Url.SignIn);
             });
     }
 

@@ -5,6 +5,7 @@ import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import SignUpForm, { SignUpFormData } from '@/components/SignUpForm';
 import { AlertProps } from '@material-tailwind/react';
+import Config from '@/config';
 
 function SignUp() {
     const { isReady, session, supabaseClient } = useSessionContext();
@@ -14,9 +15,7 @@ function SignUp() {
     const [loading, setLoading] = useState<boolean>(false);
 
     const router = useRouter();
-    if (session) {
-        router.push('/dashboard');
-    }
+    if (router.isReady && session) router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignUpFormData) => {
         setAlertProps(undefined);

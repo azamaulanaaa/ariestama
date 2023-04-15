@@ -16,7 +16,8 @@
     "paths": {
       "@/components/*": ["./src/components/*"],
       "@/libs/*": ["./src/libs/*"],
-      "@/pages/*": ["./src/pages/*"]
+      "@/pages/*": ["./src/pages/*"],
+      "@/config": ["./src/config"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

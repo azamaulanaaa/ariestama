@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import SignInForm, { SignInFormData } from '@/components/SignInForm';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
+import Config from '@/config';
 
 function SignIn() {
     const { isReady, session, supabaseClient } = useSessionContext();
@@ -12,9 +13,7 @@ function SignIn() {
     const [loading, setLoading] = useState<boolean>(false);
 
     const router = useRouter();
-    if (session) {
-        router.push('/dashboard');
-    }
+    if (router.isReady && session) router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignInFormData) => {
         setError(null);

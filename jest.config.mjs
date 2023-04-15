@@ -16,6 +16,7 @@ const config = {
         "^@/components/(.*)$": '<rootDir>/src/components/$1',
         "^@/libs/(.*)$": '<rootDir>/src/libs/$1',
         "^@/pages/(.*)$": '<rootDir>/src/pages/$1',
+        "^@/config$": '<rootDir>/src/config',
     }
 }
 
