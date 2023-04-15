@@ -34,7 +34,7 @@ type TableHeaderProps<K extends string> = {
 
 const TableHeader = <K extends string>(props: TableHeaderProps<K>) => {
     return (
-        <thead className="bg-gray-200 text-gray-700">
+        <thead className="bg-gray-300 text-gray-700">
             <tr className="border-b">
                 {Object.entries(props.data).map(([key, value]) => (
                     <th
@@ -66,18 +66,24 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
     };
 
     return (
-        <tbody className="mouse-pointer">
+        <tbody className="cursor-pointer">
             {props.data.map((data, index) => (
                 <tr
                     key={index}
-                    className="border-y hover:bg-gray-50"
+                    className="border-y hover:bg-gray-200"
                     onClick={genHandleClick(data)}
                 >
-                    {props.dataKey.map((key) => (
-                        <td key={key} className="p-4 first:pl-6 last:pr-6">
-                            {data[key]}
-                        </td>
-                    ))}
+                    {props.dataKey.map((key) => {
+                        let value = data[key];
+                        if (typeof value == 'string')
+                            value = <Typography>{value}</Typography>;
+
+                        return (
+                            <td key={key} className="p-4 first:pl-6 last:pr-6">
+                                {value}
+                            </td>
+                        );
+                    })}
                 </tr>
             ))}
         </tbody>
