@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import SignInPage from '@/pages/signin';
 import Database from '@/libs/Database';
+import Config from '@/config';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -74,7 +75,7 @@ describe('SignIn Page', () => {
         });
     });
 
-    it('redirect for success signin', async () => {
+    it('redirect to dashboard for success signin', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
         jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
@@ -92,11 +93,11 @@ describe('SignIn Page', () => {
 
         await waitFor(() => {
             expect(push).toBeCalledTimes(1);
+            expect(push).toBeCalledWith(Config.Url.Dashboard);
         });
     });
 
-    /*
-    it('redirect for signed user', async () => {
+    it('redirect to dashboard for signed user', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
         jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(true);
@@ -105,6 +106,7 @@ describe('SignIn Page', () => {
 
         await waitFor(() => {
             expect(push).toBeCalledTimes(1);
+            expect(push).toBeCalledWith(Config.Url.Dashboard);
         });
     });
 
@@ -128,5 +130,18 @@ describe('SignIn Page', () => {
             screen.getByRole('status');
         });
     });
-    */
+
+    it('verify signin only once', async () => {
+        const push = jest.fn();
+        useRouter.mockReturnValue({ isReady: true, push });
+        const IsSignedIn = jest
+            .spyOn(session.auth, 'IsSignedIn')
+            .mockResolvedValue(true);
+
+        render(<SignInPage />);
+
+        await waitFor(() => {
+            expect(IsSignedIn).toBeCalledTimes(1);
+        });
+    });
 });
