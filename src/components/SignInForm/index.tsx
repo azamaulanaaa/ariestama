@@ -6,7 +6,7 @@ interface SignInFormProps {
     errorMessage?: string;
 }
 
-interface SignInFormData {
+export interface SignInFormData {
     email: string;
     password: string;
 }
