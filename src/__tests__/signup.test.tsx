@@ -4,6 +4,7 @@ import { AuthError } from '@supabase/supabase-js';
 
 import Database from '@/libs/Database';
 import SignUp from '@/pages/signup';
+import Config from '@/config';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -53,6 +54,7 @@ describe('SignUp Page', () => {
 
         await waitFor(() => {
             expect(push).toBeCalledTimes(1);
+            expect(push).toBeCalledWith(Config.Url.Dashboard);
         });
     });
 

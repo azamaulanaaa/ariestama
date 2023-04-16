@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 
 import SignOutPage from '@/pages/signout';
 import Database from '@/libs/Database';
+import Config from '@/config';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -46,6 +47,7 @@ describe('SignOut Page', () => {
         await waitFor(() => {
             expect(session.auth.SignOut).toBeCalledTimes(1);
             expect(push).toBeCalledTimes(1);
+            expect(push).toBeCalledWith(Config.Url.SignIn);
         });
     });
 });
