@@ -1,7 +1,7 @@
-import SignOut from '@/pages/signout';
-import { w } from '@supabase/auth-helpers-nextjs/dist/withMiddlewareAuth-06637ed5';
-import { createClient } from '@supabase/supabase-js';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
+
+import SignOutPage from '@/pages/signout';
+import Database from '@/libs/Database';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -10,10 +10,10 @@ jest.mock('next/router', () => ({
     },
 }));
 
-const useSessionContext = jest.fn();
+const session = new Database({} as any);
 jest.mock('@/components/SessionContext', () => ({
     useSessionContext() {
-        return useSessionContext();
+        return session;
     },
 }));
 
@@ -23,28 +23,28 @@ afterEach(() => {
 });
 
 describe('SignOut Page', () => {
-    const supabaseClient = createClient(
-        'https://localhost:8080',
-        'some.fake.key'
-    );
-    it('show loading animation while on process', () => {
+    it('show loading animation while on process', async () => {
         useRouter.mockReturnValue({ isReady: true, push: jest.fn() });
-        useSessionContext.mockReturnValue({ isReady: true, supabaseClient });
+        const SignOut = jest
+            .spyOn(session.auth, 'SignOut')
+            .mockResolvedValue(null);
 
-        render(<SignOut />);
-        screen.getByRole('status');
+        render(<SignOutPage />);
+        await waitFor(() => {
+            expect(SignOut).toBeCalledTimes(1);
+            screen.getByRole('status');
+        });
     });
 
     it('call signout function then redirect', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        useSessionContext.mockReturnValue({ isReady: true, supabaseClient });
-        const signOut = jest.spyOn(supabaseClient.auth, 'signOut');
+        jest.spyOn(session.auth, 'SignOut').mockResolvedValue(null);
 
-        render(<SignOut />);
+        render(<SignOutPage />);
 
         await waitFor(() => {
-            expect(signOut).toBeCalledTimes(1);
+            expect(session.auth.SignOut).toBeCalledTimes(1);
             expect(push).toBeCalledTimes(1);
         });
     });

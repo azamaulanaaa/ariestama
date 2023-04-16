@@ -81,74 +81,62 @@ export interface Database {
       unit: {
         Row: {
           brand: string
-          capacity: string
-          category: string
-          company_id: string
           created_at: string
           id: string
-          location: string
           made_in: string
-          manufactore_year: number
-          manufacture: string
+          oem: string
           serial_number: string
-          start_use_year: number
-          type: string
-          unit_number: string
         }
         Insert: {
           brand: string
-          capacity: string
-          category: string
-          company_id: string
           created_at?: string
           id?: string
-          location: string
           made_in: string
-          manufactore_year: number
-          manufacture: string
+          oem: string
           serial_number: string
-          start_use_year: number
-          type: string
-          unit_number: string
         }
         Update: {
           brand?: string
-          capacity?: string
-          category?: string
-          company_id?: string
           created_at?: string
           id?: string
-          location?: string
           made_in?: string
-          manufactore_year?: number
-          manufacture?: string
+          oem?: string
           serial_number?: string
-          start_use_year?: number
-          type?: string
-          unit_number?: string
         }
       }
-      unit_registration: {
+      unit_sertification: {
         Row: {
+          category: string
           created_at: string
           id: number
+          k3_object: string
+          owner: string
           registered_at: string
           registration_number: string
           unit_id: string
+          used_by: string
         }
         Insert: {
+          category: string
           created_at?: string
           id?: number
+          k3_object: string
+          owner: string
           registered_at: string
           registration_number: string
           unit_id: string
+          used_by: string
         }
         Update: {
+          category?: string
           created_at?: string
           id?: number
+          k3_object?: string
+          owner?: string
           registered_at?: string
           registration_number?: string
           unit_id?: string
+          used_by?: string
         }
       }
       user_permission: {

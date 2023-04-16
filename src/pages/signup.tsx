@@ -8,19 +8,27 @@ import { AlertProps } from '@material-tailwind/react';
 import Config from '@/config';
 
 function SignUp() {
-    const { isReady, session, supabaseClient } = useSessionContext();
+    const session = useSessionContext();
     const [alertProps, setAlertProps] = useState<AlertProps | undefined>(
         undefined
     );
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const router = useRouter();
-    if (router.isReady && session) router.push(Config.Url.Dashboard);
+    if (router.isReady)
+        session.auth.IsSignedIn().then((isTrue) => {
+            if (isTrue) {
+                router.push(Config.Url.Dashboard);
+                return;
+            }
+
+            setLoading(false);
+        });
 
     const handleSubmit = async (data: SignUpFormData) => {
         setAlertProps(undefined);
         setLoading(true);
-        const { error } = await supabaseClient.auth.signUp({
+        const error = await session.auth.SignUp({
             email: data.email,
             password: data.password,
         });
@@ -39,7 +47,7 @@ function SignUp() {
 
     return (
         <div className="grid h-screen place-items-center m-4">
-            <Loading isLoading={loading || !router.isReady || !isReady}>
+            <Loading isLoading={loading}>
                 <div className="border border-gray-300 rounded w-[350px] p-4">
                     <SignUpForm
                         onSubmit={handleSubmit}

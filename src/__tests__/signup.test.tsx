@@ -1,7 +1,9 @@
-import SignUp from '@/pages/signup';
-import { AuthError, createClient } from '@supabase/supabase-js';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AuthError } from '@supabase/supabase-js';
+
+import Database from '@/libs/Database';
+import SignUp from '@/pages/signup';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -10,48 +12,42 @@ jest.mock('next/router', () => ({
     },
 }));
 
-const useSessionContext = jest.fn();
+const session = new Database({} as any);
 jest.mock('@/components/SessionContext', () => ({
     useSessionContext() {
-        return useSessionContext();
+        return session;
     },
 }));
 
 describe('SignUp Page', () => {
-    const user = userEvent.setup();
-    const supabaseClient = createClient(
-        'http://localhost:8080',
-        'some.fake.key'
-    );
     afterEach(() => {
         jest.resetAllMocks();
         cleanup;
     });
 
-    it('render signup form when all ready', () => {
+    const user = userEvent.setup();
+
+    it('render signup form when all ready', async () => {
         useRouter.mockReturnValue({
             isReady: true,
         });
-        useSessionContext.mockReturnValue({
-            isReady: true,
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+
         render(<SignUp />);
 
-        screen.getByRole('form');
-        screen.getByLabelText(/email/i);
-        screen.getByLabelText(/^password/i);
-        screen.getByLabelText(/confirm password/i);
-        screen.getByRole('button');
+        await waitFor(() => {
+            screen.getByRole('form');
+            screen.getByLabelText(/email/i);
+            screen.getByLabelText(/^password/i);
+            screen.getByLabelText(/confirm password/i);
+            screen.getByRole('button');
+        });
     });
 
     it('redirect for signed user', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        useSessionContext.mockReturnValue({
-            isReady: true,
-            session: {} as any,
-            error: null,
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(true);
 
         render(<SignUp />);
 
@@ -62,18 +58,7 @@ describe('SignUp Page', () => {
 
     it('render loading animation if router is not ready', async () => {
         useRouter.mockReturnValue({ isReady: false });
-        useSessionContext.mockReturnValueOnce({ isReady: true, session: null });
-
-        render(<SignUp />);
-        screen.getByRole('status');
-    });
-
-    it('render loading animation if session is not ready', async () => {
-        useRouter.mockReturnValue({ isReady: true });
-        useSessionContext.mockReturnValueOnce({
-            isReady: false,
-            session: null,
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
 
         render(<SignUp />);
         screen.getByRole('status');
@@ -87,16 +72,10 @@ describe('SignUp Page', () => {
         };
 
         useRouter.mockReturnValue({ isReady: true });
-        useSessionContext.mockReturnValue({
-            isReady: true,
-            session: null,
-            supabaseClient: supabaseClient,
-        });
-        const signUpFn = jest.spyOn(supabaseClient.auth, 'signUp');
-        signUpFn.mockResolvedValue({
-            data: {} as any,
-            error: new AuthError(data.alert),
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+        const signUpFn = jest
+            .spyOn(session.auth, 'SignUp')
+            .mockResolvedValue(new AuthError(data.alert));
 
         render(<SignUp />);
 
@@ -129,16 +108,10 @@ describe('SignUp Page', () => {
         };
 
         useRouter.mockReturnValue({ isReady: true });
-        useSessionContext.mockReturnValue({
-            isReady: true,
-            session: null,
-            supabaseClient: supabaseClient,
-        });
-        const signUpFn = jest.spyOn(supabaseClient.auth, 'signUp');
-        signUpFn.mockResolvedValue({
-            data: {} as any,
-            error: null,
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+        const signUpFn = jest
+            .spyOn(session.auth, 'SignUp')
+            .mockResolvedValue(null);
 
         render(<SignUp />);
 
@@ -165,16 +138,8 @@ describe('SignUp Page', () => {
 
     it('render loading animation while process sending signup data to server', async () => {
         useRouter.mockReturnValue({ isReady: true });
-        useSessionContext.mockReturnValue({
-            isReady: true,
-            session: null,
-            supabaseClient: supabaseClient,
-        });
-        const signUpFn = jest.spyOn(supabaseClient.auth, 'signUp');
-        signUpFn.mockResolvedValue({
-            data: {} as any,
-            error: null,
-        });
+        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+        jest.spyOn(session.auth, 'SignUp').mockResolvedValue(null);
 
         render(<SignUp />);
 

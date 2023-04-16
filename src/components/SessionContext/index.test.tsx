@@ -1,97 +1,23 @@
-import { renderHook, waitFor } from '@testing-library/react';
-import { createClient } from '@supabase/supabase-js';
+import { cleanup, renderHook } from '@testing-library/react';
+import Database from '@/libs/Database';
 import { SessionContextProvider, useSessionContext } from '.';
 import { ReactNode } from 'react';
 
-afterEach(() => {
-    jest.resetAllMocks();
-});
+describe('SessionContext Component', () => {
+    afterEach(() => {
+        cleanup();
+    });
 
-describe('Session Component', () => {
-    const supabaseClient = createClient(
-        'http://localhost:3000',
-        'some.fake.key'
-    );
-
+    const database = new Database({} as any);
     const wrapper = ({ children }: { children: ReactNode }) => (
-        <SessionContextProvider supabaseClient={supabaseClient}>
+        <SessionContextProvider database={database}>
             {children}
         </SessionContextProvider>
     );
 
-    const getSession = jest.spyOn(supabaseClient.auth, 'getSession');
+    it('useSessionContext must return database', () => {
+        const { result } = renderHook(useSessionContext, { wrapper });
 
-    it('initialize properly', async () => {
-        const { result } = renderHook(useSessionContext, {
-            wrapper: wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current).toEqual({
-                isReady: false,
-                session: null,
-                error: null,
-                supabaseClient: supabaseClient,
-            });
-        });
-    });
-
-    it('ready with given session', async () => {
-        getSession.mockResolvedValue({
-            data: { session: {} as any },
-            error: null,
-        });
-
-        const { result } = renderHook(useSessionContext, {
-            wrapper: wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.isReady).toBeTruthy();
-            expect(result.current.session).toEqual({});
-            expect(result.current.error).toBeNull();
-        });
-
-        expect(supabaseClient.auth.getSession).toBeCalledTimes(1);
-    });
-
-    it('ready with given error', async () => {
-        getSession.mockResolvedValue({
-            data: { session: null },
-            error: {} as any,
-        });
-
-        const { result } = renderHook(useSessionContext, {
-            wrapper: wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.isReady).toBeTruthy();
-            expect(result.current.session).toBeNull();
-            expect(result.current.error).toEqual({});
-        });
-
-        expect(supabaseClient.auth.getSession).toBeCalledTimes(1);
-    });
-
-    it('has no session after signout', async () => {
-        getSession.mockResolvedValue({
-            data: { session: {} as any },
-            error: null,
-        });
-
-        const { result } = renderHook(useSessionContext, {
-            wrapper: wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.session).not.toBeNull();
-        });
-
-        result.current.supabaseClient.auth.signOut();
-
-        await waitFor(() => {
-            expect(result.current.session).toBeNull();
-        });
+        expect(result.current).toEqual(database);
     });
 });
