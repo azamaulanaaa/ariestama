@@ -75,7 +75,10 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
                 >
                     {props.dataKey.map((key) => {
                         let value = data[key];
-                        if (typeof value == 'string')
+                        if (
+                            typeof value == 'string' ||
+                            typeof value == 'number'
+                        )
                             value = <Typography>{value}</Typography>;
 
                         return (
