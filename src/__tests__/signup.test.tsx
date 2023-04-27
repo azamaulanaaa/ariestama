@@ -51,7 +51,7 @@ describe('SignUp Page', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
         useSessionContext.mockReturnValue({
-            userPermission: {signin: true},
+            userPermission: { signin: true },
         });
 
         render(<SignUp />);
@@ -60,16 +60,6 @@ describe('SignUp Page', () => {
             expect(push).toBeCalledTimes(1);
             expect(push).toBeCalledWith(Config.Url.Dashboard);
         });
-    });
-
-    it('render loading animation if router is not ready', async () => {
-        useRouter.mockReturnValue({ isReady: false });
-        useSessionContext.mockReturnValue({
-            userPermission: {},
-        });
-
-        render(<SignUp />);
-        screen.getByRole('status');
     });
 
     it('render error alert on fail signup', async () => {

@@ -41,16 +41,6 @@ describe('SignIn Page', () => {
         });
     });
 
-    it('render loading animation if router is not ready', async () => {
-        useRouter.mockReturnValue({ isReady: false });
-        useSessionContext.mockReturnValue({ userPermission: {} });
-        render(<SignInPage />);
-
-        await waitFor(() => {
-            screen.getByRole('status');
-        });
-    });
-
     it('renders Alert and maintains input data for incorrect signin', async () => {
         const message = 'some';
         const email = 'some@email.com';

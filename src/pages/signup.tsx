@@ -14,7 +14,7 @@ function SignUp() {
     const [alertProps, setAlertProps] = useState<AlertProps | undefined>(
         undefined
     );
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
     if (session.userPermission?.signin && router.isReady)
         router.push(Config.Url.Dashboard);

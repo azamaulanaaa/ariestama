@@ -36,7 +36,7 @@ function SignIn() {
 
     return (
         <div className="grid h-screen place-items-center m-4">
-            <Loading isLoading={loading || !router.isReady}>
+            <Loading isLoading={loading}>
                 <div className="border border-gray-300 rounded w-[350px] p-4">
                     <SignInForm
                         onSubmit={handleSubmit}
