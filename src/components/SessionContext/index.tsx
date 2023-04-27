@@ -1,7 +1,13 @@
 import { createContext, ReactNode, useContext } from 'react';
 import Database from '@/libs/Database';
+import useUserPermission, { UserPermission } from './useUserPermssion';
 
-const SessionContext = createContext<Database>({} as Database);
+export type Session = {
+    database: Database;
+    userPermission: UserPermission | null;
+};
+
+const SessionContext = createContext<Session>({} as Session);
 
 export interface SessionProviderProps {
     children: ReactNode;
@@ -9,8 +15,14 @@ export interface SessionProviderProps {
 }
 
 export const SessionContextProvider = (props: SessionProviderProps) => {
+    const userPermission = useUserPermission(props.database);
     return (
-        <SessionContext.Provider value={props.database}>
+        <SessionContext.Provider
+            value={{
+                database: props.database,
+                userPermission: userPermission,
+            }}
+        >
             {props.children}
         </SessionContext.Provider>
     );
