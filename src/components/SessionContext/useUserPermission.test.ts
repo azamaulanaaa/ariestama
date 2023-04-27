@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 
-import useUserPermission from './useUserPermssion';
+import useUserPermission from './useUserPermission';
 import Database from '@/libs/Database';
 
 describe('useUserPermission of SessionContext Component', () => {

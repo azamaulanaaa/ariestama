@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext } from 'react';
 import Database from '@/libs/Database';
-import useUserPermission, { UserPermission } from './useUserPermssion';
+import useUserPermission, { UserPermission } from './useUserPermission';
 
 export type Session = {
     database: Database;
