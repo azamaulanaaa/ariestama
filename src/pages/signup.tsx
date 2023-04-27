@@ -8,27 +8,21 @@ import { AlertProps } from '@material-tailwind/react';
 import Config from '@/config';
 
 function SignUp() {
+    const router = useRouter();
     const session = useSessionContext();
+
     const [alertProps, setAlertProps] = useState<AlertProps | undefined>(
         undefined
     );
     const [loading, setLoading] = useState<boolean>(true);
 
-    const router = useRouter();
-    if (router.isReady)
-        session.auth.IsSignedIn().then((isTrue) => {
-            if (isTrue) {
-                router.push(Config.Url.Dashboard);
-                return;
-            }
-
-            setLoading(false);
-        });
+    if (session.userPermission?.signin && router.isReady)
+        router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignUpFormData) => {
         setAlertProps(undefined);
         setLoading(true);
-        const error = await session.auth.SignUp({
+        const error = await session.database.auth.SignUp({
             email: data.email,
             password: data.password,
         });

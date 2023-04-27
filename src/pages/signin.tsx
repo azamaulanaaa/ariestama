@@ -12,37 +12,31 @@ function SignIn() {
     const session = useSessionContext();
 
     const [error, setError] = useState<AuthError | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    if (router.isReady)
-        session.auth.IsSignedIn().then((isTrue) => {
-            if (isTrue) {
-                router.push(Config.Url.Dashboard);
-                return;
-            }
-
-            setLoading(false);
-        });
+    if (session.userPermission?.signin && router.isReady)
+        router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignInFormData) => {
         setError(null);
         setLoading(true);
-        const error = await session.auth.SignIn({
+
+        const error = await session.database.auth.SignIn({
             email: data.email,
             password: data.password,
         });
+
         if (error) {
             setError(error);
             setLoading(false);
-            return;
+        } else {
+            router.push(Config.Url.Dashboard);
         }
-
-        router.push('/dashboard');
     };
 
     return (
         <div className="grid h-screen place-items-center m-4">
-            <Loading isLoading={loading}>
+            <Loading isLoading={loading || !router.isReady}>
                 <div className="border border-gray-300 rounded w-[350px] p-4">
                     <SignInForm
                         onSubmit={handleSubmit}

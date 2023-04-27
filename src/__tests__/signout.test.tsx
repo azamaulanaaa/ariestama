@@ -11,24 +11,30 @@ jest.mock('next/router', () => ({
     },
 }));
 
-const session = new Database({} as any);
+const useSessionContext = jest.fn();
 jest.mock('@/components/SessionContext', () => ({
     useSessionContext() {
-        return session;
+        return useSessionContext();
     },
 }));
 
-afterEach(() => {
-    jest.resetAllMocks();
-    cleanup();
-});
-
 describe('SignOut Page', () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+        cleanup();
+    });
+
     it('show loading animation while on process', async () => {
         useRouter.mockReturnValue({ isReady: true, push: jest.fn() });
+
+        const database = new Database({} as any);
         const SignOut = jest
-            .spyOn(session.auth, 'SignOut')
+            .spyOn(database.auth, 'SignOut')
             .mockResolvedValue(null);
+        useSessionContext.mockReturnValue({
+            database: database,
+            userPermission: null,
+        });
 
         render(<SignOutPage />);
         await waitFor(() => {
@@ -40,12 +46,18 @@ describe('SignOut Page', () => {
     it('call signout function then redirect', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        jest.spyOn(session.auth, 'SignOut').mockResolvedValue(null);
+
+        const database = new Database({} as any);
+        jest.spyOn(database.auth, 'SignOut').mockResolvedValue(null);
+        useSessionContext.mockReturnValue({
+            database: database,
+            userPermission: null,
+        });
 
         render(<SignOutPage />);
 
         await waitFor(() => {
-            expect(session.auth.SignOut).toBeCalledTimes(1);
+            expect(database.auth.SignOut).toBeCalledTimes(1);
             expect(push).toBeCalledTimes(1);
             expect(push).toBeCalledWith(Config.Url.SignIn);
         });

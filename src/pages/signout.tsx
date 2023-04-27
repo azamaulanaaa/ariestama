@@ -6,11 +6,10 @@ import Config from '@/config';
 
 const SignOut = () => {
     const router = useRouter();
-
     const session = useSessionContext();
 
     if (router.isReady) {
-        session.auth.SignOut().then((error) => {
+        session.database.auth.SignOut().then((error) => {
             if (error) return;
             router.push(Config.Url.SignIn);
         });

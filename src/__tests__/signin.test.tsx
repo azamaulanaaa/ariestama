@@ -3,8 +3,8 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import SignInPage from '@/pages/signin';
-import Database from '@/libs/Database';
 import Config from '@/config';
+import Database from '@/libs/Database';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -13,10 +13,10 @@ jest.mock('next/router', () => ({
     },
 }));
 
-const session = new Database({} as any);
+const useSessionContext = jest.fn();
 jest.mock('@/components/SessionContext', () => ({
     useSessionContext() {
-        return session;
+        return useSessionContext();
     },
 }));
 
@@ -30,16 +30,20 @@ describe('SignIn Page', () => {
 
     it('render SignIn form when all ready', async () => {
         useRouter.mockReturnValue({ isReady: true });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+        useSessionContext.mockReturnValue({ userPermission: {} });
+
         render(<SignInPage />);
+        const loading = screen.queryByRole('status');
+
         await waitFor(() => {
             screen.getByRole('form');
+            expect(loading).not.toBeInTheDocument();
         });
     });
 
     it('render loading animation if router is not ready', async () => {
         useRouter.mockReturnValue({ isReady: false });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
+        useSessionContext.mockReturnValue({ userPermission: {} });
         render(<SignInPage />);
 
         await waitFor(() => {
@@ -47,14 +51,21 @@ describe('SignIn Page', () => {
         });
     });
 
-    it('render Alert for incorrect signin', async () => {
+    it('renders Alert and maintains input data for incorrect signin', async () => {
         const message = 'some';
+        const email = 'some@email.com';
+        const password = 'some';
 
         useRouter.mockReturnValue({ isReady: true });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
-        jest.spyOn(session.auth, 'SignIn').mockResolvedValue(
+
+        const database = new Database({} as any);
+        jest.spyOn(database.auth, 'SignIn').mockResolvedValue(
             new AuthError(message)
         );
+        useSessionContext.mockReturnValue({
+            database: database,
+            userPermission: {},
+        });
 
         render(<SignInPage />);
 
@@ -62,24 +73,29 @@ describe('SignIn Page', () => {
         const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button', { name: /submit/i });
 
-        await user.type(input_email, 'some@email.com');
-        await user.type(input_password, 'some');
+        await user.type(input_email, email);
+        await user.type(input_password, password);
         await user.click(btn_submit);
 
         await waitFor(() => {
             const alert = screen.getByRole('alert');
             expect(alert).toHaveTextContent(message);
 
-            expect(input_email).toHaveValue('some@email.com');
-            expect(input_password).toHaveValue('some');
+            expect(input_email).toHaveValue(email);
+            expect(input_password).toHaveValue(password);
         });
     });
 
     it('redirect to dashboard for success signin', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(false);
-        jest.spyOn(session.auth, 'SignIn').mockResolvedValue(null);
+
+        const database = new Database({} as any);
+        jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
+        useSessionContext.mockReturnValue({
+            database: database,
+            userPermission: {},
+        });
 
         render(<SignInPage />);
 
@@ -100,7 +116,7 @@ describe('SignIn Page', () => {
     it('redirect to dashboard for signed user', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(true);
+        useSessionContext.mockReturnValue({ userPermission: { signin: true } });
 
         render(<SignInPage />);
 
@@ -113,8 +129,13 @@ describe('SignIn Page', () => {
     it('render loading is submit response on process', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        jest.spyOn(session.auth, 'IsSignedIn').mockResolvedValue(true);
-        jest.spyOn(session.auth, 'SignIn').mockResolvedValue(null);
+
+        const database = new Database({} as any);
+        jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
+        useSessionContext.mockReturnValue({
+            database: database,
+            userPermission: {},
+        });
 
         render(<SignInPage />);
 
@@ -128,20 +149,6 @@ describe('SignIn Page', () => {
 
         await waitFor(() => {
             screen.getByRole('status');
-        });
-    });
-
-    it('verify signin only once', async () => {
-        const push = jest.fn();
-        useRouter.mockReturnValue({ isReady: true, push });
-        const IsSignedIn = jest
-            .spyOn(session.auth, 'IsSignedIn')
-            .mockResolvedValue(true);
-
-        render(<SignInPage />);
-
-        await waitFor(() => {
-            expect(IsSignedIn).toBeCalledTimes(1);
         });
     });
 });
