@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import Database from '@/libs/Database';
-import { Database as DatabaseType } from '@/libs/Database/supabase';
 
-type ReservedUserPermissionKey = 'id' | 'created_at';
-type UserPermissionKey =
-    | 'signin'
-    | Exclude<
-          keyof DatabaseType['public']['Tables']['user_permission']['Row'],
-          ReservedUserPermissionKey
-      >;
 export type UserPermission = {
-    [key in UserPermissionKey]?: boolean;
+    signin: boolean;
+    read_other_profile: boolean;
+    read_company: boolean;
+    iud_company: boolean;
+    read_unit: boolean;
+    iud_unit: boolean;
 };
 
 const useUserPermission = (database: Database) => {
@@ -24,6 +21,11 @@ const useUserPermission = (database: Database) => {
             if (permission == null) {
                 setUserPermission({
                     signin: false,
+                    read_other_profile: false,
+                    read_company: false,
+                    iud_company: false,
+                    read_unit: false,
+                    iud_unit: false,
                 });
                 return;
             }
