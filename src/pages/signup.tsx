@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import SignUpForm, { SignUpFormData } from '@/components/SignUpForm';
-import { AlertProps } from '@material-tailwind/react';
+import { AlertProps, Card, CardBody } from '@material-tailwind/react';
 import Config from '@/config';
 
 function SignUp() {
@@ -42,12 +42,14 @@ function SignUp() {
     return (
         <div className="grid h-screen place-items-center m-4">
             <Loading isLoading={loading}>
-                <div className="border border-gray-300 rounded w-[350px] p-4">
-                    <SignUpForm
-                        onSubmit={handleSubmit}
-                        alertProps={alertProps}
-                    />
-                </div>
+                <Card className="w-[350px]">
+                    <CardBody>
+                        <SignUpForm
+                            onSubmit={handleSubmit}
+                            alertProps={alertProps}
+                        />
+                    </CardBody>
+                </Card>
             </Loading>
         </div>
     );

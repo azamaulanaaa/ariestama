@@ -6,6 +6,7 @@ import SignInForm, { SignInFormData } from '@/components/SignInForm';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import Config from '@/config';
+import { Card, CardBody } from '@material-tailwind/react';
 
 function SignIn() {
     const router = useRouter();
@@ -37,12 +38,14 @@ function SignIn() {
     return (
         <div className="grid h-screen place-items-center m-4">
             <Loading isLoading={loading}>
-                <div className="border border-gray-300 rounded w-[350px] p-4">
-                    <SignInForm
-                        onSubmit={handleSubmit}
-                        errorMessage={error?.message}
-                    />
-                </div>
+                <Card className="w-[350px]">
+                    <CardBody>
+                        <SignInForm
+                            onSubmit={handleSubmit}
+                            errorMessage={error?.message}
+                        />
+                    </CardBody>
+                </Card>
             </Loading>
         </div>
     );
