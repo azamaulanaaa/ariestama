@@ -22,57 +22,55 @@ jest.mock('@/components/SessionContext', () => ({
 
 describe('SignIn Page', () => {
     afterEach(() => {
-        jest.resetAllMocks();
         cleanup();
+        jest.resetAllMocks();
     });
 
-    const user = userEvent.setup();
+    const database = new Database({} as any);
 
-    it('render SignIn form when all ready', async () => {
+    it('render SignIn form when all ready', () => {
         useRouter.mockReturnValue({ isReady: true });
         useSessionContext.mockReturnValue({ userPermission: {} });
 
         render(<SignInPage />);
         const loading = screen.queryByRole('status');
 
-        await waitFor(() => {
-            screen.getByRole('form');
-            expect(loading).not.toBeInTheDocument();
-        });
+        screen.getByRole('form');
+        expect(loading).not.toBeInTheDocument();
     });
 
     it('renders Alert and maintains input data for incorrect signin', async () => {
-        const message = 'some';
-        const email = 'some@email.com';
-        const password = 'some';
-
+        const testdata = {
+            message: 'some',
+            email: 'some@email.com',
+            password: 'some',
+        };
         useRouter.mockReturnValue({ isReady: true });
 
-        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignIn').mockResolvedValue(
-            new AuthError(message)
+            new AuthError(testdata.message)
         );
         useSessionContext.mockReturnValue({
             database: database,
             userPermission: {},
         });
+        const user = userEvent.setup();
 
         render(<SignInPage />);
 
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/password/i);
-        const btn_submit = screen.getByRole('button', { name: /submit/i });
+        const button = screen.getByRole('button', { name: /submit/i });
 
-        await user.type(input_email, email);
-        await user.type(input_password, password);
-        await user.click(btn_submit);
-
+        await user.type(input_email, testdata.email);
+        await user.type(input_password, testdata.password);
+        await user.click(button);
         await waitFor(() => {
             const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(message);
+            expect(alert).toHaveTextContent(testdata.message);
 
-            expect(input_email).toHaveValue(email);
-            expect(input_password).toHaveValue(password);
+            expect(input_email).toHaveValue(testdata.email);
+            expect(input_password).toHaveValue(testdata.password);
         });
     });
 
@@ -80,22 +78,22 @@ describe('SignIn Page', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
 
-        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
         useSessionContext.mockReturnValue({
             database: database,
             userPermission: {},
         });
+        const user = userEvent.setup();
 
         render(<SignInPage />);
 
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/password/i);
-        const btn_submit = screen.getByRole('button', { name: /submit/i });
+        const button = screen.getByRole('button', { name: /submit/i });
 
         await user.type(input_email, 'some@email.com');
         await user.type(input_password, 'some');
-        await user.click(btn_submit);
+        await user.click(button);
 
         await waitFor(() => {
             expect(push).toBeCalledTimes(1);
@@ -116,28 +114,26 @@ describe('SignIn Page', () => {
         });
     });
 
-    it('render loading is submit response on process', async () => {
+    it('render loading is submit response on process', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
 
-        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
         useSessionContext.mockReturnValue({
             database: database,
             userPermission: {},
         });
+        const user = userEvent.setup();
 
         render(<SignInPage />);
 
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/password/i);
-        const btn_submit = screen.getByRole('button', { name: /submit/i });
+        const button = screen.getByRole('button', { name: /submit/i });
 
-        await user.type(input_email, 'some@email.com');
-        await user.type(input_password, 'some');
-        await user.click(btn_submit);
-
-        await waitFor(() => {
+        user.type(input_email, 'some@email.com');
+        user.type(input_password, 'some');
+        user.click(button).then(() => {
             screen.getByRole('status');
         });
     });

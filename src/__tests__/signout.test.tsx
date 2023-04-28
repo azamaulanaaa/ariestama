@@ -24,10 +24,11 @@ describe('SignOut Page', () => {
         cleanup();
     });
 
+    const database = new Database({} as any);
+
     it('show loading animation while on process', async () => {
         useRouter.mockReturnValue({ isReady: true, push: jest.fn() });
 
-        const database = new Database({} as any);
         const SignOut = jest
             .spyOn(database.auth, 'SignOut')
             .mockResolvedValue(null);
@@ -47,7 +48,6 @@ describe('SignOut Page', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
 
-        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignOut').mockResolvedValue(null);
         useSessionContext.mockReturnValue({
             database: database,

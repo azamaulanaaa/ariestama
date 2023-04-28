@@ -26,7 +26,7 @@ describe('SignUp Page', () => {
         cleanup;
     });
 
-    const user = userEvent.setup();
+    const database = new Database({} as any);
 
     it('render signup form when all ready', async () => {
         useRouter.mockReturnValue({
@@ -63,21 +63,24 @@ describe('SignUp Page', () => {
     });
 
     it('render error alert on fail signup', async () => {
-        const email = 'some@example.com';
-        const password = 'somesome';
-        const alertMessage = 'some';
+        const testdata = {
+            email: 'some@example.com',
+            password: 'somesome',
+            alertMessage: 'some',
+        };
 
         useRouter.mockReturnValue({ isReady: true });
 
         const database = new Database({} as any);
         const signUpFn = jest
             .spyOn(database.auth, 'SignUp')
-            .mockResolvedValue(new AuthError(alertMessage));
+            .mockResolvedValue(new AuthError(testdata.alertMessage));
 
         useSessionContext.mockReturnValue({
             userPermission: {},
             database: database,
         });
+        const user = userEvent.setup();
 
         render(<SignUp />);
 
@@ -85,27 +88,28 @@ describe('SignUp Page', () => {
         const input_password = screen.getByLabelText(/^password/i);
         const input_confirm_password =
             screen.getByLabelText(/confirm password/i);
-        const btn_submit = screen.getByRole('button');
+        const button = screen.getByRole('button');
 
-        await user.type(input_email, email);
-        await user.type(input_password, password);
-        await user.type(input_confirm_password, password);
-        await user.click(btn_submit);
+        await user.type(input_email, testdata.email);
+        await user.type(input_password, testdata.password);
+        await user.type(input_confirm_password, testdata.password);
+        await user.click(button);
 
         await waitFor(() => {
+            const alert = screen.queryByRole('alert');
+
+            expect(alert).toBeInTheDocument();
+            expect(alert).toHaveTextContent(testdata.alertMessage);
             expect(signUpFn).toBeCalledTimes(1);
             expect(signUpFn).toBeCalledWith({
-                email: email,
-                password: password,
+                email: testdata.email,
+                password: testdata.password,
             });
-            const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(alertMessage);
         });
     });
 
     it('render success alert on success signup', async () => {
-        const email = 'some@example.com';
-        const password = 'somesome';
+        const testdata = { email: 'some@example.com', password: 'somesome' };
 
         useRouter.mockReturnValue({ isReady: true });
 
@@ -117,6 +121,7 @@ describe('SignUp Page', () => {
             userPermission: {},
             database: database,
         });
+        const user = userEvent.setup();
 
         render(<SignUp />);
 
@@ -124,48 +129,52 @@ describe('SignUp Page', () => {
         const input_password = screen.getByLabelText(/^password/i);
         const input_confirm_password =
             screen.getByLabelText(/confirm password/i);
-        const btn_submit = screen.getByRole('button');
+        const button = screen.getByRole('button');
 
-        await user.type(input_email, email);
-        await user.type(input_password, password);
-        await user.type(input_confirm_password, password);
-        await user.click(btn_submit);
+        await user.type(input_email, testdata.email);
+        await user.type(input_password, testdata.password);
+        await user.type(input_confirm_password, testdata.password);
+        await user.click(button);
 
         await waitFor(() => {
+            const alert = screen.queryByRole('alert');
+
+            expect(alert).toBeInTheDocument();
             expect(signUpFn).toBeCalledTimes(1);
             expect(signUpFn).toBeCalledWith({
-                email: email,
-                password: password,
+                email: testdata.email,
+                password: testdata.password,
             });
-            screen.getByRole('alert');
         });
     });
 
-    it('render loading animation while process sending signup data to server', async () => {
+    it('render loading animation while on process', async () => {
         useRouter.mockReturnValue({ isReady: true });
 
-        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignUp').mockResolvedValue(null);
         useSessionContext.mockReturnValue({
             userPermssion: {},
             database: database,
         });
 
+        const user = userEvent.setup();
+
         render(<SignUp />);
 
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/^password/i);
         const input_confirm_password =
             screen.getByLabelText(/confirm password/i);
-        const btn_submit = screen.getByRole('button');
+        const button = screen.getByRole('button');
 
         await user.type(input_email, 'some@exmplain.com');
         await user.type(input_password, 'somesome');
         await user.type(input_confirm_password, 'somesome');
-        user.click(btn_submit);
+        user.click(button);
 
         await waitFor(() => {
-            screen.getByRole('status');
+            const alert = screen.queryByRole('status');
+            expect(alert).toBeInTheDocument();
         });
     });
 });
