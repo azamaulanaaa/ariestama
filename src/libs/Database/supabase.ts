@@ -86,6 +86,7 @@ export interface Database {
           made_in: string
           oem: string
           serial_number: string
+          yom: number
         }
         Insert: {
           brand: string
@@ -94,6 +95,7 @@ export interface Database {
           made_in: string
           oem: string
           serial_number: string
+          yom: number
         }
         Update: {
           brand?: string
@@ -102,6 +104,7 @@ export interface Database {
           made_in?: string
           oem?: string
           serial_number?: string
+          yom?: number
         }
       }
       unit_sertification: {
