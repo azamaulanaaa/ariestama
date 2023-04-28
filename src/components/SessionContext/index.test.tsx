@@ -7,8 +7,8 @@ import Database from '@/libs/Database';
 
 describe('SessionContext Component', () => {
     afterEach(() => {
-        jest.resetAllMocks();
         cleanup();
+        jest.resetAllMocks();
     });
 
     const supabaseClient = createClient(

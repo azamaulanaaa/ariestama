@@ -1,11 +1,16 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { cleanup, renderHook, waitFor } from '@testing-library/react';
 
 import useUserPermission from './useUserPermission';
 import Database from '@/libs/Database';
 
 describe('useUserPermission of SessionContext Component', () => {
+    afterEach(() => {
+        cleanup();
+        jest.resetAllMocks();
+    });
+    const database = new Database({} as any);
+
     it('return null if on process', async () => {
-        const database = new Database({} as any);
         jest.spyOn(database.user_permission, 'mine').mockResolvedValue(null);
 
         const { result } = renderHook(() => useUserPermission(database));
@@ -15,7 +20,6 @@ describe('useUserPermission of SessionContext Component', () => {
     });
 
     it('call database function exactly once', async () => {
-        const database = new Database({} as any);
         const mine = jest
             .spyOn(database.user_permission, 'mine')
             .mockResolvedValue(null);
@@ -28,7 +32,6 @@ describe('useUserPermission of SessionContext Component', () => {
     });
 
     it('return signin false for not found for no session data', async () => {
-        const database = new Database({} as any);
         jest.spyOn(database.user_permission, 'mine').mockResolvedValue(null);
 
         const { result } = renderHook(() => useUserPermission(database));
@@ -40,7 +43,6 @@ describe('useUserPermission of SessionContext Component', () => {
     });
 
     it('return signin true for found permission', async () => {
-        const database = new Database({} as any);
         jest.spyOn(database.user_permission, 'mine').mockResolvedValue(
             {} as any
         );
@@ -54,7 +56,6 @@ describe('useUserPermission of SessionContext Component', () => {
     });
 
     it('if signin false then everything else is false', async () => {
-        const database = new Database({} as any);
         jest.spyOn(database.user_permission, 'mine').mockResolvedValue(null);
 
         const { result } = renderHook(() => useUserPermission(database));

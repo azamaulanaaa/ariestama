@@ -1,11 +1,10 @@
 import { cleanup, render, screen } from '@testing-library/react';
+
 import Loading from '.';
 
-afterEach(() => {
-    cleanup();
-});
-
 describe('Loading Base Component', () => {
+    afterEach(cleanup);
+
     it('render child if not loading', () => {
         render(
             <Loading>
@@ -14,6 +13,7 @@ describe('Loading Base Component', () => {
         );
         screen.getByTestId('child');
         const status = screen.queryByRole('status');
+
         expect(status).not.toBeInTheDocument();
     });
 
@@ -28,6 +28,8 @@ describe('Loading Base Component', () => {
 
     it('render loading animation if no child', () => {
         render(<Loading />);
-        screen.getByRole('status');
+        const status = screen.queryByRole('status');
+
+        expect(status).toBeInTheDocument();
     });
 });

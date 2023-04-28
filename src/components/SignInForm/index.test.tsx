@@ -1,46 +1,50 @@
-import SignInForm from '.';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+import SignInForm from '.';
 
 afterEach(() => {
     cleanup();
 });
 
 describe('SignIn Form', () => {
-    const user = userEvent.setup();
-
     it('render properly', () => {
         render(<SignInForm />);
-        screen.getByRole('form');
-        const heading = screen.getByRole('heading');
+
+        const heading = screen.queryByRole('heading');
+        const form = screen.queryByRole('form');
+        const input_email = screen.queryByLabelText(/email/i);
+        const input_password = screen.queryByLabelText(/password/i);
+        const button = screen.queryByRole('button');
+
+        expect(heading).toBeInTheDocument();
         expect(heading).toHaveTextContent('Sign in');
-        screen.getByLabelText(/email/i);
-        screen.getByLabelText(/password/i);
-        screen.getByRole('button');
+        expect(form).toBeInTheDocument();
+        expect(input_email).toBeInTheDocument();
+        expect(input_password).toBeInTheDocument();
+        expect(button).toBeInTheDocument();
     });
 
     it('call onSubmit when form is submited', async () => {
-        const handleSubmit = jest.fn();
-        const data = {
+        const testdata = {
             email: 'name@example.com',
             password: 'password',
         };
+        const handleSubmit = jest.fn();
+        const user = userEvent.setup();
+
         render(<SignInForm onSubmit={handleSubmit} />);
-        const form = screen.getByRole('form');
+
         const input_email = screen.getByLabelText(/email/i);
         const input_password = screen.getByLabelText(/password/i);
         const btn_submit = screen.getByRole('button');
 
-        await user.type(input_email, data.email);
-        await user.type(input_password, data.password);
+        await user.type(input_email, testdata.email);
+        await user.type(input_password, testdata.password);
 
-        expect(form).toHaveFormValues(data);
-
-        await user.click(btn_submit);
-
-        await waitFor(() => {
+        await user.click(btn_submit).then(() => {
             expect(handleSubmit).toBeCalledTimes(1);
-            expect(handleSubmit).toBeCalledWith(data);
+            expect(handleSubmit).toBeCalledWith(testdata);
         });
     });
 
@@ -49,6 +53,7 @@ describe('SignIn Form', () => {
 
         render(<SignInForm errorMessage={message} />);
         const alert = screen.getByRole('alert');
+
         expect(alert).toHaveTextContent(message);
     });
 });

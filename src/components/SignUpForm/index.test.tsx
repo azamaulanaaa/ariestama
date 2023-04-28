@@ -1,34 +1,41 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SignUpForm from '.';
 
 describe('SignUp Form Component', () => {
-    const user = userEvent.setup();
     afterEach(() => {
-        jest.resetAllMocks();
         cleanup();
+        jest.resetAllMocks();
     });
 
     it('default render', () => {
         render(<SignUpForm />);
 
-        const title = screen.getByRole('heading');
-        screen.getByRole('form');
-        screen.getByLabelText(/email/i);
-        screen.getByLabelText(/^password/i);
-        screen.getByLabelText(/confirm password/i);
-        const btn_submit = screen.getByRole('button');
+        const heading = screen.getByRole('heading');
+        const form = screen.queryByRole('form');
+        const input_email = screen.queryByLabelText(/email/i);
+        const input_password = screen.queryByLabelText(/^password/i);
+        const input_confirmPassword =
+            screen.queryByLabelText(/confirm password/i);
+        const button = screen.queryByRole('button');
 
-        expect(title).toHaveTextContent('Sign up');
-        expect(btn_submit).toHaveTextContent(/submit/i);
+        expect(heading).toBeInTheDocument();
+        expect(heading).toHaveTextContent('Sign up');
+        expect(form).toBeInTheDocument();
+        expect(input_email).toBeInTheDocument();
+        expect(input_password).toBeInTheDocument();
+        expect(input_confirmPassword).toBeInTheDocument();
+        expect(button).toHaveTextContent(/submit/i);
     });
 
     it('call onSubmit on click submit botton', async () => {
-        const handleSubmit = jest.fn();
-        const data = {
+        const testdata = {
             email: 'some@email.com',
             password: 'somesome',
         };
+
+        const handleSubmit = jest.fn();
+        const user = userEvent.setup();
 
         render(<SignUpForm onSubmit={handleSubmit} />);
 
@@ -38,42 +45,52 @@ describe('SignUp Form Component', () => {
             screen.getByLabelText(/confirm password/i);
         const btn_submit = screen.getByRole('button');
 
-        await user.type(input_email, data.email);
-        await user.type(input_password, data.password);
-        await user.type(input_confirm_password, data.password);
-        await user.click(btn_submit);
+        await user.type(input_email, testdata.email);
+        await user.type(input_password, testdata.password);
+        await user.type(input_confirm_password, testdata.password);
 
-        await waitFor(() => {
+        expect(handleSubmit).toBeCalledTimes(0);
+        await user.click(btn_submit).then(() => {
             expect(handleSubmit).toBeCalledTimes(1);
-            expect(handleSubmit).toBeCalledWith(data);
+            expect(handleSubmit).toBeCalledWith(testdata);
         });
     });
 
     it('support error message', async () => {
-        const message = 'some';
+        const testdata = {
+            message: 'some',
+        };
 
-        render(<SignUpForm alertProps={{ color: 'red', children: message }} />);
+        render(
+            <SignUpForm
+                alertProps={{ color: 'red', children: testdata.message }}
+            />
+        );
+        const alert = screen.queryByRole('alert');
 
-        await waitFor(() => {
-            const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(message);
-        });
+        expect(alert).toBeInTheDocument();
+        expect(alert).toHaveTextContent(testdata.message);
     });
 
     it('support success message', async () => {
-        const message = 'some';
+        const testdata = {
+            message: 'some',
+        };
 
         render(
-            <SignUpForm alertProps={{ color: 'green', children: message }} />
+            <SignUpForm
+                alertProps={{ color: 'green', children: testdata.message }}
+            />
         );
+        const alert = screen.queryByRole('alert');
 
-        await waitFor(() => {
-            const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(message);
-        });
+        expect(alert).toBeInTheDocument();
+        expect(alert).toHaveTextContent(testdata.message);
     });
 
     it('everytimes password change make sure password and confirm password are the same', async () => {
+        const user = userEvent.setup();
+
         render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
@@ -81,18 +98,18 @@ describe('SignUp Form Component', () => {
             screen.getByLabelText(/confirm password/i);
 
         expect(input_confirm_password).toBeInvalid();
-        await user.type(input_password, 'some');
-        await waitFor(() => {
+        await user.type(input_password, 'some').then(() => {
             expect(input_confirm_password).toBeInvalid();
         });
         await user.type(input_confirm_password, 'some2');
-        await user.type(input_password, '2');
-        await waitFor(() => {
+        await user.type(input_password, '2').then(() => {
             expect(input_confirm_password).toBeValid();
         });
     });
 
     it('everytimes confirm password change make sure password and confirm password are the same', async () => {
+        const user = userEvent.setup();
+
         render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
@@ -100,43 +117,39 @@ describe('SignUp Form Component', () => {
             screen.getByLabelText(/confirm password/i);
 
         expect(input_confirm_password).toBeInvalid();
-        await user.type(input_confirm_password, 'some');
-        await waitFor(() => {
+        await user.type(input_confirm_password, 'some').then(() => {
             expect(input_confirm_password).toBeInvalid();
         });
         await user.type(input_password, 'some2');
-        await user.type(input_confirm_password, '2');
-        await waitFor(() => {
+        await user.type(input_confirm_password, '2').then(() => {
             expect(input_confirm_password).toBeValid();
         });
     });
 
     it('valid password should have minimum char of 6', async () => {
+        const user = userEvent.setup();
         render(<SignUpForm />);
 
         const input_password = screen.getByLabelText(/^password/i);
         expect(input_password).toBeInvalid();
 
-        for (let i = 0; i < 5; i++) {
-            await user.type(input_password, 'w');
-            await waitFor(() => {
+        const wait = '12345'.split('').map(async (char) => {
+            return user.type(input_password, char).then(() => {
                 expect(input_password).toBeInvalid();
             });
-        }
+        });
+        await Promise.all(wait);
 
-        await user.type(input_password, 'w');
-        await waitFor(() => {
+        await user.type(input_password, '6').then(() => {
             expect(input_password).toBeValid();
         });
     });
 
-    it('set email to invalid if inputed with invalid email', async () => {
-        const invalidEmails = [
-            'some',
-            'some@',
-            'some@email',
-            'some @email.com',
-        ];
+    it('set email to invalid if inputed with invalid email', () => {
+        const testdata = {
+            invalidEmails: ['some', 'some@', 'some@email', 'some @email.com'],
+        };
+        const user = userEvent.setup();
 
         render(<SignUpForm />);
 
@@ -144,22 +157,24 @@ describe('SignUp Form Component', () => {
 
         expect(input_email).toBeInvalid();
 
-        invalidEmails.forEach(async (invalidEmail) => {
+        testdata.invalidEmails.forEach(async (invalidEmail) => {
             await user.clear(input_email);
-            await user.type(input_email, invalidEmail);
-            await waitFor(() => {
+            await user.type(input_email, invalidEmail).then(() => {
                 expect(input_email).toBeInvalid();
             });
         });
     });
 
-    it('set email to valid if inputed with valid email', async () => {
-        const validEmails = [
-            'some@gmail.com',
-            'some@example.com',
-            's0m33@yahoo.to',
-            'n4m3_e@domain.wow',
-        ];
+    it('set email to valid if inputed with valid email', () => {
+        const testdata = {
+            validEmails: [
+                'some@gmail.com',
+                'some@example.com',
+                's0m33@yahoo.to',
+                'n4m3_e@domain.wow',
+            ],
+        };
+        const user = userEvent.setup();
 
         render(<SignUpForm />);
 
@@ -167,10 +182,9 @@ describe('SignUp Form Component', () => {
 
         expect(input_email).toBeInvalid();
 
-        validEmails.forEach(async (validEmail) => {
+        testdata.validEmails.forEach(async (validEmail) => {
             await user.clear(input_email);
-            await user.type(input_email, validEmail);
-            await waitFor(() => {
+            await user.type(input_email, validEmail).then(() => {
                 expect(input_email).toBeValid();
             });
         });

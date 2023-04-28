@@ -1,5 +1,6 @@
-import ProtectedContent from '.';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
+
+import ProtectedContent from '.';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -55,7 +56,7 @@ describe('Protected Content Component', () => {
         });
     });
 
-    it('render loading animation if access on verification', async () => {
+    it('render loading animation if access on verification', () => {
         useRouter.mockReturnValue({
             isReady: true,
         });
@@ -72,8 +73,6 @@ describe('Protected Content Component', () => {
             </ProtectedContent>
         );
 
-        await waitFor(() => {
-            screen.getByRole('status');
-        });
+        screen.getByRole('status');
     });
 });
