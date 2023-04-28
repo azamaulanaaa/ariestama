@@ -8,13 +8,15 @@ interface LayoutDashboardProps {
 
 const LayoutDashboard = (props: LayoutDashboardProps) => {
     return (
-        <>
-            <Header />
-            <div className="flex flex-row">
-                <Sidebar className="w-[150px]" />
-                <div className="p-2 flex-auto">{props.children}</div>
+        <div className="h-screen">
+            <div className="container mx-auto">
+                <Header />
+                <div className="flex flex-row">
+                    <Sidebar />
+                    <div className="p-4 flex-auto">{props.children}</div>
+                </div>
             </div>
-        </>
+        </div>
     );
 };
 
