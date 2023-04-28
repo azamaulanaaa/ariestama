@@ -2,7 +2,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import UnitsTable from '.';
 
-describe('Unit Table Component', () => {
+describe('Units Table Component', () => {
     const user = userEvent.setup();
     afterEach(() => {
         cleanup();
