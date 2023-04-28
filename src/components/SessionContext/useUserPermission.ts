@@ -30,7 +30,7 @@ const useUserPermission = (database: Database) => {
 
             setUserPermission({
                 signin: true,
-                permission,
+                ...permission,
             } as UserPermission);
         });
     }, [database]);
