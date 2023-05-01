@@ -125,7 +125,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                     size="lg"
                 />
                 <div className="col-span-2">
-                    <Button type="submit" ripple={false} fullWidth>
+                    <Button type="submit" fullWidth>
                         Submit
                     </Button>
                 </div>

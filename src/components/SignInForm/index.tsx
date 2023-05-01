@@ -61,7 +61,7 @@ const SignInForm = (props: SignInFormProps) => {
                     size="lg"
                 />
             </div>
-            <Button type="submit" fullWidth className="mt-8" ripple={false}>
+            <Button type="submit" fullWidth className="mt-8">
                 Submit
             </Button>
         </form>

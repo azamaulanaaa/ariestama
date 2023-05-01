@@ -3,11 +3,18 @@ import userEvent from '@testing-library/user-event';
 
 import SignInForm from '.';
 
-afterEach(() => {
-    cleanup();
-});
+jest.mock('material-ripple-effects', () => ({
+    __esModule: true,
+    default: () => ({
+        create() {},
+    }),
+}));
 
 describe('SignIn Form', () => {
+    afterEach(() => {
+        cleanup();
+    });
+
     it('render properly', () => {
         render(<SignInForm />);
 

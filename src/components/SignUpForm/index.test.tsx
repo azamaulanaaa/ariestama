@@ -1,6 +1,14 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import SignUpForm from '.';
+
+jest.mock('material-ripple-effects', () => ({
+    __esModule: true,
+    default: () => ({
+        create() {},
+    }),
+}));
 
 describe('SignUp Form Component', () => {
     afterEach(() => {
