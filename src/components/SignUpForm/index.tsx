@@ -1,11 +1,7 @@
-import {
-    Alert,
-    AlertProps,
-    Button,
-    Input,
-    Typography,
-} from '@material-tailwind/react';
+import { Button, Input, Typography } from '@material-tailwind/react';
 import { FormEvent, ChangeEvent, useRef, useState } from 'react';
+
+import Alert, { AlertProps } from '@/components/Alert';
 
 export interface SignUpFormProps {
     onSubmit?: (data: SignUpFormData) => void;
@@ -70,7 +66,7 @@ const SignUpForm = (props: SignUpFormProps) => {
         return passwordEnoughLength && passwordMatch;
     };
 
-    const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = (_: ChangeEvent<HTMLInputElement>) => {
         validatePassword();
     };
 

@@ -1,9 +1,11 @@
 import { FormEvent } from 'react';
-import { Alert, Button, Input, Typography } from '@material-tailwind/react';
+import { Button, Input, Typography } from '@material-tailwind/react';
+
+import Alert, { AlertProps } from '@/components/Alert';
 
 interface SignInFormProps {
     onSubmit?: (data: SignInFormData) => void;
-    errorMessage?: string;
+    alertProps?: AlertProps;
 }
 
 export interface SignInFormData {
@@ -30,6 +32,11 @@ const SignInForm = (props: SignInFormProps) => {
         });
     };
 
+    const FormAlert = () => {
+        if (!props.alertProps) return null;
+        return <Alert {...props.alertProps} />;
+    };
+
     return (
         <form role="form" onSubmit={handleSubmit}>
             <Typography variant="h4" component="h1">
@@ -39,7 +46,7 @@ const SignInForm = (props: SignInFormProps) => {
                 to continue to Ariestama System
             </Typography>
             <div className="flex flex-col gap-6 mt-6">
-                <ErrorAlert errorMessage={props.errorMessage} />
+                <FormAlert />
                 <Input
                     id="email"
                     name="email"
@@ -47,7 +54,6 @@ const SignInForm = (props: SignInFormProps) => {
                     label="Email"
                     labelProps={{ htmlFor: 'email' }}
                     required
-                    error={props.errorMessage !== undefined}
                     size="lg"
                 />
                 <Input
@@ -57,7 +63,6 @@ const SignInForm = (props: SignInFormProps) => {
                     label="Password"
                     labelProps={{ htmlFor: 'password' }}
                     required
-                    error={props.errorMessage !== undefined}
                     size="lg"
                 />
             </div>
@@ -66,12 +71,6 @@ const SignInForm = (props: SignInFormProps) => {
             </Button>
         </form>
     );
-};
-
-const ErrorAlert = ({ errorMessage }: { errorMessage?: string }) => {
-    if (!errorMessage) return null;
-
-    return <Alert color="red">{errorMessage}</Alert>;
 };
 
 export default SignInForm;

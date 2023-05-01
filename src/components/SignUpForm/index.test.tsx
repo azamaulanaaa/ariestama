@@ -71,7 +71,7 @@ describe('SignUp Form Component', () => {
 
         render(
             <SignUpForm
-                alertProps={{ color: 'red', children: testdata.message }}
+                alertProps={{ type: 'error', children: testdata.message }}
             />
         );
         const alert = screen.queryByRole('alert');
@@ -87,7 +87,7 @@ describe('SignUp Form Component', () => {
 
         render(
             <SignUpForm
-                alertProps={{ color: 'green', children: testdata.message }}
+                alertProps={{ type: 'success', children: testdata.message }}
             />
         );
         const alert = screen.queryByRole('alert');

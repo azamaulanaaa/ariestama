@@ -58,7 +58,9 @@ describe('SignIn Form', () => {
     it('support error message', async () => {
         const message = 'some';
 
-        render(<SignInForm errorMessage={message} />);
+        render(
+            <SignInForm alertProps={{ type: 'error', children: message }} />
+        );
         const alert = screen.getByRole('alert');
 
         expect(alert).toHaveTextContent(message);
