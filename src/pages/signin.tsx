@@ -42,7 +42,11 @@ function SignIn() {
                     <CardBody>
                         <SignInForm
                             onSubmit={handleSubmit}
-                            errorMessage={error?.message}
+                            alertProps={
+                                !error
+                                    ? undefined
+                                    : { type: 'error', children: error.message }
+                            }
                         />
                     </CardBody>
                 </Card>
