@@ -1,4 +1,10 @@
-import { ReactNode, useState, createContext, useContext } from 'react';
+import {
+    ReactNode,
+    useState,
+    createContext,
+    useContext,
+    useEffect,
+} from 'react';
 
 import * as Default from './default';
 import * as Dashboard from './dashboard';
@@ -24,11 +30,11 @@ const useLayout = () => {
 
     const layoutList = {
         default() {
-            setLayout(Default.default);
+            useEffect(() => setLayout(Default.default), []);
             return Default.config;
         },
         dashboard() {
-            setLayout(Dashboard.default);
+            useEffect(() => setLayout(Dashboard.default), []);
             return Dashboard.config;
         },
     };
