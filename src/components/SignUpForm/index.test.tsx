@@ -19,7 +19,6 @@ describe('SignUp Form Component', () => {
     it('default render', () => {
         render(<SignUpForm />);
 
-        const heading = screen.getByRole('heading');
         const form = screen.queryByRole('form');
         const input_email = screen.queryByLabelText(/email/i);
         const input_password = screen.queryByLabelText(/^password/i);
@@ -27,8 +26,6 @@ describe('SignUp Form Component', () => {
             screen.queryByLabelText(/confirm password/i);
         const button = screen.queryByRole('button');
 
-        expect(heading).toBeInTheDocument();
-        expect(heading).toHaveTextContent('Sign up');
         expect(form).toBeInTheDocument();
         expect(input_email).toBeInTheDocument();
         expect(input_password).toBeInTheDocument();

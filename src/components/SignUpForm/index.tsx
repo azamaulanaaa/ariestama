@@ -1,4 +1,4 @@
-import { Button, Input, Typography } from '@material-tailwind/react';
+import { Button, Input } from '@material-tailwind/react';
 import { FormEvent, ChangeEvent, useRef, useState } from 'react';
 
 import Alert, { AlertProps } from '@/components/Alert';
@@ -77,13 +77,7 @@ const SignUpForm = (props: SignUpFormProps) => {
 
     return (
         <form role="form" onSubmit={handleSubmit}>
-            <Typography variant="h4" component="h1">
-                Sign up
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-                to have account in Ariestama System
-            </Typography>
-            <div className="flex flex-col gap-6 mt-6">
+            <div className="flex flex-col gap-6">
                 <FormAlert />
                 <Input
                     inputRef={emailRef}

@@ -1,5 +1,5 @@
 import { FormEvent } from 'react';
-import { Button, Input, Typography } from '@material-tailwind/react';
+import { Button, Input } from '@material-tailwind/react';
 
 import Alert, { AlertProps } from '@/components/Alert';
 
@@ -39,13 +39,7 @@ const SignInForm = (props: SignInFormProps) => {
 
     return (
         <form role="form" onSubmit={handleSubmit}>
-            <Typography variant="h4" component="h1">
-                Sign in
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-                to continue to Ariestama System
-            </Typography>
-            <div className="flex flex-col gap-6 mt-6">
+            <div className="flex flex-col gap-6">
                 <FormAlert />
                 <Input
                     id="email"
@@ -66,7 +60,7 @@ const SignInForm = (props: SignInFormProps) => {
                     size="lg"
                 />
             </div>
-            <Button type="submit" fullWidth className="mt-8">
+            <Button type="submit" variant="gradient" fullWidth className="mt-8">
                 Submit
             </Button>
         </form>
