@@ -12,8 +12,24 @@ const Loading = (props: LoadingProps) => {
 
     return (
         <div className="relative">
-            {props.children}
-            {<Container hidden={!props.isLoading} />}
+            <div className={!props.isLoading ? '' : 'opacity-60'}>
+                {props.children}
+            </div>
+            <Container hidden={!props.isLoading} />
+        </div>
+    );
+};
+
+const Container = ({ hidden }: { hidden?: boolean }) => {
+    if (hidden) return <div></div>;
+    return (
+        <div
+            className="
+            absolute top-0 bottom-0 left-0 right-0 
+            grid place-items-center
+            "
+        >
+            <Animation />
         </div>
     );
 };
@@ -26,18 +42,5 @@ const Animation = () => {
         />
     );
 };
-const Container = ({ hidden }: { hidden?: boolean }) => {
-    if (hidden) return null;
-    return (
-        <div
-            className="
-            absolute top-0 bottom-0 left-0 right-0 
-            grid place-items-center
-            bg-gray-50/75
-            "
-        >
-            <Animation />
-        </div>
-    );
-};
+
 export default Loading;
