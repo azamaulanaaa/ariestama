@@ -1,7 +1,7 @@
-import { Card, CardBody } from '@material-tailwind/react';
-import { useEffect, useState } from 'react';
+import { Button, Card, CardBody } from '@material-tailwind/react';
+import { useEffect, useState, MouseEvent } from 'react';
 
-import LayoutDashboard from '@/components/layout/dashboard';
+import useLayout from '@/components/Layout';
 import ProtectedContent from '@/components/ProtectedContent';
 import { useSessionContext } from '@/components/SessionContext';
 import UnitsTable, { UnitsItemData } from '@/components/UnitsTable';
@@ -9,6 +9,8 @@ import Config from '@/config';
 
 function Units() {
     const session = useSessionContext();
+    const { useAlertsSystem } = useLayout().dashboard();
+    const alertSystem = useAlertsSystem();
 
     const [items, setItems] = useState<UnitsItemData[]>([]);
 
@@ -21,19 +23,36 @@ function Units() {
             });
     }, [session]);
 
+    const handleInsertClick = (_: MouseEvent<HTMLButtonElement>) => {
+        alertSystem({
+            kind: 'add',
+            id: new Date().toString(),
+            type: 'success',
+            message: 'Hello fellaws,',
+        });
+    };
+
     return (
         <ProtectedContent
             hasAccess={session.userPermission?.read_unit == true}
             isReady={session.userPermission != null}
             redirectUrl={Config.Url.Dashboard}
         >
-            <LayoutDashboard>
-                <Card>
-                    <CardBody>
+            <Card>
+                <CardBody>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex justify-between flex-row gap-4">
+                            <div></div>
+                            <div>
+                                <Button onClick={handleInsertClick}>
+                                    Insert
+                                </Button>
+                            </div>
+                        </div>
                         <UnitsTable items={items} />
-                    </CardBody>
-                </Card>
-            </LayoutDashboard>
+                    </div>
+                </CardBody>
+            </Card>
         </ProtectedContent>
     );
 }

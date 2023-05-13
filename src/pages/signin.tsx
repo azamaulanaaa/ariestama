@@ -1,16 +1,25 @@
 import { AuthError } from '@supabase/supabase-js';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Typography,
+} from '@material-tailwind/react';
 
+import useLayout from '@/components/Layout';
 import SignInForm, { SignInFormData } from '@/components/SignInForm';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import Config from '@/config';
-import { Card, CardBody } from '@material-tailwind/react';
 
 function SignIn() {
     const router = useRouter();
     const session = useSessionContext();
+    useLayout().default();
 
     const [error, setError] = useState<AuthError | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -36,9 +45,18 @@ function SignIn() {
     };
 
     return (
-        <div className="grid h-screen place-items-center m-4">
+        <div className="grid h-screen place-items-center">
             <Loading isLoading={loading}>
                 <Card className="w-[350px]">
+                    <CardHeader
+                        variant="gradient"
+                        color="blue"
+                        className="grid place-items-center h-28"
+                    >
+                        <Typography variant="h3" color="white">
+                            Sign In
+                        </Typography>
+                    </CardHeader>
                     <CardBody>
                         <SignInForm
                             onSubmit={handleSubmit}
@@ -49,6 +67,24 @@ function SignIn() {
                             }
                         />
                     </CardBody>
+                    <CardFooter>
+                        <Typography
+                            variant="small"
+                            className="flex justify-center"
+                        >
+                            Don't have an account?
+                            <Link href="/signup" passHref legacyBehavior>
+                                <Typography
+                                    as="a"
+                                    variant="small"
+                                    color="blue"
+                                    className="ml-1 font-bold"
+                                >
+                                    Sign up
+                                </Typography>
+                            </Link>
+                        </Typography>
+                    </CardFooter>
                 </Card>
             </Loading>
         </div>

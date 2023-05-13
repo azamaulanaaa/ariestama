@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 
+import useLayout from '@/components/Layout';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import Config from '@/config';
@@ -7,6 +8,7 @@ import Config from '@/config';
 const SignOut = () => {
     const router = useRouter();
     const session = useSessionContext();
+    useLayout().default();
 
     if (router.isReady) {
         session.database.auth.SignOut().then((error) => {
