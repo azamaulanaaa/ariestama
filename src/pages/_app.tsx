@@ -4,6 +4,7 @@ import { SessionContextProvider } from '@/components/SessionContext';
 
 import '../global.css';
 import Database from '@/libs/Database';
+import { LayoutProvider } from '@/components/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const supabaseClient = createBrowserSupabaseClient();
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     return (
         <SessionContextProvider database={database}>
-            <Component {...pageProps} />
+            <LayoutProvider>
+                <Component {...pageProps} />
+            </LayoutProvider>
         </SessionContextProvider>
     );
 }
