@@ -5,6 +5,7 @@ import { HiCheckCircle, HiXCircle } from 'react-icons/hi';
 export type AlertProps = {
     children: ReactNode;
     type: 'success' | 'error';
+    open?: boolean;
     onClose?: () => void;
 };
 
@@ -26,15 +27,10 @@ const Alert = (props: AlertProps) => {
         <AlertMT
             icon={icon}
             color={color as any}
-            dismissible={
-                !props.onClose
-                    ? undefined
-                    : {
-                          onClose: props.onClose,
-                      }
-            }
+            open={props.open}
+            onClose={props.onClose}
         >
-            <Typography>{props.children}</Typography>
+            <Typography variant="small">{props.children}</Typography>
         </AlertMT>
     );
 };
