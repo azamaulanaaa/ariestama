@@ -1,23 +1,31 @@
 import { ReactNode } from 'react';
+
+import { AlertsSystemProvider } from './alerts_system';
+import { useAlertsSystem } from './alerts_system';
 import Header from './header';
 import Sidebar from './sidebar';
 
-interface LayoutDashboardProps {
+interface DashboardProps {
     children: ReactNode;
 }
 
-const LayoutDashboard = (props: LayoutDashboardProps) => {
+const Dashboard = (props: DashboardProps) => {
     return (
         <div className="h-screen">
             <div className="container mx-auto">
                 <Header />
-                <div className="flex flex-row">
-                    <Sidebar />
-                    <div className="p-4 flex-auto">{props.children}</div>
-                </div>
+                <AlertsSystemProvider>
+                    <div className="flex flex-row gap-4">
+                        <Sidebar />
+                        <div className="pt-4 flex-auto">{props.children}</div>
+                    </div>
+                </AlertsSystemProvider>
             </div>
         </div>
     );
 };
 
-export default LayoutDashboard;
+export default Dashboard;
+export const config = {
+    useAlertsSystem,
+};
