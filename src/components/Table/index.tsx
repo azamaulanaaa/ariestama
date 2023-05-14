@@ -17,7 +17,7 @@ export interface TableProps<K extends string> {
 
 const Table = <K extends string>(props: TableProps<K>) => {
     return (
-        <table className="table-auto border-collapse w-full">
+        <table className="table-auto border-collapse w-full text-left rounded">
             <TableHeader data={props.headers} />
             <TableBody
                 data={props.items}
@@ -39,9 +39,13 @@ const TableHeader = <K extends string>(props: TableHeaderProps<K>) => {
                 {Object.entries(props.data).map(([key, value]) => (
                     <th
                         key={key}
-                        className="p-4 first:pl-6 last:pr-6 text-left"
+                        className="p-4 border-b border-blue-gray-100 bg-blue-gray-50"
                     >
-                        <Typography variant="h6" as="span">
+                        <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal leading-none opacity-70"
+                        >
                             {value}
                         </Typography>
                     </th>
@@ -70,7 +74,7 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
             {props.data.map((data, index) => (
                 <tr
                     key={index}
-                    className="border-y hover:bg-gray-200"
+                    className="even:bg-blue-gray-50/50 hover:bg-blue-gray-50"
                     onClick={genHandleClick(data)}
                 >
                     {props.dataKey.map((key) => {
@@ -79,10 +83,18 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
                             typeof value == 'string' ||
                             typeof value == 'number'
                         )
-                            value = <Typography>{value}</Typography>;
+                            value = (
+                                <Typography
+                                    variant="small"
+                                    color="blue-gray"
+                                    className="font-normal"
+                                >
+                                    {value}
+                                </Typography>
+                            );
 
                         return (
-                            <td key={key} className="p-4 first:pl-6 last:pr-6">
+                            <td key={key} className="p-4">
                                 {value}
                             </td>
                         );
