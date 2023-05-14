@@ -12,35 +12,35 @@ export interface Database {
       company: {
         Row: {
           address: string
+          branch: string
           city: string
           created_at: string
           id: string
           name: string
           province: string
           sub_district: string
-          village: string
           zip_code: number
         }
         Insert: {
           address: string
+          branch?: string
           city: string
           created_at?: string
           id?: string
           name: string
           province: string
           sub_district: string
-          village: string
           zip_code: number
         }
         Update: {
           address?: string
+          branch?: string
           city?: string
           created_at?: string
           id?: string
           name?: string
           province?: string
           sub_district?: string
-          village?: string
           zip_code?: number
         }
       }
@@ -107,7 +107,7 @@ export interface Database {
           yom?: number
         }
       }
-      unit_sertification: {
+      unit_certification: {
         Row: {
           category: string
           created_at: string
