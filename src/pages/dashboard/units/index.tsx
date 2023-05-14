@@ -1,5 +1,6 @@
-import { Button, Card, CardBody } from '@material-tailwind/react';
+import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
 import { useEffect, useState, MouseEvent } from 'react';
+import Link from 'next/link';
 
 import useLayout from '@/components/Layout';
 import ProtectedContent from '@/components/ProtectedContent';
@@ -9,8 +10,7 @@ import Config from '@/config';
 
 function Units() {
     const session = useSessionContext();
-    const { useAlertsSystem } = useLayout().dashboard();
-    const alertSystem = useAlertsSystem();
+    useLayout().dashboard();
 
     const [items, setItems] = useState<UnitsItemData[]>([]);
 
@@ -23,15 +23,6 @@ function Units() {
             });
     }, [session]);
 
-    const handleInsertClick = (_: MouseEvent<HTMLButtonElement>) => {
-        alertSystem({
-            kind: 'add',
-            id: new Date().toString(),
-            type: 'success',
-            message: 'Hello fellaws,',
-        });
-    };
-
     return (
         <ProtectedContent
             hasAccess={session.userPermission?.read_unit == true}
@@ -39,18 +30,20 @@ function Units() {
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>
-                <CardBody>
-                    <div className="flex flex-col gap-4">
-                        <div className="flex justify-between flex-row gap-4">
-                            <div></div>
-                            <div>
-                                <Button onClick={handleInsertClick}>
-                                    Insert
-                                </Button>
-                            </div>
-                        </div>
-                        <UnitsTable items={items} />
+                <CardBody className="flex flex-col gap-4">
+                    <div className="flex justify-between">
+                        <Typography variant="h3" as="h1" color="blue-gray">
+                            Units
+                        </Typography>
+                        <Link
+                            href="/dashboard/units/insert"
+                            passHref
+                            legacyBehavior
+                        >
+                            <Button size="md">Insert</Button>
+                        </Link>
                     </div>
+                    <UnitsTable items={items} />
                 </CardBody>
             </Card>
         </ProtectedContent>

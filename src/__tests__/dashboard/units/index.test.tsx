@@ -68,11 +68,11 @@ describe('Dashboard Units Page', () => {
 
     it('render table header if user has read unit permission', async () => {
         const headers = [
-            'Nomor Seri',
-            'Merek',
-            'OEM',
-            'Tahun Dibuat',
-            'Negara Pembuat',
+            'Serial Number',
+            'Brand',
+            'Original Equipment Manufacture',
+            'Year of Manufacture',
+            'Made In',
         ];
 
         const routerPush = jest.fn();
