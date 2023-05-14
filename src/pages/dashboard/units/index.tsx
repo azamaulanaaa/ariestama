@@ -1,5 +1,5 @@
 import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
-import { useEffect, useState, MouseEvent } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import useLayout from '@/components/Layout';
