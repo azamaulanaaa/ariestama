@@ -15,6 +15,17 @@ class Unit {
             .range(offset, limit);
         return result;
     }
+
+    async insert(data: {
+        serial_number: string;
+        brand: string;
+        oem: string;
+        yom: number;
+        made_in: string;
+    }) {
+        const result = await this.supabaseClient.from('unit').insert(data);
+        return result;
+    }
 }
 
 export default Unit;
