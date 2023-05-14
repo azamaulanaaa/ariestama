@@ -31,11 +31,11 @@ const useLayout = () => {
     const layoutList = {
         default() {
             useEffect(() => setLayout(Default.default), []);
-            return Default.config;
+            return Default.config();
         },
         dashboard() {
             useEffect(() => setLayout(Dashboard.default), []);
-            return Dashboard.config;
+            return Dashboard.config();
         },
     };
 

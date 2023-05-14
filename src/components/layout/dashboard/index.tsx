@@ -25,6 +25,6 @@ const Dashboard = (props: DashboardProps) => {
 };
 
 export default Dashboard;
-export const config = {
-    useAlertsSystem,
-};
+export const config = () => ({
+    useAlertsSystem: useAlertsSystem(),
+});

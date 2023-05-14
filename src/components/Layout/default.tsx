@@ -9,4 +9,4 @@ const DefaultLayout = (props: DefaultLayoutProps) => {
 };
 
 export default DefaultLayout;
-export const config = {};
+export const config = () => ({});

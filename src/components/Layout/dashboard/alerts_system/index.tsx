@@ -34,7 +34,7 @@ export const AlertsSystemProvider = (props: AlertsSystemProviderProps) => {
     );
 };
 
-export const useAlertsSystem = (action: AlertsAction) => {
+export const useAlertsSystem = () => {
     const { dispatch } = useAlerts();
-    return dispatch(action);
+    return dispatch;
 };
