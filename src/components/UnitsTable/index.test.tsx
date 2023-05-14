@@ -10,11 +10,11 @@ describe('Units Table Component', () => {
     it('render table with header', () => {
         const testdata = {
             headers: {
-                serial_number: 'Nomor Seri',
-                brand: 'Merek',
-                oem: 'OEM',
-                yom: 'Tahun Dibuat',
-                made_in: 'Negara Pembuat',
+                serial_number: 'Serial Number',
+                brand: 'Brand',
+                oem: 'Original Equipment Manufacture',
+                yom: 'Year of Manufacture',
+                made_in: 'Made In',
             },
         };
 
