@@ -40,7 +40,9 @@ function Units() {
                             passHref
                             legacyBehavior
                         >
-                            <Button size="md">Insert</Button>
+                            <Button size="md" variant="gradient">
+                                Insert
+                            </Button>
                         </Link>
                     </div>
                     <UnitsTable items={items} />

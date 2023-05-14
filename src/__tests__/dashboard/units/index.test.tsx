@@ -17,6 +17,13 @@ jest.mock('@/components/SessionContext', () => ({
     },
 }));
 
+jest.mock('material-ripple-effects', () => ({
+    __esModule: true,
+    default: () => ({
+        create() {},
+    }),
+}));
+
 describe('Dashboard Units Page', () => {
     afterEach(() => {
         jest.resetAllMocks();
