@@ -18,6 +18,14 @@ jest.mock('@/components/SessionContext', () => ({
     },
 }));
 
+const layoutDefault = {};
+jest.mock('@/components/Layout', () => ({
+    __esModule: true,
+    default: () => ({
+        default: () => layoutDefault,
+    }),
+}));
+
 describe('SignOut Page', () => {
     afterEach(() => {
         jest.resetAllMocks();

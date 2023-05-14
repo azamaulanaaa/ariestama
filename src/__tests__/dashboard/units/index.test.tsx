@@ -24,6 +24,16 @@ jest.mock('material-ripple-effects', () => ({
     }),
 }));
 
+const layoutDashboard = {
+    useAlertsSystem: jest.fn(),
+};
+jest.mock('@/components/Layout', () => ({
+    __esModule: true,
+    default: () => ({
+        dashboard: () => layoutDashboard,
+    }),
+}));
+
 describe('Dashboard Units Page', () => {
     afterEach(() => {
         jest.resetAllMocks();
