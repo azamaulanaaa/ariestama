@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { AlertsProvider, useAlerts } from './context';
+import { AlertsAction, AlertsProvider, useAlerts } from './context';
 import Toasts from './toasts';
 
 type AlertsSystemContentProps = {
@@ -34,7 +34,7 @@ export const AlertsSystemProvider = (props: AlertsSystemProviderProps) => {
     );
 };
 
-export const useAlertsSystem = () => {
+export const useAlertsSystem = (action: AlertsAction) => {
     const { dispatch } = useAlerts();
-    return dispatch;
+    return dispatch(action);
 };

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
-import { AlertsSystemProvider } from './alerts_system';
-import { useAlertsSystem } from './alerts_system';
+import { useAlertsSystem, AlertsSystemProvider } from './alerts_system';
 import Header from './header';
 import Sidebar from './sidebar';
 
