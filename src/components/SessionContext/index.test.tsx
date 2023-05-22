@@ -22,22 +22,11 @@ describe('SessionContext Component', () => {
         </SessionContextProvider>
     );
 
-    it('useSessionContext must return database', () => {
-        const { result } = renderHook(useSessionContext, { wrapper });
-
-        expect(result.current.database).toEqual(database);
-    });
-
-    it('verify User Permission exactly once with null return', async () => {
-        const userPermissionMine = jest
-            .spyOn(database.user_permission, 'mine')
-            .mockResolvedValue(null);
-
-        const { result } = renderHook(useSessionContext, { wrapper });
+    it('useSessionContext must return database', async () => {
+        const { result } = renderHook(() => useSessionContext(), { wrapper });
 
         await waitFor(() => {
-            expect(userPermissionMine).toBeCalledTimes(1);
-            expect(result.current.userPermission).toBeNull();
+            expect(result.current.database).toEqual(database);
         });
     });
 });
