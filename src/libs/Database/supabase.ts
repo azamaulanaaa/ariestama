@@ -19,17 +19,19 @@ export interface Database {
           name: string
           province: string
           sub_district: string
+          user_id: string
           zip_code: number
         }
         Insert: {
           address: string
-          branch?: string
+          branch: string
           city: string
           created_at?: string
           id?: string
           name: string
           province: string
           sub_district: string
+          user_id: string
           zip_code: number
         }
         Update: {
@@ -41,134 +43,120 @@ export interface Database {
           name?: string
           province?: string
           sub_district?: string
+          user_id?: string
           zip_code?: number
         }
       }
-      official: {
+      company_snapshot: {
         Row: {
+          company_id: string
           created_at: string
-          id: number
-          name: string
+          data: Json
+          id: string
+          user_id: string
         }
         Insert: {
+          company_id: string
           created_at?: string
-          id?: number
-          name: string
+          data: Json
+          id?: string
+          user_id: string
         }
         Update: {
+          company_id?: string
           created_at?: string
-          id?: number
-          name?: string
+          data?: Json
+          id?: string
+          user_id?: string
         }
       }
-      profile: {
+      configuration: {
         Row: {
-          created_at: string | null
-          id: string
-          name: string
+          key: string
+          value: Json
         }
         Insert: {
-          created_at?: string | null
-          id: string
-          name: string
+          key: string
+          value: Json
         }
         Update: {
-          created_at?: string | null
-          id?: string
-          name?: string
+          key?: string
+          value?: Json
         }
       }
       unit: {
         Row: {
           brand: string
           created_at: string
+          extra: Json
           id: string
           made_in: string
           oem: string
           serial_number: string
+          user_id: string
           yom: number
         }
         Insert: {
           brand: string
           created_at?: string
+          extra: Json
           id?: string
           made_in: string
           oem: string
           serial_number: string
+          user_id: string
           yom: number
         }
         Update: {
           brand?: string
           created_at?: string
+          extra?: Json
           id?: string
           made_in?: string
           oem?: string
           serial_number?: string
+          user_id?: string
           yom?: number
         }
       }
-      unit_certification: {
+      unit_snapshot: {
         Row: {
-          category: string
           created_at: string
-          id: number
-          k3_object: string
-          owner: string
-          registered_at: string
-          registration_number: string
+          data: Json
+          id: string
           unit_id: string
-          used_by: string
+          user_id: string
         }
         Insert: {
-          category: string
           created_at?: string
-          id?: number
-          k3_object: string
-          owner: string
-          registered_at: string
-          registration_number: string
+          data: Json
+          id?: string
           unit_id: string
-          used_by: string
+          user_id: string
         }
         Update: {
-          category?: string
           created_at?: string
-          id?: number
-          k3_object?: string
-          owner?: string
-          registered_at?: string
-          registration_number?: string
+          data?: Json
+          id?: string
           unit_id?: string
-          used_by?: string
+          user_id?: string
         }
       }
-      user_permission: {
+      user: {
         Row: {
-          created_at: string
           id: string
-          iud_company: boolean
-          iud_unit: boolean
-          read_company: boolean
-          read_other_profile: boolean
-          read_unit: boolean
+          name: string
+          permission: Json | null
         }
         Insert: {
-          created_at?: string
           id: string
-          iud_company?: boolean
-          iud_unit?: boolean
-          read_company?: boolean
-          read_other_profile?: boolean
-          read_unit?: boolean
+          name: string
+          permission?: Json | null
         }
         Update: {
-          created_at?: string
           id?: string
-          iud_company?: boolean
-          iud_unit?: boolean
-          read_company?: boolean
-          read_other_profile?: boolean
-          read_unit?: boolean
+          name?: string
+          permission?: Json | null
         }
       }
     }

@@ -2,25 +2,26 @@ import { SupabaseClient } from '@supabase/supabase-js';
 
 import { Database as DatabaseType } from './supabase';
 import Auth from './auth';
-import UserPermission from './user_permission';
+import UserDB from './user';
+import CompanyDB from './company';
 import Unit from './unit';
-import Company from './company';
+export * from './type';
 
 class Database {
     private supabaseClient: SupabaseClient<DatabaseType>;
 
     auth: Auth;
-    user_permission: UserPermission;
+    user: UserDB;
+    company: CompanyDB;
     unit: Unit;
-    company: Company;
 
     constructor(supabaseClient: SupabaseClient<DatabaseType>) {
         this.supabaseClient = supabaseClient;
 
         this.auth = new Auth(this.supabaseClient);
-        this.user_permission = new UserPermission(this.supabaseClient);
+        this.user = new UserDB(this.supabaseClient);
+        this.company = new CompanyDB(this.supabaseClient);
         this.unit = new Unit(this.supabaseClient);
-        this.company = new Company(this.supabaseClient);
     }
 }
 

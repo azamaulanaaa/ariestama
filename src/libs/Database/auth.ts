@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database as DatabaseType } from './supabase';
+import type { Error } from './type';
 
 class Auth {
     private supabaseClient: SupabaseClient<DatabaseType>;
@@ -9,10 +10,18 @@ class Auth {
     }
 
     async SignIn({ email, password }: { email: string; password: string }) {
-        const { error } = await this.supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-        });
+        const { error: db_error } =
+            await this.supabaseClient.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+        let error: Error | null = null;
+        if (db_error)
+            error = {
+                code: db_error.name,
+                text: db_error.message,
+            };
 
         return error;
     }
@@ -24,10 +33,17 @@ class Auth {
     }
 
     async SignUp({ email, password }: { email: string; password: string }) {
-        const { error } = await this.supabaseClient.auth.signUp({
+        const { error: db_error } = await this.supabaseClient.auth.signUp({
             email,
             password,
         });
+
+        let error: Error | null = null;
+        if (db_error)
+            error = {
+                code: db_error.name,
+                text: db_error.message,
+            };
 
         return error;
     }
