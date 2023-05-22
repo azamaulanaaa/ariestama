@@ -17,7 +17,22 @@ const InsertCompany = () => {
 
     const handleSubmit = async (data: InsertUnitData) => {
         setLoading(true);
-        const result = await session.database.unit.insert(data);
+        if (!session.user) {
+            useAlertsSystem({
+                kind: 'add',
+                id: new Date().toString(),
+                type: 'error',
+                message: 'Unauthorize user.',
+            });
+            setLoading(false);
+            return;
+        }
+
+        const result = await session.database.unit.insert({
+            user_id: session.user.id,
+            extra: {},
+            ...data,
+        });
         if (result.error == null) {
             useAlertsSystem({
                 kind: 'add',
@@ -31,7 +46,7 @@ const InsertCompany = () => {
                 kind: 'add',
                 id: new Date().toString(),
                 type: 'error',
-                message: result.error.message,
+                message: result.error.text,
             });
             setLoading(false);
         }
@@ -39,8 +54,8 @@ const InsertCompany = () => {
 
     return (
         <ProtectedContent
-            hasAccess={session.userPermission?.iud_unit == true}
-            isReady={session.userPermission != null && !loading}
+            hasAccess={session.user?.permission.unit_insert == true}
+            isReady={session.user != undefined && !loading}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>

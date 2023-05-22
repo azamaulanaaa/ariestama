@@ -15,17 +15,17 @@ import SignInForm, { SignInFormData } from '@/components/SignInForm';
 import { useSessionContext } from '@/components/SessionContext';
 import Loading from '@/components/Loading';
 import Config from '@/config';
+import { Error } from '@/libs/Database';
 
 function SignIn() {
     const router = useRouter();
     const session = useSessionContext();
     useLayout().default();
 
-    const [error, setError] = useState<AuthError | null>(null);
+    const [error, setError] = useState<Error | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    if (session.userPermission?.signin && router.isReady)
-        router.push(Config.Url.Dashboard);
+    if (session.user && router.isReady) router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignInFormData) => {
         setError(null);
@@ -63,7 +63,7 @@ function SignIn() {
                             alertProps={
                                 !error
                                     ? undefined
-                                    : { type: 'error', children: error.message }
+                                    : { type: 'error', children: error.text }
                             }
                         />
                     </CardBody>

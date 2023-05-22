@@ -41,7 +41,7 @@ describe('Dashboard Insert Company Page', () => {
         cleanup();
     });
 
-    it('redirect to dashboard if user does not have insert company permission', async () => {
+    it('redirect to dashboard if user does not have company insert permission', async () => {
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
             isReady: true,
@@ -49,7 +49,9 @@ describe('Dashboard Insert Company Page', () => {
         });
 
         useSessionContext.mockReturnValue({
-            userPermission: {},
+            user: {
+                permission: {},
+            },
         });
 
         render(<InsertCompanyPage />);
@@ -60,7 +62,7 @@ describe('Dashboard Insert Company Page', () => {
         });
     });
 
-    it('stays in page if user has insert company permission', async () => {
+    it('stays in page if user has company insert permission', async () => {
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
             isReady: true,
@@ -68,7 +70,7 @@ describe('Dashboard Insert Company Page', () => {
         });
 
         useSessionContext.mockReturnValue({
-            userPermission: { iud_company: true },
+            user: { permission: { company_insert: true } },
         });
 
         render(<InsertCompanyPage />);
@@ -82,7 +84,9 @@ describe('Dashboard Insert Company Page', () => {
         useRouter.mockReturnValue({ isReady: true });
 
         useSessionContext.mockReturnValue({
-            userPermission: { iud_company: true },
+            user: {
+                permission: { company_insert: true },
+            },
         });
 
         render(<InsertCompanyPage />);
@@ -134,7 +138,11 @@ describe('Dashboard Insert Company Page', () => {
             });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_company: true },
+            user: {
+                permission: {
+                    company_inser: true,
+                },
+            },
         });
 
         render(<InsertCompanyPage />);
@@ -199,7 +207,12 @@ describe('Dashboard Insert Company Page', () => {
         });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_company: true },
+            user: {
+                id: 'some',
+                permission: {
+                    company_insert: true,
+                },
+            },
         });
 
         render(<InsertCompanyPage />);
@@ -256,7 +269,7 @@ describe('Dashboard Insert Company Page', () => {
         });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_company: true },
+            user: { id: 'some', permission: { company_insert: true } },
         });
 
         render(<InsertCompanyPage />);

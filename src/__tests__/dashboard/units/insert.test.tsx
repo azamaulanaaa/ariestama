@@ -49,7 +49,9 @@ describe('Dashboard Insert Unit Page', () => {
         });
 
         useSessionContext.mockReturnValue({
-            userPermission: {},
+            user: {
+                permission: {},
+            },
         });
 
         render(<InsertUnitPage />);
@@ -68,7 +70,7 @@ describe('Dashboard Insert Unit Page', () => {
         });
 
         useSessionContext.mockReturnValue({
-            userPermission: { iud_unit: true },
+            user: { permission: { unit_insert: true } },
         });
 
         render(<InsertUnitPage />);
@@ -82,7 +84,7 @@ describe('Dashboard Insert Unit Page', () => {
         useRouter.mockReturnValue({ isReady: true });
 
         useSessionContext.mockReturnValue({
-            userPermission: { iud_unit: true },
+            user: { permission: { unit_insert: true } },
         });
 
         render(<InsertUnitPage />);
@@ -114,6 +116,7 @@ describe('Dashboard Insert Unit Page', () => {
                 oem: 'oem',
                 yom: 2000,
                 made_in: 'made_in',
+                user_id: 'user_id',
             },
         };
 
@@ -130,7 +133,10 @@ describe('Dashboard Insert Unit Page', () => {
             });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_unit: true },
+            user: {
+                id: testdata.data.user_id,
+                permission: { unit_insert: true },
+            },
         });
 
         render(<InsertUnitPage />);
@@ -158,6 +164,8 @@ describe('Dashboard Insert Unit Page', () => {
             oem: testdata.data.oem,
             yom: testdata.data.yom,
             made_in: testdata.data.made_in,
+            extra: {},
+            user_id: testdata.data.user_id,
         });
     });
 
@@ -189,7 +197,7 @@ describe('Dashboard Insert Unit Page', () => {
         });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_unit: true },
+            user: { permission: { unit_insert: true } },
         });
 
         render(<InsertUnitPage />);
@@ -242,7 +250,7 @@ describe('Dashboard Insert Unit Page', () => {
         });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { iud_unit: true },
+            user: { permission: { unit_insert: true } },
         });
 
         render(<InsertUnitPage />);

@@ -40,7 +40,7 @@ describe('Dashboard Units Page', () => {
         cleanup();
     });
 
-    it('redirect to dashboard if user does not have read unit permission', async () => {
+    it('redirect to dashboard if user does not have unit read permission', async () => {
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
             isReady: true,
@@ -51,7 +51,9 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: {},
+            user: {
+                permission: {},
+            },
         });
 
         render(<UnitsPage />);
@@ -62,7 +64,7 @@ describe('Dashboard Units Page', () => {
         });
     });
 
-    it('stays in page if user has read unit permission', async () => {
+    it('stays in page if user has unit read permission', async () => {
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
             isReady: true,
@@ -73,7 +75,7 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_unit: true },
+            unit: { permission: { unit_read: true } },
         });
 
         render(<UnitsPage />);
@@ -102,7 +104,7 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_unit: true },
+            user: { permission: { unit_read: true } },
         });
 
         render(<UnitsPage />);
@@ -139,7 +141,7 @@ describe('Dashboard Units Page', () => {
         });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_unit: true },
+            user: { permission: { unit_read: true } },
         });
 
         render(<UnitsPage />);

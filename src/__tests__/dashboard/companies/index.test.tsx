@@ -34,7 +34,7 @@ jest.mock('@/components/Layout', () => ({
     }),
 }));
 
-describe('Dashboard Units Page', () => {
+describe('Dashboard Companies Page', () => {
     afterEach(() => {
         jest.resetAllMocks();
         cleanup();
@@ -51,7 +51,9 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: {},
+            user: {
+                permission: {},
+            },
         });
 
         render(<CompaniesPage />);
@@ -62,7 +64,7 @@ describe('Dashboard Units Page', () => {
         });
     });
 
-    it('stays in page if user has read company permission', async () => {
+    it('stays in page if user has company read permission', async () => {
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
             isReady: true,
@@ -73,7 +75,11 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_company: true },
+            user: {
+                permission: {
+                    company_read: true,
+                },
+            },
         });
 
         render(<CompaniesPage />);
@@ -83,8 +89,10 @@ describe('Dashboard Units Page', () => {
         });
     });
 
-    it('render table header if user has read company permission', async () => {
-        const headers = ['Name', 'Branch', 'City', 'Province'];
+    it('render table header if user has company read permission', async () => {
+        const testdata = {
+            headers: ['Name', 'Branch', 'City', 'Province'],
+        };
 
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
@@ -96,28 +104,32 @@ describe('Dashboard Units Page', () => {
         jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_company: true },
+            user: {
+                permission: { company_read: true },
+            },
         });
 
         render(<CompaniesPage />);
 
         await waitFor(() => {
             const colheaders = screen.getAllByRole('columnheader');
-            headers.forEach((header, index) => {
+            testdata.headers.forEach((header, index) => {
                 expect(colheaders[index]).toHaveTextContent(header);
             });
         });
     });
 
-    it('render table data for user has read unit permission', async () => {
-        const items = [
-            {
-                name: 'name',
-                branch: 'branch',
-                city: 'city',
-                province: 'province',
-            },
-        ];
+    it('render table data for user has company read permission', async () => {
+        const testdata = {
+            items: [
+                {
+                    name: 'name',
+                    branch: 'branch',
+                    city: 'city',
+                    province: 'province',
+                },
+            ],
+        };
 
         const routerPush = jest.fn();
         useRouter.mockReturnValue({
@@ -129,12 +141,14 @@ describe('Dashboard Units Page', () => {
         const companylist = jest
             .spyOn(database.company, 'list')
             .mockResolvedValue({
-                data: items,
+                data: testdata.items,
                 ...({} as any),
             });
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: { read_company: true },
+            user: {
+                permission: { company_read: true },
+            },
         });
 
         render(<CompaniesPage />);
@@ -143,8 +157,8 @@ describe('Dashboard Units Page', () => {
             expect(companylist).toBeCalledTimes(1);
 
             const rows = screen.getAllByRole('row');
-            expect(rows).toHaveLength(items.length + 1);
-            items.forEach((item, index) => {
+            expect(rows).toHaveLength(testdata.items.length + 1);
+            testdata.items.forEach((item, index) => {
                 Object.values(item).forEach((value) => {
                     expect(rows[index + 1]).toHaveTextContent(String(value));
                 });

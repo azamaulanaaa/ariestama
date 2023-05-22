@@ -8,14 +8,14 @@ import { useSessionContext } from '@/components/SessionContext';
 import CompaniesTable, { CompaniesItemData } from '@/components/CompaniesTable';
 import Config from '@/config';
 
-function Units() {
+function Companies() {
     const session = useSessionContext();
     useLayout().dashboard();
 
     const [items, setItems] = useState<CompaniesItemData[]>([]);
 
     useEffect(() => {
-        if (session.userPermission?.read_company == true)
+        if (session.user?.permission.company_read == true)
             session.database.company.list().then((items) => {
                 if (items.data) {
                     setItems(items.data);
@@ -25,8 +25,8 @@ function Units() {
 
     return (
         <ProtectedContent
-            hasAccess={session.userPermission?.read_company == true}
-            isReady={session.userPermission != null}
+            hasAccess={session.user?.permission.company_read == true}
+            isReady={session.user != undefined}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>
@@ -52,4 +52,4 @@ function Units() {
     );
 }
 
-export default Units;
+export default Companies;

@@ -15,7 +15,7 @@ function Units() {
     const [items, setItems] = useState<UnitsItemData[]>([]);
 
     useEffect(() => {
-        if (session.userPermission?.read_unit == true)
+        if (session.user?.permission.unit_read == true)
             session.database.unit.list().then((items) => {
                 if (items.data) {
                     setItems(items.data);
@@ -25,8 +25,8 @@ function Units() {
 
     return (
         <ProtectedContent
-            hasAccess={session.userPermission?.read_unit == true}
-            isReady={session.userPermission != null}
+            hasAccess={session.user?.permission.unit_read == true}
+            isReady={session.user != undefined}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>

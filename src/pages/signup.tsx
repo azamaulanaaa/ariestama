@@ -26,8 +26,7 @@ function SignUp() {
     );
     const [loading, setLoading] = useState<boolean>(false);
 
-    if (session.userPermission?.signin && router.isReady)
-        router.push(Config.Url.Dashboard);
+    if (session.user && router.isReady) router.push(Config.Url.Dashboard);
 
     const handleSubmit = async (data: SignUpFormData) => {
         setAlertProps(undefined);
@@ -37,7 +36,7 @@ function SignUp() {
             password: data.password,
         });
         if (error) {
-            setAlertProps({ type: 'error', children: error.message });
+            setAlertProps({ type: 'error', children: error.text });
             setLoading(false);
             return;
         }

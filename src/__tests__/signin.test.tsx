@@ -1,4 +1,3 @@
-import { AuthError } from '@supabase/supabase-js';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -41,8 +40,6 @@ describe('SignIn Page', () => {
         jest.resetAllMocks();
     });
 
-    const database = new Database({} as any);
-
     it('render SignIn form when all ready', () => {
         useRouter.mockReturnValue({ isReady: true });
         useSessionContext.mockReturnValue({ userPermission: {} });
@@ -56,18 +53,22 @@ describe('SignIn Page', () => {
 
     it('renders Alert and maintains input data for incorrect signin', async () => {
         const testdata = {
-            message: 'some',
-            email: 'some@email.com',
-            password: 'some',
+            error: {
+                code: 'code',
+                text: 'some',
+            },
+            form: {
+                email: 'some@email.com',
+                password: 'some',
+            },
         };
         useRouter.mockReturnValue({ isReady: true });
 
-        jest.spyOn(database.auth, 'SignIn').mockResolvedValue(
-            new AuthError(testdata.message)
-        );
+        const database = new Database({} as any);
+        jest.spyOn(database.auth, 'SignIn').mockResolvedValue(testdata.error);
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: {},
+            user: null,
         });
         const user = userEvent.setup();
 
@@ -77,15 +78,15 @@ describe('SignIn Page', () => {
         const input_password = screen.getByLabelText(/password/i);
         const button = screen.getByRole('button', { name: /submit/i });
 
-        await user.type(input_email, testdata.email);
-        await user.type(input_password, testdata.password);
+        await user.type(input_email, testdata.form.email);
+        await user.type(input_password, testdata.form.password);
         await user.click(button);
         await waitFor(() => {
             const alert = screen.getByRole('alert');
-            expect(alert).toHaveTextContent(testdata.message);
+            expect(alert).toHaveTextContent(testdata.error.text);
 
-            expect(input_email).toHaveValue(testdata.email);
-            expect(input_password).toHaveValue(testdata.password);
+            expect(input_email).toHaveValue(testdata.form.email);
+            expect(input_password).toHaveValue(testdata.form.password);
         });
     });
 
@@ -93,10 +94,12 @@ describe('SignIn Page', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
 
+        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
+
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: {},
+            user: null,
         });
         const user = userEvent.setup();
 
@@ -119,7 +122,7 @@ describe('SignIn Page', () => {
     it('redirect to dashboard for signed user', async () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
-        useSessionContext.mockReturnValue({ userPermission: { signin: true } });
+        useSessionContext.mockReturnValue({ user: {} as any });
 
         render(<SignInPage />);
 
@@ -133,10 +136,12 @@ describe('SignIn Page', () => {
         const push = jest.fn();
         useRouter.mockReturnValue({ isReady: true, push });
 
+        const database = new Database({} as any);
         jest.spyOn(database.auth, 'SignIn').mockResolvedValue(null);
+
         useSessionContext.mockReturnValue({
             database: database,
-            userPermission: {},
+            user: null,
         });
         const user = userEvent.setup();
 
