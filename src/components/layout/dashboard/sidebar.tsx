@@ -1,40 +1,13 @@
-import {
-    Card,
-    List,
-    ListItem,
-    ListItemPrefix,
-    Typography,
-} from '@material-tailwind/react';
+import { Card, List, ListItem, ListItemPrefix } from '@material-tailwind/react';
 import Link from 'next/link';
-import { ReactNode } from 'react';
 import { HiClipboardList } from 'react-icons/hi';
 import { HiBuildingOffice, HiHome, HiPower } from 'react-icons/hi2';
 
-interface ItemProps {
-    children?: ReactNode;
-    href: string;
-}
-
-const Item = (props: ItemProps) => {
-    return (
-        <li>
-            <Link
-                href={props.href}
-                className="block p-2 hover:border hover:bg-gray-200"
-            >
-                <Typography>{props.children}</Typography>
-            </Link>
-        </li>
-    );
-};
-
-interface SidebarProps {}
-
-const Sidebar = (props: SidebarProps) => {
+const Sidebar = () => {
     return (
         <Card className="mt-4 w-full max-w-[18rem]">
             <List>
-                <Link href="/dashboard" passHref>
+                <Link href="/dashboard" passHref legacyBehavior>
                     <ListItem>
                         <ListItemPrefix>
                             <HiHome />
@@ -42,7 +15,7 @@ const Sidebar = (props: SidebarProps) => {
                         Dashboard
                     </ListItem>
                 </Link>
-                <Link href="/dashboard/companies" passHref>
+                <Link href="/dashboard/companies" passHref legacyBehavior>
                     <ListItem>
                         <ListItemPrefix>
                             <HiBuildingOffice />
@@ -50,7 +23,7 @@ const Sidebar = (props: SidebarProps) => {
                         Companies
                     </ListItem>
                 </Link>
-                <Link href="/dashboard/units" passHref>
+                <Link href="/dashboard/units" passHref legacyBehavior>
                     <ListItem>
                         <ListItemPrefix>
                             <HiClipboardList />
@@ -58,7 +31,7 @@ const Sidebar = (props: SidebarProps) => {
                         Units
                     </ListItem>
                 </Link>
-                <Link href="/signout" passHref>
+                <Link href="/signout" passHref legacyBehavior>
                     <ListItem>
                         <ListItemPrefix>
                             <HiPower />
