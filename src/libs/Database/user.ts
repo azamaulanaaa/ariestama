@@ -14,7 +14,7 @@ class UserDB {
         const db_result = await this.supabaseClient
             .from('user')
             .select('*')
-            .range(offset, limit);
+            .range(offset, offset + limit);
 
         let error: Error | null = null;
         if (db_result.error) {

@@ -9,11 +9,11 @@ class UnitDB {
         this.supabaseClient = supabaseClient;
     }
 
-    async list(offset: number = 0, limit: number = 100) {
+    async gets(offset: number = 0, limit: number = 100) {
         const db_result = await this.supabaseClient
             .from('unit')
             .select('*')
-            .range(offset, limit);
+            .range(offset, offset + limit);
 
         let error: Error | null = null;
         if (db_result.error) {
@@ -26,6 +26,49 @@ class UnitDB {
         let data: Unit[] = [];
         if (db_result.data) {
             data = db_result.data.map((data) => ({
+                id: data.id,
+                serial_number: data.serial_number,
+                brand: data.brand,
+                oem: data.oem,
+                yom: data.yom,
+                made_in: data.made_in,
+                extra: data.extra as any,
+                user_id: data.user_id,
+            }));
+        }
+
+        let count: number = 0;
+        if (db_result.count) {
+            count = db_result.count;
+        }
+
+        let result: Result<Unit> = {
+            error: error,
+            data: data,
+            count: count,
+        };
+        return result;
+    }
+
+    async getById(id: string, offset: number = 0, limit: number = 100) {
+        const db_result = await this.supabaseClient
+            .from('unit')
+            .select('*')
+            .eq('id', id)
+            .range(offset, offset + limit);
+
+        let error: Error | null = null;
+        if (db_result.error) {
+            error = {
+                code: db_result.error.code,
+                text: db_result.error.message,
+            };
+        }
+
+        let data: Unit[] = [];
+        if (db_result.data) {
+            data = db_result.data.map((data) => ({
+                id: data.id,
                 serial_number: data.serial_number,
                 brand: data.brand,
                 oem: data.oem,

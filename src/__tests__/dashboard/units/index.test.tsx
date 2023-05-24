@@ -48,7 +48,7 @@ describe('Dashboard Units Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.unit, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             user: {
@@ -72,7 +72,7 @@ describe('Dashboard Units Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.unit, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             unit: { permission: { unit_read: true } },
@@ -101,7 +101,7 @@ describe('Dashboard Units Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.unit, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.unit, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             user: { permission: { unit_read: true } },
@@ -120,6 +120,7 @@ describe('Dashboard Units Page', () => {
     it('render table data for user has read unit permission', async () => {
         const items = [
             {
+                id: 'id',
                 serial_number: '000',
                 brand: 'brand',
                 oem: 'oem',
@@ -135,7 +136,7 @@ describe('Dashboard Units Page', () => {
         });
 
         const database = new Database({} as any);
-        const unitList = jest.spyOn(database.unit, 'list').mockResolvedValue({
+        const unitList = jest.spyOn(database.unit, 'gets').mockResolvedValue({
             data: items,
             ...({} as any),
         });

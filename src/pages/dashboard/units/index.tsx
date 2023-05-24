@@ -16,7 +16,7 @@ function Units() {
 
     useEffect(() => {
         if (session.user?.permission.unit_read == true)
-            session.database.unit.list().then((items) => {
+            session.database.unit.gets().then((items) => {
                 if (items.data) {
                     setItems(items.data);
                 }

@@ -48,7 +48,7 @@ describe('Dashboard Companies Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.company, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             user: {
@@ -72,7 +72,7 @@ describe('Dashboard Companies Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.company, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             user: {
@@ -101,7 +101,7 @@ describe('Dashboard Companies Page', () => {
         });
 
         const database = new Database({} as any);
-        jest.spyOn(database.company, 'list').mockResolvedValue({} as any);
+        jest.spyOn(database.company, 'gets').mockResolvedValue({} as any);
         useSessionContext.mockReturnValue({
             database: database,
             user: {
@@ -123,6 +123,7 @@ describe('Dashboard Companies Page', () => {
         const testdata = {
             items: [
                 {
+                    id: 'id',
                     name: 'name',
                     branch: 'branch',
                     city: 'city',
@@ -139,7 +140,7 @@ describe('Dashboard Companies Page', () => {
 
         const database = new Database({} as any);
         const companylist = jest
-            .spyOn(database.company, 'list')
+            .spyOn(database.company, 'gets')
             .mockResolvedValue({
                 data: testdata.items,
                 ...({} as any),
@@ -159,9 +160,11 @@ describe('Dashboard Companies Page', () => {
             const rows = screen.getAllByRole('row');
             expect(rows).toHaveLength(testdata.items.length + 1);
             testdata.items.forEach((item, index) => {
-                Object.values(item).forEach((value) => {
-                    expect(rows[index + 1]).toHaveTextContent(String(value));
-                });
+                const row = rows[index + 1];
+                expect(row).toHaveTextContent(item.name);
+                expect(row).toHaveTextContent(item.branch);
+                expect(row).toHaveTextContent(item.city);
+                expect(row).toHaveTextContent(item.province);
             });
         });
     });

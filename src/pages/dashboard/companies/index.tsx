@@ -16,7 +16,7 @@ function Companies() {
 
     useEffect(() => {
         if (session.user?.permission.company_read == true)
-            session.database.company.list().then((items) => {
+            session.database.company.gets().then((items) => {
                 if (items.data) {
                     setItems(items.data);
                 }

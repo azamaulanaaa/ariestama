@@ -34,6 +34,7 @@ describe('Units Table Component', () => {
         const testdata = {
             items: [
                 {
+                    id: 'id 1',
                     serial_number: '000',
                     brand: 'Merek 0',
                     oem: 'OEM 0',
@@ -41,6 +42,7 @@ describe('Units Table Component', () => {
                     made_in: 'Negara Pembuat 0',
                 },
                 {
+                    id: 'id 2',
                     serial_number: '001',
                     brand: 'Merek 1',
                     oem: 'OEM 1',
@@ -57,9 +59,11 @@ describe('Units Table Component', () => {
         expect(rows).toHaveLength(testdata.items.length + 1);
         testdata.items.forEach((item, index) => {
             const row = rows[index + 1];
-            Object.values(item).forEach((value) => {
-                expect(row).toHaveTextContent(String(value));
-            });
+            expect(row).toHaveTextContent(item.serial_number);
+            expect(row).toHaveTextContent(item.brand);
+            expect(row).toHaveTextContent(item.oem);
+            expect(row).toHaveTextContent(String(item.yom));
+            expect(row).toHaveTextContent(item.made_in);
         });
     });
 
@@ -67,6 +71,7 @@ describe('Units Table Component', () => {
         const testdata = {
             items: [
                 {
+                    id: 'id 1',
                     serial_number: '000',
                     brand: 'Merek 0',
                     oem: 'OEM 0',
@@ -74,6 +79,7 @@ describe('Units Table Component', () => {
                     made_in: 'Negara Pembuat 0',
                 },
                 {
+                    id: 'id 2',
                     serial_number: '001',
                     brand: 'Merek 1',
                     oem: 'OEM 1',

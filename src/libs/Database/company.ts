@@ -9,10 +9,53 @@ class CompanyDB {
         this.supabaseClient = supabaseClient;
     }
 
-    async list(offset: number = 0, limit: number = 100) {
+    async gets(offset: number = 0, limit: number = 100) {
         const db_result = await this.supabaseClient
             .from('company')
             .select('*')
+            .range(offset, offset + limit);
+
+        let error: Error | null = null;
+        if (db_result.error) {
+            error = {
+                code: db_result.error.code,
+                text: db_result.error.message,
+            };
+        }
+
+        let data: Company[] = [];
+        if (db_result.data) {
+            data = db_result.data.map((data) => ({
+                id: data.id,
+                name: data.name,
+                branch: data.branch,
+                address: data.address,
+                sub_district: data.sub_district,
+                city: data.city,
+                province: data.province,
+                zip_code: data.zip_code,
+                user_id: data.user_id,
+            }));
+        }
+
+        let count: number = 0;
+        if (db_result.count) {
+            count = db_result.count;
+        }
+
+        let result: Result<Company> = {
+            error: error,
+            data: data,
+            count: count,
+        };
+        return result;
+    }
+
+    async getsById(id: string, offset: number = 0, limit: number = 100) {
+        const db_result = await this.supabaseClient
+            .from('company')
+            .select('*')
+            .eq('id', id)
             .range(offset, limit);
 
         let error: Error | null = null;
@@ -26,6 +69,7 @@ class CompanyDB {
         let data: Company[] = [];
         if (db_result.data) {
             data = db_result.data.map((data) => ({
+                id: data.id,
                 name: data.name,
                 branch: data.branch,
                 address: data.address,
@@ -70,7 +114,6 @@ class CompanyDB {
                 text: db_result.error.message,
             };
         }
-
 
         let data: Company[] = [];
 

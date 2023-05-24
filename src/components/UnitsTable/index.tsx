@@ -1,6 +1,7 @@
 import Table, { TableData } from '@/components/Table';
 
 export interface UnitsItemData {
+    id: string;
     serial_number: string;
     brand: string;
     oem: string;

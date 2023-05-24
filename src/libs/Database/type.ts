@@ -1,5 +1,3 @@
-import { w } from '@supabase/auth-helpers-nextjs/dist/withMiddlewareAuth-06637ed5';
-
 export type Error = {
     code: string;
     text: string;
@@ -25,6 +23,7 @@ export type User = {
 };
 
 export type Company = {
+    id: string;
     name: string;
     branch: string;
     address: string;
@@ -36,6 +35,7 @@ export type Company = {
 };
 
 export type Unit = {
+    id: string;
     serial_number: string;
     brand: string;
     oem: string;

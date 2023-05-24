@@ -1,6 +1,7 @@
 import Table, { TableData } from '@/components/Table';
 
 export interface CompaniesItemData {
+    id: string;
     name: string;
     branch: string;
     city: string;
