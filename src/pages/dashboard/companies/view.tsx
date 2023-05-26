@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Card, CardBody } from '@material-tailwind/react';
 
 import ProtectedContent from '@/components/ProtectedContent';
 import { useSessionContext } from '@/components/SessionContext';
@@ -41,7 +42,11 @@ const Dashboard = () => {
             }
             redirectUrl={Config.Url.SignIn}
         >
-            <CompanyView {...companyData} />
+            <Card>
+                <CardBody>
+                    <CompanyView {...companyData} />
+                </CardBody>
+            </Card>
         </ProtectedContent>
     );
 };
