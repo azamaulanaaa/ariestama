@@ -1,5 +1,5 @@
 import { Button, Input } from '@material-tailwind/react';
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
 
 export type InsertCompanyData = {
     name: string;
@@ -13,6 +13,7 @@ export type InsertCompanyData = {
 
 export type InsertCompanyFormProps = {
     onSubmit?: (data: InsertCompanyData) => void;
+    defaultValues?: InsertCompanyData;
 };
 
 const InsertCompanyForm = (props: InsertCompanyFormProps) => {
@@ -54,12 +55,22 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
     };
 
     const [name, setName] = useState<string>('');
+    useEffect(() => {
+        if (props.defaultValues) {
+            setName(props.defaultValues.name);
+        }
+    }, [props.defaultValues]);
+
     const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value.toUpperCase());
     };
 
     return (
-        <form role="form" onSubmit={handleSubmit}>
+        <form
+            data-testid="InsertCompanyForm"
+            role="form"
+            onSubmit={handleSubmit}
+        >
             <div className="grid grid-cols-2 gap-4">
                 <Input
                     id="name"
@@ -78,6 +89,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                     label="Branch"
                     labelProps={{ htmlFor: 'branch' }}
                     required
+                    defaultValue={props.defaultValues?.branch}
                 />
                 <div className="col-span-2">
                     <Input
@@ -87,6 +99,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                         label="Address"
                         labelProps={{ htmlFor: 'address' }}
                         required
+                        defaultValue={props.defaultValues?.address}
                     />
                 </div>
                 <Input
@@ -96,6 +109,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                     label="Sub-District"
                     labelProps={{ htmlFor: 'subdistrict' }}
                     required
+                    defaultValue={props.defaultValues?.sub_district}
                 />
                 <Input
                     id="city"
@@ -104,6 +118,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                     label="City"
                     labelProps={{ htmlFor: 'city' }}
                     required
+                    defaultValue={props.defaultValues?.city}
                 />
                 <Input
                     id="province"
@@ -112,6 +127,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                     label="Province"
                     labelProps={{ htmlFor: 'province' }}
                     required
+                    defaultValue={props.defaultValues?.province}
                 />
                 <Input
                     id="zipcode"
@@ -120,6 +136,7 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
                     label="Zip Code"
                     labelProps={{ htmlFor: 'zipcode' }}
                     required
+                    defaultValue={props.defaultValues?.zip_code}
                 />
                 <Button type="submit" variant="gradient" className="col-span-2">
                     Submit

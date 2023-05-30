@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
-import InsertUnitForm from '.';
+import InsertCompanyForm from '.';
 
 jest.mock('material-ripple-effects', () => ({
     __esModule: true,
@@ -13,7 +13,7 @@ describe('InsertCompanyForm Component', () => {
     afterEach(cleanup);
 
     it('render a complete form', () => {
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
 
         screen.getByRole('form');
         screen.getByRole('button');
@@ -28,18 +28,20 @@ describe('InsertCompanyForm Component', () => {
 
     it('call onSubmit function if submit button is clicked', async () => {
         const testdata = {
-            name: 'NAME',
-            branch: 'branch',
-            address: 'address',
-            sub_district: 'subdistrict',
-            city: 'city',
-            province: 'province',
-            zip_code: 1000,
+            data: {
+                name: 'NAME',
+                branch: 'branch',
+                address: 'address',
+                sub_district: 'subdistrict',
+                city: 'city',
+                province: 'province',
+                zip_code: 1000,
+            },
         };
         const handleSubmit = jest.fn();
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm onSubmit={handleSubmit} />);
+        render(<InsertCompanyForm onSubmit={handleSubmit} />);
         const button = screen.getByRole('button');
         const input_name = screen.getByLabelText(/name/i);
         const input_branch = screen.getByLabelText(/branch/i);
@@ -49,33 +51,33 @@ describe('InsertCompanyForm Component', () => {
         const input_province = screen.getByLabelText(/province/i);
         const input_zipcode = screen.getByLabelText(/zip code/i);
 
-        await user.type(input_name, testdata.name);
-        await user.type(input_branch, testdata.branch);
-        await user.type(input_address, testdata.address);
-        await user.type(input_subdistrict, testdata.sub_district);
-        await user.type(input_city, testdata.city);
-        await user.type(input_province, testdata.province);
-        await user.type(input_zipcode, String(testdata.zip_code));
+        await user.type(input_name, testdata.data.name);
+        await user.type(input_branch, testdata.data.branch);
+        await user.type(input_address, testdata.data.address);
+        await user.type(input_subdistrict, testdata.data.sub_district);
+        await user.type(input_city, testdata.data.city);
+        await user.type(input_province, testdata.data.province);
+        await user.type(input_zipcode, String(testdata.data.zip_code));
 
         expect(handleSubmit).toBeCalledTimes(0);
 
         await user.click(button);
         expect(handleSubmit).toBeCalledTimes(1);
         expect(handleSubmit).toBeCalledWith({
-            name: testdata.name,
-            branch: testdata.branch,
-            address: testdata.address,
-            sub_district: testdata.sub_district,
-            city: testdata.city,
-            province: testdata.province,
-            zip_code: testdata.zip_code,
+            name: testdata.data.name,
+            branch: testdata.data.branch,
+            address: testdata.data.address,
+            sub_district: testdata.data.sub_district,
+            city: testdata.data.city,
+            province: testdata.data.province,
+            zip_code: testdata.data.zip_code,
         });
     });
 
     it('input name cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_name = screen.getByLabelText(/name/i);
 
         expect(input_name).toBeInvalid();
@@ -86,7 +88,7 @@ describe('InsertCompanyForm Component', () => {
     it('input branch cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_branch = screen.getByLabelText(/branch/i);
 
         expect(input_branch).toBeInvalid();
@@ -97,7 +99,7 @@ describe('InsertCompanyForm Component', () => {
     it('input address cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_address = screen.getByLabelText(/address/i);
 
         expect(input_address).toBeInvalid();
@@ -108,7 +110,7 @@ describe('InsertCompanyForm Component', () => {
     it('input subdistrict cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_subdistrict = screen.getByLabelText(/sub-district/i);
 
         expect(input_subdistrict).toBeInvalid();
@@ -119,7 +121,7 @@ describe('InsertCompanyForm Component', () => {
     it('input city cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_city = screen.getByLabelText(/city/i);
 
         expect(input_city).toBeInvalid();
@@ -130,7 +132,7 @@ describe('InsertCompanyForm Component', () => {
     it('input province cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_province = screen.getByLabelText(/province/i);
 
         expect(input_province).toBeInvalid();
@@ -141,7 +143,7 @@ describe('InsertCompanyForm Component', () => {
     it('input zipcode must be a number and cannot be empty', async () => {
         const user = UserEvent.setup();
 
-        render(<InsertUnitForm />);
+        render(<InsertCompanyForm />);
         const input_zipcode = screen.getByLabelText(/zip code/i);
 
         expect(input_zipcode).toBeInvalid();
@@ -150,5 +152,38 @@ describe('InsertCompanyForm Component', () => {
         await user.clear(input_zipcode);
         await user.type(input_zipcode, '60000');
         expect(input_zipcode).toBeValid();
+    });
+
+    it('have option to set default value', () => {
+        const testdata = {
+            defaultValue: {
+                name: 'NAME',
+                branch: 'branch',
+                address: 'address',
+                sub_district: 'subdistrict',
+                city: 'city',
+                province: 'province',
+                zip_code: 1000,
+            },
+        };
+
+        render(<InsertCompanyForm defaultValues={testdata.defaultValue} />);
+        const input_name = screen.getByLabelText(/name/i);
+        const input_branch = screen.getByLabelText(/branch/i);
+        const input_address = screen.getByLabelText(/address/i);
+        const input_subdistrict = screen.getByLabelText(/sub-district/i);
+        const input_city = screen.getByLabelText(/city/i);
+        const input_province = screen.getByLabelText(/province/i);
+        const input_zipcode = screen.getByLabelText(/zip code/i);
+
+        expect(input_name).toHaveValue(testdata.defaultValue.name);
+        expect(input_branch).toHaveValue(testdata.defaultValue.branch);
+        expect(input_address).toHaveValue(testdata.defaultValue.address);
+        expect(input_subdistrict).toHaveValue(
+            testdata.defaultValue.sub_district
+        );
+        expect(input_city).toHaveValue(testdata.defaultValue.city);
+        expect(input_province).toHaveValue(testdata.defaultValue.province);
+        expect(input_zipcode).toHaveValue(testdata.defaultValue.zip_code);
     });
 });
