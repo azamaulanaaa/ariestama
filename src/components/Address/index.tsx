@@ -1,8 +1,6 @@
 import { Typography } from '@material-tailwind/react';
 
-export type CompanyViewProps = {
-    name: string;
-    branch: string;
+export type AddressProps = {
     address: string;
     sub_district: string;
     city: string;
@@ -10,18 +8,14 @@ export type CompanyViewProps = {
     zip_code: number;
 };
 
-const CompanyView = (props: CompanyViewProps) => {
+const Address = (props: AddressProps) => {
     if (props == ({} as any)) return null;
 
     let address = props.address;
     if (address) address = address.replaceAll(/,\s/g, '\r\n');
 
     return (
-        <div>
-            <Typography variant="h3" as="h1">
-                {props.name}
-            </Typography>
-            <Typography variant="h4">{props.branch}</Typography>
+        <div data-testid="address">
             <Typography className="whitespace-pre-wrap">{address}</Typography>
             <Typography>
                 Kec. {props.sub_district}, {props.city}
@@ -33,4 +27,4 @@ const CompanyView = (props: CompanyViewProps) => {
     );
 };
 
-export default CompanyView;
+export default Address;

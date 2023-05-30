@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react';
-import CompanyView from '.';
+import Address from '.';
 
-describe('CompanyView Component', () => {
+describe('Address Component', () => {
     afterEach(() => {
         jest.resetAllMocks();
         cleanup();
@@ -10,8 +10,6 @@ describe('CompanyView Component', () => {
     it('render simple data', () => {
         const testdata = {
             data: {
-                name: 'name',
-                branch: 'branch',
                 address: 'address',
                 sub_district: 'sub_district',
                 city: 'city',
@@ -20,10 +18,8 @@ describe('CompanyView Component', () => {
             },
         };
 
-        render(<CompanyView {...testdata.data} />);
+        render(<Address {...testdata.data} />);
 
-        const name = screen.queryByText(testdata.data.name);
-        const branch = screen.queryByText(testdata.data.branch);
         const address = screen.queryByText(testdata.data.address);
         const sub_district = screen.queryByText(testdata.data.sub_district, {
             exact: false,
@@ -36,8 +32,6 @@ describe('CompanyView Component', () => {
             exact: false,
         });
 
-        expect(name).toBeInTheDocument();
-        expect(branch).toBeInTheDocument();
         expect(address).toBeInTheDocument();
         expect(sub_district).toBeInTheDocument();
         expect(city).toBeInTheDocument();
@@ -48,8 +42,6 @@ describe('CompanyView Component', () => {
     it('replace coma on address with new line', () => {
         const testdata = {
             data: {
-                name: 'name',
-                branch: 'branch',
                 address: 'add, ress',
                 sub_district: 'sub_district',
                 city: 'city',
@@ -59,10 +51,8 @@ describe('CompanyView Component', () => {
             new_address: 'add\\sress',
         };
 
-        render(<CompanyView {...testdata.data} />);
+        render(<Address {...testdata.data} />);
 
-        const name = screen.queryByText(testdata.data.name);
-        const branch = screen.queryByText(testdata.data.branch);
         const address = screen.queryByText(new RegExp(testdata.new_address));
         const sub_district = screen.queryByText(testdata.data.sub_district, {
             exact: false,
@@ -75,8 +65,6 @@ describe('CompanyView Component', () => {
             exact: false,
         });
 
-        expect(name).toBeInTheDocument();
-        expect(branch).toBeInTheDocument();
         expect(address).toBeInTheDocument();
         expect(sub_district).toBeInTheDocument();
         expect(city).toBeInTheDocument();
