@@ -1,20 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Card, CardBody } from '@material-tailwind/react';
+import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
 
 import ProtectedContent from '@/components/ProtectedContent';
 import { useSessionContext } from '@/components/SessionContext';
 import useLayout from '@/components/Layout';
-import CompanyView from '@/components/CompanyView';
+import Address from '@/components/Address';
 import type { Company } from '@/libs/Database';
 import Config from '@/config';
+import CardHeader from '@/components/CardHeader';
+import { HiPencil } from 'react-icons/hi2';
 
 const Dashboard = () => {
     const session = useSessionContext();
     useLayout().dashboard();
     const router = useRouter();
 
-    const [companyData, setCompanyData] = useState<Company>({} as any);
+    const defaultCompanyData: Company = {
+        id: '',
+        name: '',
+        branch: '',
+        address: '',
+        sub_district: '',
+        city: '',
+        province: '',
+        zip_code: 0,
+        user_id: '',
+    };
+
+    const [companyData, setCompanyData] = useState<Company>(defaultCompanyData);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (session.user?.permission.company_read == true && router.isReady) {
@@ -25,26 +40,57 @@ const Dashboard = () => {
             if (Array.isArray(query_id[0])) id = query_id[0];
 
             session.database.company.getsById(id).then((items) => {
-                if (items.data) {
-                    setCompanyData(items.data[0]);
+                if (items.error) {
+                    return;
                 }
+                setCompanyData(items.data[0]);
             });
         }
+
+        setLoading(false);
     }, [session]);
+
+    const handleEdit = () => {
+        if (!router.isReady) return;
+        router.push({
+            pathname: '/dashboard/companies/edit',
+            query: { id: companyData.id },
+        });
+    };
 
     return (
         <ProtectedContent
-            hasAccess={session.user != null}
-            isReady={
-                session.user != undefined &&
-                companyData != ({} as any) &&
-                router.isReady
-            }
+            hasAccess={session.user?.permission.company_read == true}
+            isReady={session.user != undefined && !loading}
             redirectUrl={Config.Url.SignIn}
         >
             <Card>
+                <CardHeader>
+                    <div className="flex justify-between">
+                        <div>
+                            <Typography data-testid="company-name" variant="h3">
+                                {companyData.name}
+                            </Typography>
+                            <Typography
+                                data-testid="company-branch"
+                                variant="h5"
+                            >
+                                {companyData.branch}
+                            </Typography>
+                        </div>
+                        <div>
+                            <Button
+                                variant="text"
+                                size="sm"
+                                onClick={handleEdit}
+                            >
+                                <HiPencil className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    </div>
+                </CardHeader>
                 <CardBody>
-                    <CompanyView {...companyData} />
+                    <Address {...companyData} />
                 </CardBody>
             </Card>
         </ProtectedContent>
