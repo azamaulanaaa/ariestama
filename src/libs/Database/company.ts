@@ -129,6 +129,46 @@ class CompanyDB {
         };
         return result;
     }
+
+    async update(
+        id: string,
+        update_data: {
+            name?: string;
+            branch?: string;
+            address?: string;
+            sub_district?: string;
+            city?: string;
+            province?: string;
+            zip_code?: number;
+            user_id?: string;
+        }
+    ) {
+        const db_result = await this.supabaseClient
+            .from('company')
+            .update(update_data)
+            .eq('id', id);
+        let error: Error | null = null;
+        if (db_result.error) {
+            error = {
+                code: db_result.error.code,
+                text: db_result.error.message,
+            };
+        }
+
+        let data: Company[] = [];
+
+        let count: number = 0;
+        if (db_result.count) {
+            count = db_result.count;
+        }
+
+        let result: Result<Company> = {
+            error: error,
+            data: data,
+            count: count,
+        };
+        return result;
+    }
 }
 
 export default CompanyDB;
