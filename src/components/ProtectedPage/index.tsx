@@ -2,14 +2,14 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import Loading from '@/components/Loading';
 
-export type ProtectedContentProps = {
+export type ProtectedPageProps = {
     children: ReactNode;
     hasAccess: boolean;
     redirectUrl: string;
     isReady: boolean;
 };
 
-const ProtectedContent = (props: ProtectedContentProps) => {
+const ProtectedPage = (props: ProtectedPageProps) => {
     const router = useRouter();
 
     if (router.isReady && props.isReady && !props.hasAccess)
@@ -22,4 +22,4 @@ const ProtectedContent = (props: ProtectedContentProps) => {
     );
 };
 
-export default ProtectedContent;
+export default ProtectedPage;

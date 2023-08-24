@@ -1,6 +1,6 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 
-import ProtectedContent from '.';
+import ProtectedPage from '.';
 
 const useRouter = jest.fn();
 jest.mock('next/router', () => ({
@@ -23,9 +23,9 @@ describe('Protected Content Component', () => {
         const url = 'http://localhost/';
 
         render(
-            <ProtectedContent hasAccess={true} redirectUrl={url} isReady={true}>
+            <ProtectedPage hasAccess={true} redirectUrl={url} isReady={true}>
                 <div data-testid="child"></div>
-            </ProtectedContent>
+            </ProtectedPage>
         );
 
         screen.getByTestId('child');
@@ -41,13 +41,13 @@ describe('Protected Content Component', () => {
         const url = 'http://localhost/';
 
         render(
-            <ProtectedContent
+            <ProtectedPage
                 hasAccess={false}
                 redirectUrl={url}
                 isReady={true}
             >
                 <div data-testid="child"></div>
-            </ProtectedContent>
+            </ProtectedPage>
         );
 
         await waitFor(() => {
@@ -64,13 +64,13 @@ describe('Protected Content Component', () => {
         const url = 'http://localhost/';
 
         render(
-            <ProtectedContent
+            <ProtectedPage
                 hasAccess={false}
                 redirectUrl={url}
                 isReady={false}
             >
                 <div data-testid="child"></div>
-            </ProtectedContent>
+            </ProtectedPage>
         );
 
         screen.getByRole('status');
