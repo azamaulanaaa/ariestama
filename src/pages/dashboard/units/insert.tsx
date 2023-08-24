@@ -1,7 +1,7 @@
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 
 import useLayout from '@/components/Layout';
-import ProtectedContent from '@/components/ProtectedContent';
+import ProtectedPage from '@/components/ProtectedPage';
 import { useSessionContext } from '@/components/SessionContext';
 import Config from '@/config';
 import { useState } from 'react';
@@ -53,9 +53,9 @@ const InsertCompany = () => {
     };
 
     return (
-        <ProtectedContent
+        <ProtectedPage
             hasAccess={session.user?.permission.unit_insert == true}
-            isReady={session.user != undefined && !loading}
+            isReady={session.user !== undefined && !loading}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>
@@ -68,7 +68,7 @@ const InsertCompany = () => {
                     <InsertUnitForm onSubmit={handleSubmit} />
                 </CardBody>
             </Card>
-        </ProtectedContent>
+        </ProtectedPage>
     );
 };
 

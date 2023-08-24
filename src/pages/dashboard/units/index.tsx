@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import useLayout from '@/components/Layout';
-import ProtectedContent from '@/components/ProtectedContent';
+import ProtectedPage from '@/components/ProtectedPage';
+
 import { useSessionContext } from '@/components/SessionContext';
 import UnitsTable, { UnitsItemData } from '@/components/UnitsTable';
 import Config from '@/config';
@@ -24,9 +25,9 @@ function Units() {
     }, [session]);
 
     return (
-        <ProtectedContent
+        <ProtectedPage
             hasAccess={session.user?.permission.unit_read == true}
-            isReady={session.user != undefined}
+            isReady={session.user !== undefined}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>
@@ -48,7 +49,7 @@ function Units() {
                     <UnitsTable items={items} />
                 </CardBody>
             </Card>
-        </ProtectedContent>
+        </ProtectedPage>
     );
 }
 

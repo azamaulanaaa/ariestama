@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
 
-import ProtectedContent from '@/components/ProtectedContent';
+import ProtectedPage from '@/components/ProtectedPage';
 import { useSessionContext } from '@/components/SessionContext';
 import useLayout from '@/components/Layout';
 import Address from '@/components/Address';
@@ -59,9 +59,9 @@ const Dashboard = () => {
     };
 
     return (
-        <ProtectedContent
+        <ProtectedPage
             hasAccess={session.user?.permission.company_read == true}
-            isReady={session.user != undefined && !loading}
+            isReady={session.user !== undefined && !loading}
             redirectUrl={Config.Url.SignIn}
         >
             <Card>
@@ -93,7 +93,7 @@ const Dashboard = () => {
                     <Address {...companyData} />
                 </CardBody>
             </Card>
-        </ProtectedContent>
+        </ProtectedPage>
     );
 };
 

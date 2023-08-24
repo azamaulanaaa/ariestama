@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import useLayout from '@/components/Layout';
-import ProtectedContent from '@/components/ProtectedContent';
+import ProtectedPage from '@/components/ProtectedPage';
 import { useSessionContext } from '@/components/SessionContext';
 import CompaniesTable, { CompaniesItemData } from '@/components/CompaniesTable';
 import type { Company } from '@/libs/Database';
@@ -36,9 +36,9 @@ function Companies() {
     };
 
     return (
-        <ProtectedContent
+        <ProtectedPage
             hasAccess={session.user?.permission.company_read == true}
-            isReady={session.user != undefined && router.isReady}
+            isReady={session.user !== undefined && router.isReady}
             redirectUrl={Config.Url.Dashboard}
         >
             <Card>
@@ -60,7 +60,7 @@ function Companies() {
                     <CompaniesTable items={items} onClick={handleClick} />
                 </CardBody>
             </Card>
-        </ProtectedContent>
+        </ProtectedPage>
     );
 }
 
