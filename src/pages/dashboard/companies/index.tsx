@@ -7,8 +7,8 @@ import useLayout from '@/components/Layout';
 import ProtectedPage from '@/components/ProtectedPage';
 import { useSessionContext } from '@/components/SessionContext';
 import CompaniesTable, { CompaniesItemData } from '@/components/CompaniesTable';
-import type { Company } from '@/libs/Database';
 import Config from '@/config';
+import { TableData } from '@/components/Table';
 
 function Companies() {
     const session = useSessionContext();
@@ -27,11 +27,11 @@ function Companies() {
             });
     }, [session]);
 
-    const handleClick = (data: Company) => {
+    const handleClick = (data: TableData<keyof CompaniesItemData>) => {
         if (!router.isReady) return;
         router.push({
             pathname: '/dashboard/companies/view',
-            query: { id: data.id },
+            query: { id: data.id?.toString() },
         });
     };
 

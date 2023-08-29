@@ -11,7 +11,7 @@ import Config from '@/config';
 import CardHeader from '@/components/CardHeader';
 import { HiPencil } from 'react-icons/hi2';
 
-const Dashboard = () => {
+const ViewCompanies = () => {
     const session = useSessionContext();
     useLayout().dashboard();
     const router = useRouter();
@@ -97,4 +97,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default ViewCompanies;
