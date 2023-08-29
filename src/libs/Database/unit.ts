@@ -50,7 +50,7 @@ class UnitDB {
         return result;
     }
 
-    async getById(id: string, offset: number = 0, limit: number = 100) {
+    async getsById(id: string, offset: number = 0, limit: number = 100) {
         const db_result = await this.supabaseClient
             .from('unit')
             .select('*')
