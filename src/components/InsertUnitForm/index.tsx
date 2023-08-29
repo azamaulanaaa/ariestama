@@ -1,5 +1,5 @@
 import { Button, Input } from '@material-tailwind/react';
-import { FormEvent, ChangeEvent, useState } from 'react';
+import { FormEvent } from 'react';
 
 export type InsertUnitData = {
     serial_number: string;
