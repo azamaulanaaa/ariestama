@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -46,6 +46,14 @@ export interface Database {
           user_id?: string
           zip_code?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "company_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       company_snapshot: {
         Row: {
@@ -69,6 +77,20 @@ export interface Database {
           id?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "company_snapshot_company_id_fkey"
+            columns: ["company_id"]
+            referencedRelation: "company"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_snapshot_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       configuration: {
         Row: {
@@ -83,6 +105,7 @@ export interface Database {
           key?: string
           value?: Json
         }
+        Relationships: []
       }
       unit: {
         Row: {
@@ -93,6 +116,7 @@ export interface Database {
           made_in: string
           oem: string
           serial_number: string
+          series: string
           user_id: string
           yom: number
         }
@@ -104,6 +128,7 @@ export interface Database {
           made_in: string
           oem: string
           serial_number: string
+          series: string
           user_id: string
           yom: number
         }
@@ -115,9 +140,18 @@ export interface Database {
           made_in?: string
           oem?: string
           serial_number?: string
+          series?: string
           user_id?: string
           yom?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "unit_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       unit_snapshot: {
         Row: {
@@ -141,6 +175,20 @@ export interface Database {
           unit_id?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "unit_snapshot_unit_id_fkey"
+            columns: ["unit_id"]
+            referencedRelation: "unit"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "unit_snapshot_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       user: {
         Row: {
@@ -158,6 +206,14 @@ export interface Database {
           name?: string
           permission?: Json | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "user_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
