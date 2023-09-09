@@ -1,15 +1,15 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export type CardHeaderProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 const CardHeader = (props: CardHeaderProps) => {
-    return (
-        <div data-testid="card-header" className="p-6">
-            {props.children}
-        </div>
-    );
+  return (
+    <div data-testid="card-header" className="p-6 pb-0">
+      {props.children}
+    </div>
+  );
 };
 
 export default CardHeader;
