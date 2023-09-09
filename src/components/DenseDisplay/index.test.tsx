@@ -8,7 +8,7 @@ describe("DenseDisplay Component", () => {
   });
 
   it("render all fields for row variant", () => {
-    const testdata: DenseDisplayProps<string> = {
+    const testdata: DenseDisplayProps = {
       variant: "row",
       keys: {
         key1: "key1",
@@ -34,7 +34,7 @@ describe("DenseDisplay Component", () => {
   });
 
   it("render all fields for column variant", () => {
-    const testdata: DenseDisplayProps<string> = {
+    const testdata: DenseDisplayProps = {
       variant: "column",
       keys: {
         key1: "key1",

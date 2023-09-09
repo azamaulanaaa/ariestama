@@ -1,24 +1,20 @@
 import { ReactNode } from "react";
 
-export type DenseDisplayData<K extends string> = {
-  [key in K]: ReactNode;
-};
-
 export type DenseDisplayVariant = "row" | "column";
 
-export type DenseDisplayProps<K extends string> = {
+export type DenseDisplayProps<K = Record<any, ReactNode>> = {
   variant?: DenseDisplayVariant;
-  keys: DenseDisplayData<K>;
-  values: DenseDisplayData<K>;
+  keys: K;
+  values: K;
 };
 
-const DenseDisplay = (props: DenseDisplayProps<string>) => {
+const DenseDisplay = (props: DenseDisplayProps) => {
   switch (props.variant) {
     case "column":
       return (
         <table className="w-full">
           <tbody className="flex flex-wrap">
-            {Object.entries(props.keys).map(([key, value]) => (
+            {Object.keys(props.keys).map((key) => (
               <tr
                 key={key}
                 className="flex grow-0 shrink flex-col lg:basis-1/3 md:basis-1/2 sm:basis-full border-b-[1px]"
@@ -27,7 +23,7 @@ const DenseDisplay = (props: DenseDisplayProps<string>) => {
                   data-testid={"key_" + key}
                   className="w-full text-left font-normal text-gray-500"
                 >
-                  {value}
+                  {props.keys[key]}
                 </th>
                 <td
                   data-testid={"value_" + key}
@@ -45,7 +41,7 @@ const DenseDisplay = (props: DenseDisplayProps<string>) => {
       return (
         <table className="w-full">
           <tbody className="flex flex-wrap">
-            {Object.entries(props.keys).map(([key, value]) => (
+            {Object.keys(props.keys).map((key) => (
               <tr
                 key={key}
                 className="flex grow-0 lg:basis-1/2 sm:basis-full border-b-[1px]"
@@ -54,7 +50,7 @@ const DenseDisplay = (props: DenseDisplayProps<string>) => {
                   data-testid={"key_" + key}
                   className="lg:w-[200px] md:w-[200px] sm:w-[100px] text-left font-normal text-gray-500"
                 >
-                  {value}
+                  {props.keys[key]}
                 </th>
                 <td
                   data-testid={"value_" + key}
