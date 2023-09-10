@@ -5,7 +5,7 @@ import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import useLayout from "@/components/Layout";
-import Address from "@/components/Address";
+import DenseDisplay from "@/components/DenseDisplay";
 import type { Company } from "@/libs/Database";
 import Config from "@/config";
 import CardHeader from "@/components/CardHeader";
@@ -93,7 +93,17 @@ const ViewCompanies = () => {
           </div>
         </CardHeader>
         <CardBody>
-          <Address {...companyData} />
+          <DenseDisplay
+            variant="column"
+            keys={{
+              address: "Address",
+              sub_district: "Sub District",
+              city: "City",
+              province: "Province",
+              zip_code: "Zip Code",
+            }}
+            values={companyData}
+          />
         </CardBody>
       </Card>
     </ProtectedPage>
