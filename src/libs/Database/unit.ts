@@ -130,6 +130,44 @@ class UnitDB {
     };
     return result;
   }
-}
 
+  async update(
+    id: string,
+    update_data: {
+      serial_number?: string;
+      series?: string;
+      brand?: string;
+      oem?: string;
+      yom?: number;
+      made_in?: string;
+      user_id?: string;
+    }
+  ) {
+    const db_result = await this.supabaseClient
+      .from("unit")
+      .update(update_data)
+      .eq("id", id);
+    let error: Error | null = null;
+    if (db_result.error) {
+      error = {
+        code: db_result.error.code,
+        text: db_result.error.message,
+      };
+    }
+
+    let data: Unit[] = [];
+
+    let count: number = 0;
+    if (db_result.count) {
+      count = db_result.count;
+    }
+
+    let result: Result<Unit> = {
+      error: error,
+      data: data,
+      count: count,
+    };
+    return result;
+  }
+}
 export default UnitDB;
