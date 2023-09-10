@@ -134,4 +134,34 @@ describe("InsertUnitForm Component", () => {
     await user.type(input_made_in, "made in");
     expect(input_made_in).toBeValid();
   });
+
+  it("have option to set default value", () => {
+    const testdata = {
+      defaultValue: {
+        serial_number: "serial_number",
+        series: "series",
+        brand: "brand",
+        oem: "oem",
+        yom: 0,
+        made_in: "made_in",
+      },
+    };
+
+    render(<InsertUnitForm defaultValues={testdata.defaultValue} />);
+    const serial_number_input = screen.getByLabelText(/serial number/i);
+    const series_input = screen.getByLabelText(/series/i);
+    const brand_input = screen.getByLabelText(/brand/i);
+    const oem_input = screen.getByLabelText(/original equipment manufacture/i);
+    const yom_input = screen.getByLabelText(/year of manufacture/i);
+    const made_in_input = screen.getByLabelText(/made in/i);
+
+    expect(serial_number_input).toHaveValue(
+      testdata.defaultValue.serial_number
+    );
+    expect(series_input).toHaveValue(testdata.defaultValue.series);
+    expect(brand_input).toHaveValue(testdata.defaultValue.brand);
+    expect(oem_input).toHaveValue(testdata.defaultValue.oem);
+    expect(yom_input).toHaveValue(testdata.defaultValue.yom);
+    expect(made_in_input).toHaveValue(testdata.defaultValue.made_in);
+  });
 });

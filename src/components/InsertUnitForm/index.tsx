@@ -12,6 +12,7 @@ export type InsertUnitData = {
 
 export type InsertUnitFormProps = {
   onSubmit?: (data: InsertUnitData) => void;
+  defaultValues?: InsertUnitData;
 };
 
 const InsertUnitForm = (props: InsertUnitFormProps) => {
@@ -59,6 +60,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Serial Number"
           labelProps={{ htmlFor: "serial_number" }}
           required
+          defaultValue={props.defaultValues?.serial_number}
         />
         <Input
           id="series"
@@ -67,6 +69,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Series"
           labelProps={{ htmlFor: "series" }}
           required
+          defaultValue={props.defaultValues?.series}
         />
         <Input
           id="brand"
@@ -75,6 +78,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Brand"
           labelProps={{ htmlFor: "brand" }}
           required
+          defaultValue={props.defaultValues?.brand}
         />
         <Input
           id="oem"
@@ -83,6 +87,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Original Equipment Manufacture"
           labelProps={{ htmlFor: "oem" }}
           required
+          defaultValue={props.defaultValues?.oem}
         />
         <Input
           id="yom"
@@ -91,6 +96,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Year of Manufacture"
           labelProps={{ htmlFor: "yom" }}
           required
+          defaultValue={props.defaultValues?.yom}
         />
         <Input
           id="made_in"
@@ -99,6 +105,7 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
           label="Made In"
           labelProps={{ htmlFor: "made_in" }}
           required
+          defaultValue={props.defaultValues?.made_in}
         />
         <Button type="submit" variant="gradient" className="col-span-2">
           Submit
