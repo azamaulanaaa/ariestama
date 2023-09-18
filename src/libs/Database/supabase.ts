@@ -92,21 +92,6 @@ export interface Database {
           }
         ]
       }
-      configuration: {
-        Row: {
-          key: string
-          value: Json
-        }
-        Insert: {
-          key: string
-          value: Json
-        }
-        Update: {
-          key?: string
-          value?: Json
-        }
-        Relationships: []
-      }
       unit: {
         Row: {
           brand: string
@@ -123,7 +108,7 @@ export interface Database {
         Insert: {
           brand: string
           created_at?: string
-          extra: Json
+          extra?: Json
           id?: string
           made_in: string
           oem: string
@@ -192,19 +177,22 @@ export interface Database {
       }
       user: {
         Row: {
+          created_at: string
           id: string
           name: string
-          permission: Json | null
+          permission: Json
         }
         Insert: {
+          created_at?: string
           id: string
           name: string
-          permission?: Json | null
+          permission?: Json
         }
         Update: {
+          created_at?: string
           id?: string
           name?: string
-          permission?: Json | null
+          permission?: Json
         }
         Relationships: [
           {
@@ -230,3 +218,4 @@ export interface Database {
     }
   }
 }
+
