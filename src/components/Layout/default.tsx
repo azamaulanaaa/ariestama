@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export type DefaultLayoutProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 const DefaultLayout = (props: DefaultLayoutProps) => {
-    return <>{props.children}</>;
+  return <>{props.children}</>;
 };
 
 export default DefaultLayout;

@@ -25,8 +25,12 @@ jest.mock("material-ripple-effects", () => ({
   }),
 }));
 
+const useAlertsSystem = {
+  dispatch: jest.fn(),
+};
+
 const layoutDashboard = {
-  useAlertsSystem: jest.fn(),
+  useAlertsSystem: () => useAlertsSystem,
 };
 jest.mock("@/components/Layout", () => ({
   __esModule: true,
@@ -57,8 +61,8 @@ describe("Dashboard Insert Unit Page", () => {
     render(<InsertUnitPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(1);
-      expect(routerPush).toBeCalledWith(Config.Url.Dashboard);
+      expect(routerPush).toHaveBeenCalledTimes(1);
+      expect(routerPush).toHaveBeenCalledWith(Config.Url.Dashboard);
     });
   });
 
@@ -76,7 +80,7 @@ describe("Dashboard Insert Unit Page", () => {
     render(<InsertUnitPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(0);
+      expect(routerPush).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -95,7 +99,7 @@ describe("Dashboard Insert Unit Page", () => {
     const input_series = screen.queryByLabelText(/series/i);
     const input_brand = screen.queryByLabelText(/brand/i);
     const input_oem = screen.queryByLabelText(
-      /original equipment manufacture/i
+      /original equipment manufacture/i,
     );
     const input_yom = screen.queryByLabelText(/year of manufacture/i);
     const input_made_in = screen.queryByLabelText(/made in/i);
@@ -158,8 +162,8 @@ describe("Dashboard Insert Unit Page", () => {
     await user.type(input_made_in, testdata.data.made_in);
     await user.click(button);
 
-    expect(insertUnit).toBeCalledTimes(1);
-    expect(insertUnit).toBeCalledWith({
+    expect(insertUnit).toHaveBeenCalledTimes(1);
+    expect(insertUnit).toHaveBeenCalledWith({
       serial_number: testdata.data.serial_number,
       series: testdata.data.series,
       brand: testdata.data.brand,
@@ -185,7 +189,7 @@ describe("Dashboard Insert Unit Page", () => {
 
     const user = userEvent.setup();
 
-    layoutDashboard.useAlertsSystem.mockImplementationOnce((action) => {
+    useAlertsSystem.dispatch.mockImplementationOnce((action) => {
       expect(action.kind).toEqual("add");
       expect(action.type).toEqual("success");
     });
@@ -221,8 +225,8 @@ describe("Dashboard Insert Unit Page", () => {
     await user.type(input_made_in, testdata.data.made_in);
     await user.click(button);
 
-    expect(layoutDashboard.useAlertsSystem).toBeCalledTimes(1);
-    expect(routerPush).toBeCalledTimes(1);
+    expect(useAlertsSystem.dispatch).toHaveBeenCalledTimes(1);
+    expect(routerPush).toHaveBeenCalledTimes(1);
   });
 
   it("it call error alert for error insert", async () => {
@@ -239,7 +243,7 @@ describe("Dashboard Insert Unit Page", () => {
 
     const user = userEvent.setup();
 
-    layoutDashboard.useAlertsSystem.mockImplementationOnce((action) => {
+    useAlertsSystem.dispatch.mockImplementationOnce((action) => {
       expect(action.kind).toEqual("add");
       expect(action.type).toEqual("error");
     });
@@ -275,7 +279,7 @@ describe("Dashboard Insert Unit Page", () => {
     await user.type(input_made_in, testdata.data.made_in);
     await user.click(button);
 
-    expect(layoutDashboard.useAlertsSystem).toBeCalledTimes(1);
-    expect(routerPush).toBeCalledTimes(0);
+    expect(useAlertsSystem.dispatch).toHaveBeenCalledTimes(1);
+    expect(routerPush).toHaveBeenCalledTimes(0);
   });
 });

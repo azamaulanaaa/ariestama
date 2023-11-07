@@ -10,7 +10,7 @@ import InsertUnitForm, { InsertUnitData } from "@/components/InsertUnitForm";
 
 const InsertCompany = () => {
   const session = useSessionContext();
-  const { useAlertsSystem } = useLayout().dashboard();
+  const alertSystem = useLayout().dashboard().useAlertsSystem();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const InsertCompany = () => {
   const handleSubmit = async (data: InsertUnitData) => {
     setLoading(true);
     if (!session.user) {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "error",
@@ -34,7 +34,7 @@ const InsertCompany = () => {
       ...data,
     });
     if (result.error == null) {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "success",
@@ -42,7 +42,7 @@ const InsertCompany = () => {
       });
       router.push(Config.Url.Dashboard + "/units");
     } else {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "error",

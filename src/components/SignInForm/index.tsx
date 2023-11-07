@@ -1,70 +1,70 @@
-import { FormEvent } from 'react';
-import { Button, Input } from '@material-tailwind/react';
+import { FormEvent } from "react";
+import { Button, Input } from "@material-tailwind/react";
 
-import Alert, { AlertProps } from '@/components/Alert';
+import Alert, { AlertProps } from "@/components/Alert";
 
 interface SignInFormProps {
-    onSubmit?: (data: SignInFormData) => void;
-    alertProps?: AlertProps;
+  onSubmit?: (data: SignInFormData) => void;
+  alertProps?: AlertProps;
 }
 
 export interface SignInFormData {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 const SignInForm = (props: SignInFormProps) => {
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!props.onSubmit) return;
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!props.onSubmit) return;
 
-        const form = event.currentTarget;
-        const form_data = new FormData(form);
+    const form = event.currentTarget;
+    const form_data = new FormData(form);
 
-        const email_form = form_data.get('email');
-        const password_form = form_data.get('password');
+    const email_form = form_data.get("email");
+    const password_form = form_data.get("password");
 
-        if (!email_form || !password_form) return;
+    if (!email_form || !password_form) return;
 
-        props.onSubmit({
-            email: email_form.toString(),
-            password: password_form.toString(),
-        });
-    };
+    props.onSubmit({
+      email: email_form.toString(),
+      password: password_form.toString(),
+    });
+  };
 
-    const FormAlert = () => {
-        if (!props.alertProps) return null;
-        return <Alert {...props.alertProps} />;
-    };
+  const FormAlert = () => {
+    if (!props.alertProps) return null;
+    return <Alert {...props.alertProps} />;
+  };
 
-    return (
-        <form role="form" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-6">
-                <FormAlert />
-                <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email"
-                    labelProps={{ htmlFor: 'email' }}
-                    required
-                    size="lg"
-                />
-                <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password"
-                    labelProps={{ htmlFor: 'password' }}
-                    required
-                    size="lg"
-                />
-            </div>
-            <Button type="submit" variant="gradient" fullWidth className="mt-8">
-                Submit
-            </Button>
-        </form>
-    );
+  return (
+    <form role="form" onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-6">
+        <FormAlert />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          label="Email"
+          labelProps={{ htmlFor: "email" }}
+          required
+          size="lg"
+        />
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          labelProps={{ htmlFor: "password" }}
+          required
+          size="lg"
+        />
+      </div>
+      <Button type="submit" variant="gradient" fullWidth className="mt-8">
+        Submit
+      </Button>
+    </form>
+  );
 };
 
 export default SignInForm;

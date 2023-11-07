@@ -1,94 +1,88 @@
-import { AuthError } from '@supabase/supabase-js';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import {
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Typography,
-} from '@material-tailwind/react';
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Typography,
+} from "@material-tailwind/react";
 
-import useLayout from '@/components/Layout';
-import SignInForm, { SignInFormData } from '@/components/SignInForm';
-import { useSessionContext } from '@/components/SessionContext';
-import Loading from '@/components/Loading';
-import Config from '@/config';
-import { Error } from '@/libs/Database';
+import useLayout from "@/components/Layout";
+import SignInForm, { SignInFormData } from "@/components/SignInForm";
+import { useSessionContext } from "@/components/SessionContext";
+import Loading from "@/components/Loading";
+import Config from "@/config";
+import { Error } from "@/libs/Database";
 
 function SignIn() {
-    const router = useRouter();
-    const session = useSessionContext();
-    useLayout().default();
+  const router = useRouter();
+  const session = useSessionContext();
+  useLayout().default();
 
-    const [error, setError] = useState<Error | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    if (session.user && router.isReady) router.push(Config.Url.Dashboard);
+  if (session.user && router.isReady) router.push(Config.Url.Dashboard);
 
-    const handleSubmit = async (data: SignInFormData) => {
-        setError(null);
-        setLoading(true);
+  const handleSubmit = async (data: SignInFormData) => {
+    setError(null);
+    setLoading(true);
 
-        const error = await session.database.auth.SignIn({
-            email: data.email,
-            password: data.password,
-        });
+    const error = await session.database.auth.SignIn({
+      email: data.email,
+      password: data.password,
+    });
 
-        if (error) {
-            setError(error);
-            setLoading(false);
-        } else {
-            router.push(Config.Url.Dashboard);
-        }
-    };
+    if (error) {
+      setError(error);
+      setLoading(false);
+    } else {
+      router.push(Config.Url.Dashboard);
+    }
+  };
 
-    return (
-        <div className="grid h-screen place-items-center">
-            <Loading isLoading={loading}>
-                <Card className="w-[350px]">
-                    <CardHeader
-                        variant="gradient"
-                        color="blue"
-                        className="grid place-items-center h-28"
-                    >
-                        <Typography variant="h3" color="white">
-                            Sign In
-                        </Typography>
-                    </CardHeader>
-                    <CardBody>
-                        <SignInForm
-                            onSubmit={handleSubmit}
-                            alertProps={
-                                !error
-                                    ? undefined
-                                    : { type: 'error', children: error.text }
-                            }
-                        />
-                    </CardBody>
-                    <CardFooter>
-                        <Typography
-                            variant="small"
-                            className="flex justify-center"
-                        >
-                            Don't have an account?
-                            <Link href="/signup" passHref legacyBehavior>
-                                <Typography
-                                    as="a"
-                                    variant="small"
-                                    color="blue"
-                                    className="ml-1 font-bold"
-                                >
-                                    Sign up
-                                </Typography>
-                            </Link>
-                        </Typography>
-                    </CardFooter>
-                </Card>
-            </Loading>
-        </div>
-    );
+  return (
+    <div className="grid h-screen place-items-center">
+      <Loading isLoading={loading}>
+        <Card className="w-[350px]">
+          <CardHeader
+            variant="gradient"
+            color="blue"
+            className="grid place-items-center h-28"
+          >
+            <Typography variant="h3" color="white">
+              Sign In
+            </Typography>
+          </CardHeader>
+          <CardBody>
+            <SignInForm
+              onSubmit={handleSubmit}
+              alertProps={
+                !error ? undefined : { type: "error", children: error.text }
+              }
+            />
+          </CardBody>
+          <CardFooter>
+            <Typography variant="small" className="flex justify-center">
+              Doni&lsquo;t have an account?
+              <Link href="/signup" passHref legacyBehavior>
+                <Typography
+                  as="a"
+                  variant="small"
+                  color="blue"
+                  className="ml-1 font-bold"
+                >
+                  Sign up
+                </Typography>
+              </Link>
+            </Typography>
+          </CardFooter>
+        </Card>
+      </Loading>
+    </div>
+  );
 }
 
 export default SignIn;

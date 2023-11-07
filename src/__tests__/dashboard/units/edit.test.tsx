@@ -25,9 +25,14 @@ jest.mock("material-ripple-effects", () => ({
   }),
 }));
 
-const layoutDashboard = {
-  useAlertsSystem: jest.fn(),
+const useAlertsSystem = {
+  dispatch: jest.fn(),
 };
+
+const layoutDashboard = {
+  useAlertsSystem: () => useAlertsSystem,
+};
+
 jest.mock("@/components/Layout", () => ({
   __esModule: true,
   default: () => ({
@@ -84,7 +89,7 @@ describe("Dashboard Edit Company Page", () => {
     render(<EditPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(1);
+      expect(routerPush).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -131,7 +136,7 @@ describe("Dashboard Edit Company Page", () => {
     render(<EditPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(1);
+      expect(routerPush).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -179,7 +184,7 @@ describe("Dashboard Edit Company Page", () => {
     render(<EditPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(0);
+      expect(routerPush).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -298,8 +303,8 @@ describe("Dashboard Edit Company Page", () => {
 
     await user.click(button);
 
-    expect(updateUnit).toBeCalledTimes(1);
-    expect(updateUnit).toBeCalledWith(testdata.unitData.id, {
+    expect(updateUnit).toHaveBeenCalledTimes(1);
+    expect(updateUnit).toHaveBeenCalledWith(testdata.unitData.id, {
       serial_number: testdata.unitData.serial_number,
       series: testdata.unitData.series,
       brand: testdata.newBrand,

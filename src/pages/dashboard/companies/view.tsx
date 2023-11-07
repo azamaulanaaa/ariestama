@@ -48,7 +48,7 @@ const ViewCompanies = () => {
     }
 
     setLoading(false);
-  }, [session]);
+  }, [session, router]);
 
   const handleEdit = () => {
     if (!router.isReady) return;

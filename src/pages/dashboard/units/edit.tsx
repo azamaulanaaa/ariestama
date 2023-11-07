@@ -12,7 +12,7 @@ import type { Unit } from "@/libs/Database";
 
 const EditUnit = () => {
   const session = useSessionContext();
-  const { useAlertsSystem } = useLayout().dashboard();
+  const alertSystem = useLayout().dashboard().useAlertsSystem();
   const router = useRouter();
 
   const [unitData, setUnitData] = useState<Unit | undefined>(undefined);
@@ -35,12 +35,12 @@ const EditUnit = () => {
     }
 
     setLoading(false);
-  }, [session]);
+  }, [session, router]);
 
   const handleSubmit = async (data: InsertUnitData) => {
     setLoading(true);
     if (!session.user) {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "error",
@@ -51,7 +51,7 @@ const EditUnit = () => {
     }
 
     if (!unitData) {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "error",
@@ -66,7 +66,7 @@ const EditUnit = () => {
       ...data,
     });
     if (result.error == null) {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "success",
@@ -78,7 +78,7 @@ const EditUnit = () => {
       });
       return;
     } else {
-      useAlertsSystem({
+      alertSystem.dispatch({
         kind: "add",
         id: new Date().toString(),
         type: "error",

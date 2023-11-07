@@ -17,7 +17,7 @@ const DenseDisplay = (props: DenseDisplayProps) => {
             {Object.keys(props.keys).map((key) => (
               <tr
                 key={key}
-                className="flex grow-0 shrink flex-col lg:basis-1/3 md:basis-1/2 sm:basis-full border-b-[1px]"
+                className="flex flex-initial flex-col 2xl:basis-1/3 lg:basis-1/2 sm:basis-full border-b-[1px] pr-2"
               >
                 <th
                   data-testid={"key_" + key}
@@ -27,7 +27,7 @@ const DenseDisplay = (props: DenseDisplayProps) => {
                 </th>
                 <td
                   data-testid={"value_" + key}
-                  className="flex grow shrink text-left font-normal"
+                  className="flex flex-1 text-left font-normal"
                 >
                   {props.values[key]}
                 </td>
@@ -44,17 +44,17 @@ const DenseDisplay = (props: DenseDisplayProps) => {
             {Object.keys(props.keys).map((key) => (
               <tr
                 key={key}
-                className="flex grow-0 lg:basis-1/2 sm:basis-full border-b-[1px]"
+                className="flex flex-initial xl:basis-1/2 sm:basis-full border-b-[1px] pr-2"
               >
                 <th
                   data-testid={"key_" + key}
-                  className="lg:w-[200px] md:w-[200px] sm:w-[100px] text-left font-normal text-gray-500"
+                  className="w-[120px] text-left font-normal text-gray-500"
                 >
                   {props.keys[key]}
                 </th>
                 <td
                   data-testid={"value_" + key}
-                  className="flex grow shrink text-left font-normal"
+                  className="flex flex-1 text-left font-normal"
                 >
                   {props.values[key]}
                 </td>

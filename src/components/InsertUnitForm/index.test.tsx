@@ -52,11 +52,11 @@ describe("InsertUnitForm Component", () => {
     await user.type(input_yom, String(testdata.yom));
     await user.type(input_made_in, testdata.made_in);
 
-    expect(handleSubmit).toBeCalledTimes(0);
+    expect(handleSubmit).toHaveBeenCalledTimes(0);
 
     await user.click(button);
-    expect(handleSubmit).toBeCalledTimes(1);
-    expect(handleSubmit).toBeCalledWith({
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalledWith({
       serial_number: testdata.serial_number,
       series: testdata.series,
       brand: testdata.brand,
@@ -156,7 +156,7 @@ describe("InsertUnitForm Component", () => {
     const made_in_input = screen.getByLabelText(/made in/i);
 
     expect(serial_number_input).toHaveValue(
-      testdata.defaultValue.serial_number
+      testdata.defaultValue.serial_number,
     );
     expect(series_input).toHaveValue(testdata.defaultValue.series);
     expect(brand_input).toHaveValue(testdata.defaultValue.brand);
