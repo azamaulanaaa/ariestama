@@ -28,7 +28,7 @@ const useLayout = () => {
       return Default.config();
     },
     dashboard() {
-      setLayout(Default.default);
+      setLayout(Dashboard.default);
       return Dashboard.config();
     },
   };
