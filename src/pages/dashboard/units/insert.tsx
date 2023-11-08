@@ -1,6 +1,7 @@
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 
-import useLayout from "@/components/Layout";
+import DashboardLayout from "@/components/Layout/dashboard";
+import { useAlertsSystem } from "@/components/AlertsSystem";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import Config from "@/config";
@@ -10,7 +11,7 @@ import InsertUnitForm, { InsertUnitData } from "@/components/InsertUnitForm";
 
 const InsertCompany = () => {
   const session = useSessionContext();
-  const alertSystem = useLayout().dashboard().useAlertsSystem();
+  const alertSystem = useAlertsSystem();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,22 +54,24 @@ const InsertCompany = () => {
   };
 
   return (
-    <ProtectedPage
-      hasAccess={session.user?.permission.unit_insert == true}
-      isReady={session.user !== undefined && !loading}
-      redirectUrl={Config.Url.Dashboard}
-    >
-      <Card>
-        <CardBody className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <Typography variant="h3" as="h1" color="blue-gray">
-              Insert Unit
-            </Typography>
-          </div>
-          <InsertUnitForm onSubmit={handleSubmit} />
-        </CardBody>
-      </Card>
-    </ProtectedPage>
+    <DashboardLayout>
+      <ProtectedPage
+        hasAccess={session.user?.permission.unit_insert == true}
+        isReady={session.user !== undefined && !loading}
+        redirectUrl={Config.Url.Dashboard}
+      >
+        <Card>
+          <CardBody className="flex flex-col gap-4">
+            <div className="flex justify-between">
+              <Typography variant="h3" as="h1" color="blue-gray">
+                Insert Unit
+              </Typography>
+            </div>
+            <InsertUnitForm onSubmit={handleSubmit} />
+          </CardBody>
+        </Card>
+      </ProtectedPage>
+    </DashboardLayout>
   );
 };
 

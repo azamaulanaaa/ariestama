@@ -26,14 +26,6 @@ jest.mock("material-ripple-effects", () => ({
   }),
 }));
 
-const layoutDefault = {};
-jest.mock("@/components/Layout", () => ({
-  __esModule: true,
-  default: () => ({
-    default: () => layoutDefault,
-  }),
-}));
-
 describe("SignIn Page", () => {
   afterEach(() => {
     cleanup();

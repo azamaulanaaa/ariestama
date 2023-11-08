@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import useLayout from "@/components/Layout";
+import DefaultLayout from "@/components/Layout/default";
 import SignInForm, { SignInFormData } from "@/components/SignInForm";
 import { useSessionContext } from "@/components/SessionContext";
 import Loading from "@/components/Loading";
@@ -19,7 +19,6 @@ import { Error } from "@/libs/Database";
 function SignIn() {
   const router = useRouter();
   const session = useSessionContext();
-  useLayout().default();
 
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,44 +43,46 @@ function SignIn() {
   };
 
   return (
-    <div className="grid h-screen place-items-center">
-      <Loading isLoading={loading}>
-        <Card className="w-[350px]">
-          <CardHeader
-            variant="gradient"
-            color="blue"
-            className="grid place-items-center h-28"
-          >
-            <Typography variant="h3" color="white">
-              Sign In
-            </Typography>
-          </CardHeader>
-          <CardBody>
-            <SignInForm
-              onSubmit={handleSubmit}
-              alertProps={
-                !error ? undefined : { type: "error", children: error.text }
-              }
-            />
-          </CardBody>
-          <CardFooter>
-            <Typography variant="small" className="flex justify-center">
-              Doni&lsquo;t have an account?
-              <Link href="/signup" passHref legacyBehavior>
-                <Typography
-                  as="a"
-                  variant="small"
-                  color="blue"
-                  className="ml-1 font-bold"
-                >
-                  Sign up
-                </Typography>
-              </Link>
-            </Typography>
-          </CardFooter>
-        </Card>
-      </Loading>
-    </div>
+    <DefaultLayout>
+      <div className="grid h-screen place-items-center">
+        <Loading isLoading={loading}>
+          <Card className="w-[350px]">
+            <CardHeader
+              variant="gradient"
+              color="blue"
+              className="grid place-items-center h-28"
+            >
+              <Typography variant="h3" color="white">
+                Sign In
+              </Typography>
+            </CardHeader>
+            <CardBody>
+              <SignInForm
+                onSubmit={handleSubmit}
+                alertProps={
+                  !error ? undefined : { type: "error", children: error.text }
+                }
+              />
+            </CardBody>
+            <CardFooter>
+              <Typography variant="small" className="flex justify-center">
+                Doni&lsquo;t have an account?
+                <Link href="/signup" passHref legacyBehavior>
+                  <Typography
+                    as="a"
+                    variant="small"
+                    color="blue"
+                    className="ml-1 font-bold"
+                  >
+                    Sign up
+                  </Typography>
+                </Link>
+              </Typography>
+            </CardFooter>
+          </Card>
+        </Loading>
+      </div>
+    </DefaultLayout>
   );
 }
 

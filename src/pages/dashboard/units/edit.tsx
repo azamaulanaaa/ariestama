@@ -2,7 +2,8 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import useLayout from "@/components/Layout";
+import DashboardLayout from "@/components/Layout/dashboard";
+import { useAlertsSystem } from "@/components/AlertsSystem";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import Config from "@/config";
@@ -12,7 +13,7 @@ import type { Unit } from "@/libs/Database";
 
 const EditUnit = () => {
   const session = useSessionContext();
-  const alertSystem = useLayout().dashboard().useAlertsSystem();
+  const alertSystem = useAlertsSystem();
   const router = useRouter();
 
   const [unitData, setUnitData] = useState<Unit | undefined>(undefined);
@@ -90,25 +91,27 @@ const EditUnit = () => {
   };
 
   return (
-    <ProtectedPage
-      hasAccess={
-        session.user?.permission.unit_read == true &&
-        session.user?.permission.unit_update == true
-      }
-      isReady={session.user !== undefined && !loading && router.isReady}
-      redirectUrl={Config.Url.Dashboard}
-    >
-      <Card>
-        <CardHeader>
-          <Typography variant="h3" color="blue-gray">
-            Edit Unit
-          </Typography>
-        </CardHeader>
-        <CardBody>
-          <InsertUnitForm onSubmit={handleSubmit} defaultValues={unitData} />
-        </CardBody>
-      </Card>
-    </ProtectedPage>
+    <DashboardLayout>
+      <ProtectedPage
+        hasAccess={
+          session.user?.permission.unit_read == true &&
+          session.user?.permission.unit_update == true
+        }
+        isReady={session.user !== undefined && !loading && router.isReady}
+        redirectUrl={Config.Url.Dashboard}
+      >
+        <Card>
+          <CardHeader>
+            <Typography variant="h3" color="blue-gray">
+              Edit Unit
+            </Typography>
+          </CardHeader>
+          <CardBody>
+            <InsertUnitForm onSubmit={handleSubmit} defaultValues={unitData} />
+          </CardBody>
+        </Card>
+      </ProtectedPage>
+    </DashboardLayout>
   );
 };
 

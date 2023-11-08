@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import useLayout from "@/components/Layout";
+import DashboardLayout from "@/components/Layout/dashboard";
 import ProtectedPage from "@/components/ProtectedPage";
-
 import { useSessionContext } from "@/components/SessionContext";
 import UnitsTable, { UnitsItemData } from "@/components/UnitsTable";
 import Config from "@/config";
@@ -13,7 +12,6 @@ import { TableData } from "@/components/Table";
 
 function Units() {
   const session = useSessionContext();
-  useLayout().dashboard();
 
   const router = useRouter();
 
@@ -37,27 +35,29 @@ function Units() {
   };
 
   return (
-    <ProtectedPage
-      hasAccess={session.user?.permission.unit_read == true}
-      isReady={session.user !== undefined}
-      redirectUrl={Config.Url.Dashboard}
-    >
-      <Card>
-        <CardBody className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <Typography variant="h3" as="h1" color="blue-gray">
-              Units
-            </Typography>
-            <Link href="/dashboard/units/insert" passHref legacyBehavior>
-              <Button size="md" variant="gradient">
-                Insert
-              </Button>
-            </Link>
-          </div>
-          <UnitsTable items={items} onClick={handleClick} />
-        </CardBody>
-      </Card>
-    </ProtectedPage>
+    <DashboardLayout>
+      <ProtectedPage
+        hasAccess={session.user?.permission.unit_read == true}
+        isReady={session.user !== undefined}
+        redirectUrl={Config.Url.Dashboard}
+      >
+        <Card>
+          <CardBody className="flex flex-col gap-4">
+            <div className="flex justify-between">
+              <Typography variant="h3" as="h1" color="blue-gray">
+                Units
+              </Typography>
+              <Link href="/dashboard/units/insert" passHref legacyBehavior>
+                <Button size="md" variant="gradient">
+                  Insert
+                </Button>
+              </Link>
+            </div>
+            <UnitsTable items={items} onClick={handleClick} />
+          </CardBody>
+        </Card>
+      </ProtectedPage>
+    </DashboardLayout>
   );
 }
 

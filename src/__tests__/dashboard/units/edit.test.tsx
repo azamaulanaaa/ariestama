@@ -18,25 +18,24 @@ jest.mock("@/components/SessionContext", () => ({
   },
 }));
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 const useAlertsSystem = {
   dispatch: jest.fn(),
 };
 
-const layoutDashboard = {
+jest.mock("@/components/AlertsSystem", () => ({
+  __esModule: true,
   useAlertsSystem: () => useAlertsSystem,
-};
+}));
 
-jest.mock("@/components/Layout", () => ({
+jest.mock("@/components/Layout/dashboard", () => ({
+  __esModule: true,
+  default: (props: { children: any }) => <>{props.children}</>,
+}));
+
+jest.mock("material-ripple-effects", () => ({
   __esModule: true,
   default: () => ({
-    dashboard: () => layoutDashboard,
+    create() {},
   }),
 }));
 

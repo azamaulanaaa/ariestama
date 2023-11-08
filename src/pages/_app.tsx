@@ -4,7 +4,7 @@ import { SessionContextProvider } from "@/components/SessionContext";
 
 import "../global.css";
 import Database from "@/libs/Database";
-import { LayoutProvider } from "@/components/Layout";
+import { AlertsSystemProvider } from "@/components/AlertsSystem";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const supabaseClient = createPagesBrowserClient();
@@ -12,9 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <SessionContextProvider database={database}>
-      <LayoutProvider>
+      <AlertsSystemProvider>
         <Component {...pageProps} />
-      </LayoutProvider>
+      </AlertsSystemProvider>
     </SessionContextProvider>
   );
 }

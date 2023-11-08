@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 
+import DashboardLayout from "@/components/Layout/dashboard";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
-import useLayout from "@/components/Layout";
 import type { Unit } from "@/libs/Database";
 import Config from "@/config";
 import CardHeader from "@/components/CardHeader";
@@ -13,7 +13,6 @@ import DenseDisplay from "@/components/DenseDisplay";
 
 const ViewUnits = () => {
   const session = useSessionContext();
-  useLayout().dashboard();
   const router = useRouter();
 
   const defaultUnitData: Unit = {
@@ -59,41 +58,43 @@ const ViewUnits = () => {
   };
 
   return (
-    <ProtectedPage
-      hasAccess={session.user?.permission.unit_read == true}
-      isReady={session.user !== undefined && !loading}
-      redirectUrl={Config.Url.SignIn}
-    >
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between">
-            <div>
-              <Typography data-testid="serial-number" variant="h3">
-                {unitData.serial_number}
-              </Typography>
+    <DashboardLayout>
+      <ProtectedPage
+        hasAccess={session.user?.permission.unit_read == true}
+        isReady={session.user !== undefined && !loading}
+        redirectUrl={Config.Url.SignIn}
+      >
+        <Card>
+          <CardHeader>
+            <div className="flex justify-between">
+              <div>
+                <Typography data-testid="serial-number" variant="h3">
+                  {unitData.serial_number}
+                </Typography>
+              </div>
+              <div>
+                <Button variant="text" size="sm" onClick={handleEdit}>
+                  <HiPencil className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
-            <div>
-              <Button variant="text" size="sm" onClick={handleEdit}>
-                <HiPencil className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardBody>
-          <DenseDisplay
-            variant="column"
-            keys={{
-              series: "Series",
-              brand: "Brand",
-              oem: "Original Equipment Manufacture",
-              yom: "Year of Manufacture",
-              made_in: "Made In",
-            }}
-            values={unitData as any}
-          />
-        </CardBody>
-      </Card>
-    </ProtectedPage>
+          </CardHeader>
+          <CardBody>
+            <DenseDisplay
+              variant="column"
+              keys={{
+                series: "Series",
+                brand: "Brand",
+                oem: "Original Equipment Manufacture",
+                yom: "Year of Manufacture",
+                made_in: "Made In",
+              }}
+              values={unitData as any}
+            />
+          </CardBody>
+        </Card>
+      </ProtectedPage>
+    </DashboardLayout>
   );
 };
 

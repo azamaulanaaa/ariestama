@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import useLayout from '@/components/Layout';
+import DashboardLayout from '@/components/Layout/dashboard';
 import ProtectedPage from '@/components/ProtectedPage';
 import { useSessionContext } from '@/components/SessionContext';
 import CompaniesTable, { CompaniesItemData } from '@/components/CompaniesTable';
@@ -12,7 +12,6 @@ import { TableData } from '@/components/Table';
 
 function Companies() {
     const session = useSessionContext();
-    useLayout().dashboard();
 
     const router = useRouter();
 
@@ -36,6 +35,7 @@ function Companies() {
     };
 
     return (
+      <DashboardLayout> 
         <ProtectedPage
             hasAccess={session.user?.permission.company_read == true}
             isReady={session.user !== undefined && router.isReady}
@@ -61,6 +61,7 @@ function Companies() {
                 </CardBody>
             </Card>
         </ProtectedPage>
+      </DashboardLayout>
     );
 }
 

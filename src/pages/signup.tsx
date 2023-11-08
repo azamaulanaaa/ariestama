@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import useLayout from "@/components/Layout";
+import DefaultLayout from "@/components/Layout/default";
 import { useSessionContext } from "@/components/SessionContext";
 import Loading from "@/components/Loading";
 import SignUpForm, { SignUpFormData } from "@/components/SignUpForm";
@@ -19,7 +19,6 @@ import Config from "@/config";
 function SignUp() {
   const router = useRouter();
   const session = useSessionContext();
-  useLayout().default();
 
   const [alertProps, setAlertProps] = useState<AlertProps | undefined>(
     undefined,
@@ -49,39 +48,41 @@ function SignUp() {
   };
 
   return (
-    <div className="grid h-screen place-items-center">
-      <Loading isLoading={loading}>
-        <Card className="w-[350px]">
-          <CardHeader
-            variant="gradient"
-            color="blue"
-            className="grid place-items-center h-28"
-          >
-            <Typography variant="h3" color="white">
-              Sign Up
-            </Typography>
-          </CardHeader>
-          <CardBody>
-            <SignUpForm onSubmit={handleSubmit} alertProps={alertProps} />
-          </CardBody>
-          <CardFooter>
-            <Typography variant="small" className="flex justify-center">
-              Already have an account?
-              <Link href="/signin" passHref legacyBehavior>
-                <Typography
-                  as="a"
-                  variant="small"
-                  color="blue"
-                  className="ml-1 font-bold"
-                >
-                  Sign in
-                </Typography>
-              </Link>
-            </Typography>
-          </CardFooter>
-        </Card>
-      </Loading>
-    </div>
+    <DefaultLayout>
+      <div className="grid h-screen place-items-center">
+        <Loading isLoading={loading}>
+          <Card className="w-[350px]">
+            <CardHeader
+              variant="gradient"
+              color="blue"
+              className="grid place-items-center h-28"
+            >
+              <Typography variant="h3" color="white">
+                Sign Up
+              </Typography>
+            </CardHeader>
+            <CardBody>
+              <SignUpForm onSubmit={handleSubmit} alertProps={alertProps} />
+            </CardBody>
+            <CardFooter>
+              <Typography variant="small" className="flex justify-center">
+                Already have an account?
+                <Link href="/signin" passHref legacyBehavior>
+                  <Typography
+                    as="a"
+                    variant="small"
+                    color="blue"
+                    className="ml-1 font-bold"
+                  >
+                    Sign in
+                  </Typography>
+                </Link>
+              </Typography>
+            </CardFooter>
+          </Card>
+        </Loading>
+      </div>
+    </DefaultLayout>
   );
 }
 

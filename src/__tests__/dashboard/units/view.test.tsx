@@ -17,14 +17,9 @@ jest.mock("@/components/SessionContext", () => ({
   },
 }));
 
-const layoutDashboard = {
-  useAlertsSystem: jest.fn(),
-};
-jest.mock("@/components/Layout", () => ({
+jest.mock("@/components/Layout/dashboard", () => ({
   __esModule: true,
-  default: () => ({
-    dashboard: () => layoutDashboard,
-  }),
+  default: (props: { children: any }) => <>{props.children}</>,
 }));
 
 describe("Dashboard View Companies Page", () => {
@@ -213,7 +208,7 @@ describe("Dashboard View Companies Page", () => {
 
     await waitFor(() => {
       expect(serial_number_tag).toHaveTextContent(
-        testdata.unitData.serial_number
+        testdata.unitData.serial_number,
       );
       expect(series_tag).toHaveTextContent(testdata.unitData.series);
       expect(brand_tag).toHaveTextContent(testdata.unitData.brand);

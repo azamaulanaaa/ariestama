@@ -17,14 +17,9 @@ jest.mock("@/components/SessionContext", () => ({
   },
 }));
 
-const layoutDashboard = {
-  useAlertsSystem: jest.fn(),
-};
-jest.mock("@/components/Layout", () => ({
+jest.mock("@/components/Layout/dashboard", () => ({
   __esModule: true,
-  default: () => ({
-    dashboard: () => layoutDashboard,
-  }),
+  default: (props: { children: any }) => <>{props.children}</>,
 }));
 
 describe("Dashboard View Companies Page", () => {
@@ -217,12 +212,12 @@ describe("Dashboard View Companies Page", () => {
       expect(branch_tag).toHaveTextContent(testdata.companyData.branch);
       expect(address_tag).toHaveTextContent(testdata.companyData.address);
       expect(sub_district_tag).toHaveTextContent(
-        testdata.companyData.sub_district
+        testdata.companyData.sub_district,
       );
       expect(city_tag).toHaveTextContent(testdata.companyData.city);
       expect(province_tag).toHaveTextContent(testdata.companyData.province);
       expect(zip_code_tag).toHaveTextContent(
-        String(testdata.companyData.zip_code)
+        String(testdata.companyData.zip_code),
       );
     });
   });

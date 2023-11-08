@@ -17,20 +17,15 @@ jest.mock("@/components/SessionContext", () => ({
   },
 }));
 
+jest.mock("@/components/Layout/dashboard", () => ({
+  __esModule: true,
+  default: (props: { children: any }) => <>{props.children}</>,
+}));
+
 jest.mock("material-ripple-effects", () => ({
   __esModule: true,
   default: () => ({
     create() {},
-  }),
-}));
-
-const layoutDashboard = {
-  useAlertsSystem: jest.fn(),
-};
-jest.mock("@/components/Layout", () => ({
-  __esModule: true,
-  default: () => ({
-    dashboard: () => layoutDashboard,
   }),
 }));
 

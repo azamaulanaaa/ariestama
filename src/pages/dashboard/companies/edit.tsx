@@ -2,7 +2,8 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import useLayout from "@/components/Layout";
+import DashboardLayout from "@/components/Layout/dashboard";
+import { useAlertsSystem } from "@/components/AlertsSystem";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import Config from "@/config";
@@ -15,7 +16,7 @@ import type { Company } from "@/libs/Database";
 const EditCompany = () => {
   const session = useSessionContext();
   const router = useRouter();
-  const alertSystem = useLayout().dashboard().useAlertsSystem();
+  const alertSystem = useAlertsSystem();
 
   const [companyData, setCompanyData] = useState<Company | undefined>(
     undefined,
@@ -94,28 +95,30 @@ const EditCompany = () => {
   };
 
   return (
-    <ProtectedPage
-      hasAccess={
-        session.user?.permission.company_read == true &&
-        session.user?.permission.company_update == true
-      }
-      isReady={session.user !== undefined && !loading && router.isReady}
-      redirectUrl={Config.Url.Dashboard}
-    >
-      <Card>
-        <CardHeader>
-          <Typography variant="h3" color="blue-gray">
-            Edit Company
-          </Typography>
-        </CardHeader>
-        <CardBody>
-          <InsertCompanyForm
-            onSubmit={handleSubmit}
-            defaultValues={companyData}
-          />
-        </CardBody>
-      </Card>
-    </ProtectedPage>
+    <DashboardLayout>
+      <ProtectedPage
+        hasAccess={
+          session.user?.permission.company_read == true &&
+          session.user?.permission.company_update == true
+        }
+        isReady={session.user !== undefined && !loading && router.isReady}
+        redirectUrl={Config.Url.Dashboard}
+      >
+        <Card>
+          <CardHeader>
+            <Typography variant="h3" color="blue-gray">
+              Edit Company
+            </Typography>
+          </CardHeader>
+          <CardBody>
+            <InsertCompanyForm
+              onSubmit={handleSubmit}
+              defaultValues={companyData}
+            />
+          </CardBody>
+        </Card>
+      </ProtectedPage>
+    </DashboardLayout>
   );
 };
 
