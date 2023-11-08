@@ -38,7 +38,7 @@ const Animation = () => {
   return (
     <svg
       role="status"
-      className="animate-spin h-8 w-8 rounded-full border-4 border-solid border-blue-500 border-r-transparent"
+      className="animate-spin h-8 w-8 rounded-full border-4 border-solid border-gray-500 border-r-transparent"
     />
   );
 };
