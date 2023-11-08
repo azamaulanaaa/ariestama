@@ -54,7 +54,7 @@ function SignUp() {
           <Card className="w-[350px]">
             <CardHeader
               variant="gradient"
-              color="blue"
+              color="gray"
               className="grid place-items-center h-28"
             >
               <Typography variant="h3" color="white">
@@ -71,7 +71,7 @@ function SignUp() {
                   <Typography
                     as="a"
                     variant="small"
-                    color="blue"
+                    color="gray"
                     className="ml-1 font-bold"
                   >
                     Sign in
