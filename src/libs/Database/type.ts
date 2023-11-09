@@ -12,14 +12,16 @@ export type Result<T> = {
 export type User = {
   id: string;
   name: string;
-  permission: {
-    company_read?: boolean;
-    company_insert?: boolean;
-    company_update?: boolean;
-    unit_read?: boolean;
-    unit_insert?: boolean;
-    unit_update?: boolean;
-  };
+  permission: UserPermission;
+};
+
+export type UserPermission = {
+  company_read?: boolean;
+  company_insert?: boolean;
+  company_update?: boolean;
+  unit_read?: boolean;
+  unit_insert?: boolean;
+  unit_update?: boolean;
 };
 
 export type Company = {
