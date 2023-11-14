@@ -1,24 +1,18 @@
 import { ReactNode } from "react";
+import DashboardMobileLayout from "./mobile";
+import DashboardDesktopLayout from "./desktop";
 
-import Header from "./header";
-import Sidebar from "./sidebar";
-
-interface DashboardLayoutProps {
+export type DashboardLayoutProps = {
   children: ReactNode;
-}
-
-const DashboardLayout = (props: DashboardLayoutProps) => {
-  return (
-    <div className="h-screen">
-      <div className="container mx-auto">
-        <Header />
-          <div className="flex flex-row gap-4">
-            <Sidebar />
-            <div className="pt-4 flex-auto">{props.children}</div>
-          </div>
-      </div>
-    </div>
-  );
+  mobile?: boolean;
 };
+
+function DashboardLayout(props: DashboardLayoutProps) {
+  if (props.mobile) {
+    return <DashboardMobileLayout>{props.children}</DashboardMobileLayout>;
+  }
+
+  return <DashboardDesktopLayout>{props.children}</DashboardDesktopLayout>;
+}
 
 export default DashboardLayout;
