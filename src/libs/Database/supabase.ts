@@ -9,6 +9,86 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      bookkeeping_account: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookkeeping_account_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      bookkeeping_transaction: {
+        Row: {
+          created_at: string
+          date: string
+          description: string
+          destination: string | null
+          id: string
+          source: string | null
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          description: string
+          destination?: string | null
+          id?: string
+          source?: string | null
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string
+          destination?: string | null
+          id?: string
+          source?: string | null
+          user_id?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookkeeping_transaction_destination_fkey"
+            columns: ["destination"]
+            referencedRelation: "bookkeeping_account"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookkeeping_transaction_source_fkey"
+            columns: ["source"]
+            referencedRelation: "bookkeeping_account"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookkeeping_transaction_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       company: {
         Row: {
           address: string

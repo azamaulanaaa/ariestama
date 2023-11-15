@@ -16,6 +16,12 @@ export type User = {
 };
 
 export type UserPermission = {
+  bookkeeping_account_read?: boolean;
+  bookkeeping_account_insert?: boolean;
+  bookkeeping_acocunt_update?: boolean;
+  bookkeeping_trans_read?: boolean;
+  bookkeeping_trans_insert?: boolean;
+  bookkeeping_trans_update?: boolean;
   company_read?: boolean;
   company_insert?: boolean;
   company_update?: boolean;
