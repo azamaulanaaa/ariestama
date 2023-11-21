@@ -1,4 +1,3 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -10,7 +9,6 @@ import Config from "@/config";
 import InsertCompanyForm, {
   InsertCompanyData,
 } from "@/components/InsertCompanyForm";
-import CardHeader from "@/components/CardHeader";
 import type { Company } from "@/libs/Database";
 
 const EditCompany = () => {
@@ -104,19 +102,15 @@ const EditCompany = () => {
         isReady={session.user !== undefined && !loading && router.isReady}
         redirectUrl={Config.Url.Dashboard}
       >
-        <Card>
-          <CardHeader>
-            <Typography variant="h3" color="blue-gray">
-              Edit Company
-            </Typography>
-          </CardHeader>
-          <CardBody>
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose max-w-none">
+            <h1>Edit Company</h1>
             <InsertCompanyForm
               onSubmit={handleSubmit}
               defaultValues={companyData}
             />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

@@ -1,47 +1,46 @@
-import { Card, List, ListItem, ListItemPrefix } from '@material-tailwind/react';
-import Link from 'next/link';
-import { HiClipboardList } from 'react-icons/hi';
-import { HiBuildingOffice, HiHome, HiPower } from 'react-icons/hi2';
+import Link from "next/link";
+import { HiClipboardList } from "react-icons/hi";
+import { HiBuildingOffice, HiHome, HiPower } from "react-icons/hi2";
 
 const Sidebar = () => {
-    return (
-        <Card className="mt-4 w-full max-w-[18rem]">
-            <List>
-                <Link href="/dashboard" passHref legacyBehavior>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <HiHome />
-                        </ListItemPrefix>
-                        Dashboard
-                    </ListItem>
-                </Link>
-                <Link href="/dashboard/companies" passHref legacyBehavior>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <HiBuildingOffice />
-                        </ListItemPrefix>
-                        Companies
-                    </ListItem>
-                </Link>
-                <Link href="/dashboard/units" passHref legacyBehavior>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <HiClipboardList />
-                        </ListItemPrefix>
-                        Units
-                    </ListItem>
-                </Link>
-                <Link href="/signout" passHref legacyBehavior>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <HiPower />
-                        </ListItemPrefix>
-                        Sign out
-                    </ListItem>
-                </Link>
-            </List>
-        </Card>
-    );
+  return (
+    <div className="w-full max-w-[12rem]">
+      <ul className="menu bg-base-200 rounded-box shadow-md">
+        <li>
+          <Link href="/dashboard" passHref legacyBehavior>
+            <a>
+              <HiHome />
+              Dashboard
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/dashboard/companies" passHref legacyBehavior>
+            <a>
+              <HiBuildingOffice />
+              Companies
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/dashboard/units" passHref legacyBehavior>
+            <a>
+              <HiClipboardList />
+              Units
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/signout" passHref legacyBehavior>
+            <a>
+              <HiPower />
+              Sign out
+            </a>
+          </Link>
+        </li>
+      </ul>
+    </div>
+  );
 };
 
 export default Sidebar;

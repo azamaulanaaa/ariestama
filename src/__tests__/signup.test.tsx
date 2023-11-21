@@ -19,13 +19,6 @@ jest.mock("@/components/SessionContext", () => ({
   },
 }));
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 describe("SignUp Page", () => {
   afterEach(() => {
     jest.resetAllMocks();

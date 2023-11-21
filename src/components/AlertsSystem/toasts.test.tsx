@@ -2,169 +2,150 @@ import { cleanup, render, screen } from "@testing-library/react";
 
 import Toasts, { ToastsProps } from "./toasts";
 
-describe("Alerts of Dashboard Layout", () => {
+describe("Toasts of Alerts System", () => {
   afterEach(() => {
     jest.useRealTimers();
     cleanup();
   });
 
-  it("render no alert", () => {
+  it("render no alert", async () => {
     const testdata = {
       data: [],
     };
 
     render(<Toasts data={testdata.data} />);
 
-    const alert = screen.queryByRole("alert");
+    const alerts = screen.queryAllByRole("alert");
 
-    expect(alert).not.toBeInTheDocument();
+    expect(alerts).toHaveLength(0);
   });
 
   it("render a success alert", () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "success",
           message: "success",
-          open: true,
           onClose: () => {},
         },
       ],
     };
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
-    const alerts = screen.queryAllByRole("alert");
+    const alerts = screen.getAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(1);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
   });
 
   it("render a error alert", () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "error",
           message: "error",
-          open: true,
           onClose: () => {},
         },
       ],
     };
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
-    const alerts = screen.queryAllByRole("alert");
+    const alerts = screen.getAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(1);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
   });
 
   it("render success alerts", () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "success",
           message: "success1",
-          open: true,
           onClose: () => {},
         },
         {
           type: "success",
           message: "success2",
-          open: true,
           onClose: () => {},
         },
       ],
     };
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
-    const alerts = screen.queryAllByRole("alert");
+    const alerts = screen.getAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(2);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
   });
 
   it("render error alerts", () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "error",
           message: "error1",
-          open: true,
           onClose: () => {},
         },
         {
           type: "error",
           message: "error2",
-          open: true,
           onClose: () => {},
         },
       ],
     };
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
     const alerts = screen.queryAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(2);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
   });
 
   it("render multiple type of alerts", () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "success",
           message: "sucess",
-          open: true,
           onClose: () => {},
         },
         {
           type: "error",
           message: "error",
-          open: true,
           onClose: () => {},
         },
       ],
     };
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
     const alerts = screen.queryAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(2);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
   });
 
   it("autoclose after x amout times", async () => {
-    const testdata = {
+    const toastsProps: ToastsProps = {
       data: [
         {
           type: "error",
           message: "error",
-          open: true,
           onClose: jest.fn(),
         },
       ],
@@ -172,20 +153,18 @@ describe("Alerts of Dashboard Layout", () => {
 
     jest.useFakeTimers();
 
-    render(<Toasts data={testdata.data as ToastsProps["data"]} />);
+    render(<Toasts {...toastsProps} />);
 
     const alerts = screen.queryAllByRole("alert");
 
-    testdata.data.forEach((data, index) => {
-      const alert = alerts[index];
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(data.message);
+    expect(alerts).toHaveLength(1);
+    alerts.forEach((alert, index) => {
+      expect(alert).toHaveTextContent(toastsProps.data[index].message);
     });
 
     jest.advanceTimersByTime(5000);
 
-    testdata.data.forEach((data) => {
+    toastsProps.data.forEach((data) => {
       expect(data.onClose).toHaveBeenCalledTimes(1);
     });
   });

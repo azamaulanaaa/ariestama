@@ -7,7 +7,7 @@ import {
 } from "@testing-library/react";
 import { AlertsSystemProvider, useAlertsSystem } from ".";
 
-describe("Alert System of Dashboard Layout", () => {
+describe("Alerts System", () => {
   afterEach(cleanup);
 
   it("render no alerts at start", () => {

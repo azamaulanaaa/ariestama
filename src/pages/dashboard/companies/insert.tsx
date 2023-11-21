@@ -1,12 +1,11 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 import DashboardLayout from "@/components/Layout/dashboard";
 import { useAlertsSystem } from "@/components/AlertsSystem";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import Config from "@/config";
-import { useState } from "react";
-import { useRouter } from "next/router";
 import InsertCompanyForm, {
   InsertCompanyData,
 } from "@/components/InsertCompanyForm";
@@ -63,16 +62,12 @@ const InsertCompany = () => {
         isReady={session.user !== undefined && !loading}
         redirectUrl={Config.Url.Dashboard}
       >
-        <Card>
-          <CardBody className="flex flex-col gap-4">
-            <div className="flex justify-between">
-              <Typography variant="h3" as="h1" color="blue-gray">
-                Insert Company
-              </Typography>
-            </div>
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose max-w-none">
+            <h1>Insert Company</h1>
             <InsertCompanyForm onSubmit={handleSubmit} />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

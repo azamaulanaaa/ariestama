@@ -1,4 +1,3 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -8,7 +7,6 @@ import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import Config from "@/config";
 import InsertUnitForm, { InsertUnitData } from "@/components/InsertUnitForm";
-import CardHeader from "@/components/CardHeader";
 import type { Unit } from "@/libs/Database";
 
 const EditUnit = () => {
@@ -100,16 +98,12 @@ const EditUnit = () => {
         isReady={session.user !== undefined && !loading && router.isReady}
         redirectUrl={Config.Url.Dashboard}
       >
-        <Card>
-          <CardHeader>
-            <Typography variant="h3" color="blue-gray">
-              Edit Unit
-            </Typography>
-          </CardHeader>
-          <CardBody>
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose max-w-none">
+            <h1>Edit Unit</h1>
             <InsertUnitForm onSubmit={handleSubmit} defaultValues={unitData} />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

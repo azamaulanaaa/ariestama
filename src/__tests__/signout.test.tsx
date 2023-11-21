@@ -39,7 +39,7 @@ describe("SignOut Page", () => {
 
     render(<SignOutPage />);
     await waitFor(() => {
-      expect(SignOut).toBeCalledTimes(1);
+      expect(SignOut).toHaveBeenCalledTimes(1);
       screen.getByRole("status");
     });
   });
@@ -59,9 +59,9 @@ describe("SignOut Page", () => {
     render(<SignOutPage />);
 
     await waitFor(() => {
-      expect(database.auth.SignOut).toBeCalledTimes(1);
-      expect(push).toBeCalledTimes(1);
-      expect(push).toBeCalledWith(Config.Url.SignIn);
+      expect(database.auth.SignOut).toHaveBeenCalledTimes(1);
+      expect(push).toHaveBeenCalledTimes(1);
+      expect(push).toHaveBeenCalledWith(Config.Url.SignIn);
     });
   });
 });

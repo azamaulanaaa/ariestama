@@ -1,4 +1,3 @@
-import { Button, Input } from "@material-tailwind/react";
 import { FormEvent, ChangeEvent, useRef, useState } from "react";
 
 import Alert, { AlertProps } from "@/components/Alert";
@@ -68,54 +67,72 @@ const SignUpForm = (props: SignUpFormProps) => {
     validatePassword();
   };
 
-  const FormAlert = () => {
-    if (!props.alertProps) return null;
-    return <Alert {...props.alertProps} />;
-  };
-
   return (
     <form role="form" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-6">
-        <FormAlert />
-        <Input
-          inputRef={emailRef}
-          id="email"
-          name="email"
-          label="Email"
-          labelProps={{ htmlFor: "email" }}
-          type="email"
-          required
-          size="lg"
-        />
-        <Input
-          inputRef={passwordRef}
-          id="password"
-          name="password"
-          label="Password"
-          labelProps={{ htmlFor: "password" }}
-          type="password"
-          required
-          minLength={6}
-          onInput={handlePasswordChange}
-          error={!passwordEnoughLength}
-          size="lg"
-        />
-        <Input
-          inputRef={confirmPasswordRef}
-          id="confirm-password"
-          name="confirm-password"
-          label="Confirm Password"
-          labelProps={{ htmlFor: "confirm-password" }}
-          type="password"
-          required
-          onInput={handlePasswordChange}
-          error={!passwordMatch}
-          size="lg"
-        />
+        {props.alertProps ? <Alert {...props.alertProps} /> : null}
+        <div className="form-control">
+          <label htmlFor="email" className="label">
+            <span className="label-text">
+              Email<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            ref={emailRef}
+            id="email"
+            name="email"
+            type="email"
+            className="input input-bordered"
+            required
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="password" className="label">
+            <span className="label-text">
+              Password<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            ref={passwordRef}
+            id="password"
+            name="password"
+            type="password"
+            className={
+              "input input-bordered" +
+              (passwordMatch == false ? " input-error" : "")
+            }
+            required
+            minLength={6}
+            onInput={handlePasswordChange}
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="confirm-password" className="label">
+            <span className="label-text">
+              Confirm Password<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            ref={confirmPasswordRef}
+            id="confirm-password"
+            name="confirm-password"
+            type="password"
+            className={
+              "input input-bordered" +
+              (passwordMatch == false ? " input-error" : "")
+            }
+            required
+            onInput={handlePasswordChange}
+          />
+        </div>
         <div className="col-span-2">
-          <Button type="submit" fullWidth>
+          <button
+            type="submit"
+            className="btn btn-block"
+            disabled={!passwordMatch}
+          >
             Submit
-          </Button>
+          </button>
         </div>
       </div>
     </form>

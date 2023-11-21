@@ -1,4 +1,3 @@
-import { Button, Input } from "@material-tailwind/react";
 import { FormEvent } from "react";
 
 export type InsertUnitData = {
@@ -52,64 +51,101 @@ const InsertUnitForm = (props: InsertUnitFormProps) => {
 
   return (
     <form role="form" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 gap-4">
-        <Input
-          id="serial_number"
-          name="serial_number"
-          type="text"
-          label="Serial Number"
-          labelProps={{ htmlFor: "serial_number" }}
-          required
-          defaultValue={props.defaultValues?.serial_number}
-        />
-        <Input
-          id="series"
-          name="series"
-          type="text"
-          label="Series"
-          labelProps={{ htmlFor: "series" }}
-          required
-          defaultValue={props.defaultValues?.series}
-        />
-        <Input
-          id="brand"
-          name="brand"
-          type="text"
-          label="Brand"
-          labelProps={{ htmlFor: "brand" }}
-          required
-          defaultValue={props.defaultValues?.brand}
-        />
-        <Input
-          id="oem"
-          name="oem"
-          type="text"
-          label="Original Equipment Manufacture"
-          labelProps={{ htmlFor: "oem" }}
-          required
-          defaultValue={props.defaultValues?.oem}
-        />
-        <Input
-          id="yom"
-          name="yom"
-          type="number"
-          label="Year of Manufacture"
-          labelProps={{ htmlFor: "yom" }}
-          required
-          defaultValue={props.defaultValues?.yom}
-        />
-        <Input
-          id="made_in"
-          name="made_in"
-          type="text"
-          label="Made In"
-          labelProps={{ htmlFor: "made_in" }}
-          required
-          defaultValue={props.defaultValues?.made_in}
-        />
-        <Button type="submit" variant="gradient" className="col-span-2">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="form-control">
+          <label htmlFor="serial_number" className="label">
+            <span className="label-text">
+              Serial Number<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="serial_number"
+            name="serial_number"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.serial_number}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="series" className="label">
+            <span className="label-text">
+              Series<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="series"
+            name="series"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.series}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="brand" className="brand">
+            <span className="label-text">
+              Brand<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="brand"
+            name="brand"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.brand}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="oem" className="label">
+            <span className="label-text">
+              Original Equipment Manufacture
+              <span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="oem"
+            name="oem"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.oem}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="yom" className="label">
+            <span className="label-text">
+              Year of Manufacture<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="yom"
+            name="yom"
+            type="number"
+            required
+            defaultValue={props.defaultValues?.yom}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="made_in" className="label">
+            <span className="label-text">
+              Made In<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="made_in"
+            name="made_in"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.made_in}
+            className="input input-bordered"
+          />
+        </div>
+        <button type="submit" className="btn btn-block md:col-span-2">
           Submit
-        </Button>
+        </button>
       </div>
     </form>
   );

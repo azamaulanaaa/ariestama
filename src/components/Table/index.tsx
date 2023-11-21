@@ -1,5 +1,4 @@
 import { MouseEvent, ReactNode } from "react";
-import { Typography } from "@material-tailwind/react";
 
 export type TableData<K extends string> = {
   [key in K]: ReactNode;
@@ -15,14 +14,16 @@ export interface TableProps<K extends string> {
 
 const Table = <K extends string>(props: TableProps<K>) => {
   return (
-    <table className="table-auto border-collapse w-full text-left rounded">
-      <TableHeader data={props.headers} />
-      <TableBody
-        data={props.items}
-        dataKey={Object.keys(props.headers) as K[]}
-        onClick={props.onClick}
-      />
-    </table>
+    <div className="overflow-scroll">
+      <table className="table-auto border-collapse w-full text-left rounded">
+        <TableHeader data={props.headers} />
+        <TableBody
+          data={props.items}
+          dataKey={Object.keys(props.headers) as K[]}
+          onClick={props.onClick}
+        />
+      </table>
+    </div>
   );
 };
 
@@ -39,13 +40,7 @@ const TableHeader = <K extends string>(props: TableHeaderProps<K>) => {
             key={key}
             className="p-4 border-b border-blue-gray-100 bg-blue-gray-50"
           >
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="font-normal leading-none opacity-70"
-            >
-              {value}
-            </Typography>
+            <h4 className="font-normal leading-none opacity-70">{value}</h4>
           </th>
         ))}
       </tr>
@@ -78,15 +73,7 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
           {props.dataKey.map((key) => {
             let value = data[key];
             if (typeof value == "string" || typeof value == "number")
-              value = (
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal"
-                >
-                  {value}
-                </Typography>
-              );
+              value = <p className="font-normal">{value}</p>;
 
             return (
               <td key={key} className="p-4">

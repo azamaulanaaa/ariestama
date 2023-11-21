@@ -1,4 +1,3 @@
-import { Button, Input } from "@material-tailwind/react";
 import { FormEvent, ChangeEvent, useState, useEffect } from "react";
 
 export type InsertCompanyData = {
@@ -67,76 +66,116 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
 
   return (
     <form data-testid="InsertCompanyForm" role="form" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-2 gap-4">
-        <Input
-          id="name"
-          name="name"
-          type="text"
-          label="Name"
-          labelProps={{ htmlFor: "name" }}
-          required
-          onChange={handleNameChange}
-          value={name}
-        />
-        <Input
-          id="branch"
-          name="branch"
-          type="text"
-          label="Branch"
-          labelProps={{ htmlFor: "branch" }}
-          required
-          defaultValue={props.defaultValues?.branch}
-        />
-        <div className="col-span-2">
-          <Input
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="form-control">
+          <label htmlFor="name" className="label">
+            <span className="label-text">
+              Name<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            onChange={handleNameChange}
+            value={name}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="branch" className="label">
+            <span className="label-text">
+              Branch<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="branch"
+            name="branch"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.branch}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control md:col-span-2">
+          <label htmlFor="address" className="label">
+            <span className="label-text">
+              Address<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
             id="address"
             name="address"
             type="address"
-            label="Address"
-            labelProps={{ htmlFor: "address" }}
             required
             defaultValue={props.defaultValues?.address}
+            className="input input-bordered"
           />
         </div>
-        <Input
-          id="subdistrict"
-          name="subdistrict"
-          type="text"
-          label="Sub-District"
-          labelProps={{ htmlFor: "subdistrict" }}
-          required
-          defaultValue={props.defaultValues?.sub_district}
-        />
-        <Input
-          id="city"
-          name="city"
-          type="text"
-          label="City"
-          labelProps={{ htmlFor: "city" }}
-          required
-          defaultValue={props.defaultValues?.city}
-        />
-        <Input
-          id="province"
-          name="province"
-          type="text"
-          label="Province"
-          labelProps={{ htmlFor: "province" }}
-          required
-          defaultValue={props.defaultValues?.province}
-        />
-        <Input
-          id="zipcode"
-          name="zipcode"
-          type="number"
-          label="Zip Code"
-          labelProps={{ htmlFor: "zipcode" }}
-          required
-          defaultValue={props.defaultValues?.zip_code}
-        />
-        <Button type="submit" variant="gradient" className="col-span-2">
+        <div className="form-control">
+          <label htmlFor="subdistrict" className="label">
+            <span className="label-text">
+              Sub-District<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="subdistrict"
+            name="subdistrict"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.sub_district}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="city" className="label">
+            <span className="label-text">
+              City<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.city}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="province" className="label">
+            <span className="label-text">
+              Province<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="province"
+            name="province"
+            type="text"
+            required
+            defaultValue={props.defaultValues?.province}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="zipcode" className="label">
+            <span className="label-text">
+              Zip Code<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="zipcode"
+            name="zipcode"
+            type="number"
+            required
+            defaultValue={props.defaultValues?.zip_code}
+            className="input input-bordered"
+          />
+        </div>
+        <button type="submit" className="btn btn-block md:col-span-2">
           Submit
-        </Button>
+        </button>
       </div>
     </form>
   );

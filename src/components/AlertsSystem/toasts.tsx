@@ -3,7 +3,6 @@ import Alert from "@/components/Alert";
 export type ToastData = {
   type: "success" | "error";
   message: string;
-  open: boolean;
   onClose: () => void;
 };
 
@@ -17,12 +16,7 @@ const Toasts = (props: ToastsProps) => {
       {props.data.map((data, index) => {
         setTimeout(data.onClose, 5000);
         return (
-          <Alert
-            key={index}
-            type={data.type}
-            open={data.open}
-            onClose={data.onClose}
-          >
+          <Alert key={index} type={data.type} onClose={data.onClose}>
             {data.message}
           </Alert>
         );

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 
 import DashboardLayout from "@/components/Layout/dashboard";
 import ProtectedPage from "@/components/ProtectedPage";
@@ -8,8 +7,8 @@ import { useSessionContext } from "@/components/SessionContext";
 import DenseDisplay from "@/components/DenseDisplay";
 import type { Company } from "@/libs/Database";
 import Config from "@/config";
-import CardHeader from "@/components/CardHeader";
-import { HiPencil } from "react-icons/hi2";
+import { BiSolidPencil } from "react-icons/bi";
+import Link from "next/link";
 
 const ViewCompanies = () => {
   const session = useSessionContext();
@@ -49,14 +48,6 @@ const ViewCompanies = () => {
     setLoading(false);
   }, [session, router]);
 
-  const handleEdit = () => {
-    if (!router.isReady) return;
-    router.push({
-      pathname: "/dashboard/companies/edit",
-      query: { id: companyData.id },
-    });
-  };
-
   return (
     <DashboardLayout>
       <ProtectedPage
@@ -64,35 +55,23 @@ const ViewCompanies = () => {
         isReady={session.user !== undefined && !loading}
         redirectUrl={Config.Url.SignIn}
       >
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between">
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose prose-a:no-underline max-w-none">
+            <div className="flex flex-row justify-between items-start">
               <div>
-                <Typography
-                  data-testid="company-name"
-                  variant="h3"
-                  as="h1"
-                  color="blue-gray"
-                >
-                  {companyData.name}
-                </Typography>
-                <Typography
-                  data-testid="company-branch"
-                  variant="h5"
-                  as="h2"
-                  color="blue-gray"
-                >
-                  {companyData.branch}
-                </Typography>
+                <h1 data-testid="company-name">{companyData.name}</h1>
+                <h2 data-testid="company-branch">{companyData.branch}</h2>
               </div>
-              <div>
-                <Button variant="text" size="sm" onClick={handleEdit}>
-                  <HiPencil className="w-4 h-4" />
-                </Button>
-              </div>
+              <Link
+                href={"/dashboard/companies/edit?id=" + companyData.id}
+                passHref
+                legacyBehavior
+              >
+                <a className="btn">
+                  <BiSolidPencil className="w-5 h-5" />
+                </a>
+              </Link>
             </div>
-          </CardHeader>
-          <CardBody>
             <DenseDisplay
               variant="column"
               keys={{
@@ -104,8 +83,8 @@ const ViewCompanies = () => {
               }}
               values={companyData}
             />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

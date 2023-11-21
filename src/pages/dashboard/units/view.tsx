@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
+import Link from "next/link";
 
 import DashboardLayout from "@/components/Layout/dashboard";
 import ProtectedPage from "@/components/ProtectedPage";
 import { useSessionContext } from "@/components/SessionContext";
 import type { Unit } from "@/libs/Database";
 import Config from "@/config";
-import CardHeader from "@/components/CardHeader";
-import { HiPencil } from "react-icons/hi2";
 import DenseDisplay from "@/components/DenseDisplay";
+import { BiSolidPencil } from "react-icons/bi";
 
 const ViewUnits = () => {
   const session = useSessionContext();
@@ -49,14 +48,6 @@ const ViewUnits = () => {
     setLoading(false);
   }, [session, router]);
 
-  const handleEdit = () => {
-    if (!router.isReady) return;
-    router.push({
-      pathname: "/dashboard/units/edit",
-      query: { id: unitData.id },
-    });
-  };
-
   return (
     <DashboardLayout>
       <ProtectedPage
@@ -64,22 +55,20 @@ const ViewUnits = () => {
         isReady={session.user !== undefined && !loading}
         redirectUrl={Config.Url.SignIn}
       >
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between">
-              <div>
-                <Typography data-testid="serial-number" variant="h3">
-                  {unitData.serial_number}
-                </Typography>
-              </div>
-              <div>
-                <Button variant="text" size="sm" onClick={handleEdit}>
-                  <HiPencil className="w-4 h-4" />
-                </Button>
-              </div>
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose prose-a:no-underline max-w-none">
+            <div className="flex flex-row justify-between items-start">
+              <h1 data-testid="serial-number">{unitData.serial_number}</h1>
+              <Link
+                href={"/dashboard/units/edit?id=" + unitData.id}
+                passHref
+                legacyBehavior
+              >
+                <a className="btn">
+                  <BiSolidPencil className="w-5 h-5" />
+                </a>
+              </Link>
             </div>
-          </CardHeader>
-          <CardBody>
             <DenseDisplay
               variant="column"
               keys={{
@@ -91,8 +80,8 @@ const ViewUnits = () => {
               }}
               values={unitData as any}
             />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

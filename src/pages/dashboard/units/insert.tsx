@@ -1,5 +1,3 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
-
 import DashboardLayout from "@/components/Layout/dashboard";
 import { useAlertsSystem } from "@/components/AlertsSystem";
 import ProtectedPage from "@/components/ProtectedPage";
@@ -60,16 +58,12 @@ const InsertCompany = () => {
         isReady={session.user !== undefined && !loading}
         redirectUrl={Config.Url.Dashboard}
       >
-        <Card>
-          <CardBody className="flex flex-col gap-4">
-            <div className="flex justify-between">
-              <Typography variant="h3" as="h1" color="blue-gray">
-                Insert Unit
-              </Typography>
-            </div>
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose max-w-none">
+            <h1>Insert Unit</h1>
             <InsertUnitForm onSubmit={handleSubmit} />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

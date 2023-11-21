@@ -1,38 +1,47 @@
 import { ReactNode } from "react";
-import { Alert as AlertMT, Typography } from "@material-tailwind/react";
-import { HiCheckCircle, HiXCircle } from "react-icons/hi";
+import { BiCheckCircle, BiSolidErrorCircle, BiXCircle } from "react-icons/bi";
 
 export type AlertProps = {
   children: ReactNode;
   type: "success" | "error";
-  open?: boolean;
   onClose?: () => void;
 };
 
-const Alert = (props: AlertProps) => {
-  let color = "red";
-  let icon = <></>;
-  switch (props.type) {
-    case "success":
-      icon = <HiCheckCircle className="h-6 w-6" />;
-      color = "green";
-      break;
-    case "error":
-      icon = <HiXCircle className="h-6 w-6" />;
-      color = "red";
-      break;
-  }
+function Alert(props: AlertProps) {
+  const conditionalClassName = {
+    success: "alert-success",
+    error: "alert-error",
+  }[props.type];
+  const Icon = {
+    success: BiCheckCircle,
+    error: BiSolidErrorCircle,
+  }[props.type];
+
+  const CloseButton = () => {
+    if (props.onClose) {
+      return (
+        <button
+          className="btn btn-sm btn-ghost"
+          data-testid="close-button"
+          onClick={props.onClose}
+        >
+          <BiXCircle className="h-5 w-5" />
+        </button>
+      );
+    }
+
+    return null;
+  };
 
   return (
-    <AlertMT
-      icon={icon}
-      color={color as any}
-      open={props.open}
-      onClose={props.onClose}
-    >
-      <Typography variant="small">{props.children}</Typography>
-    </AlertMT>
+    <div role="alert" className={"alert " + conditionalClassName}>
+      <Icon className="h-6 w-6" />
+      <span data-testid="message" className="text-sm">
+        {props.children}
+      </span>
+      <CloseButton />
+    </div>
   );
-};
+}
 
 export default Alert;

@@ -2,7 +2,7 @@ import { cleanup, renderHook, act } from "@testing-library/react";
 import { ReactNode } from "react";
 import { AlertsProvider, useAlerts } from "./context";
 
-describe("Alert System Context of Dashboard Layout", () => {
+describe("Context of Alerts System", () => {
   afterEach(cleanup);
 
   it("initial with empty alert data", () => {
@@ -56,7 +56,7 @@ describe("Alert System Context of Dashboard Layout", () => {
       ),
     });
 
-    expect(result.current.state[0].open).toBeTruthy();
+    expect(result.current.state).toHaveLength(1);
 
     act(() => {
       result.current.dispatch({
@@ -65,6 +65,6 @@ describe("Alert System Context of Dashboard Layout", () => {
       });
     });
 
-    expect(result.current.state[0].open).toBeFalsy();
+    expect(result.current.state).toHaveLength(0);
   });
 });

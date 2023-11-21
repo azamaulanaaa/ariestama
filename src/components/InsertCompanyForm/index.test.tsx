@@ -2,13 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import UserEvent from "@testing-library/user-event";
 import InsertCompanyForm from ".";
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 describe("InsertCompanyForm Component", () => {
   afterEach(cleanup);
 

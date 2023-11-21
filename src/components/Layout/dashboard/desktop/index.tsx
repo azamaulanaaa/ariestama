@@ -12,7 +12,7 @@ const DashboardDesktopLayout = (props: DashboardDesktopLayoutProps) => {
     <div className="h-screen">
       <div className="container mx-auto">
         <Header />
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-4 p-4">
           <Sidebar />
           <div className="pt-4 flex-auto">{props.children}</div>
         </div>

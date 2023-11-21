@@ -1,5 +1,4 @@
 import { FormEvent } from "react";
-import { Button, Input } from "@material-tailwind/react";
 
 import Alert, { AlertProps } from "@/components/Alert";
 
@@ -41,28 +40,40 @@ const SignInForm = (props: SignInFormProps) => {
     <form role="form" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-6">
         <FormAlert />
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          label="Email"
-          labelProps={{ htmlFor: "email" }}
-          required
-          size="lg"
-        />
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          label="Password"
-          labelProps={{ htmlFor: "password" }}
-          required
-          size="lg"
-        />
+        <div className="form-control">
+          <label htmlFor="email" className="label">
+            <span className="label-text">
+              Email<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="example@domain.com"
+            className="input input-bordered"
+            required
+          />
+        </div>
+        <div className="form-control">
+          <label htmlFor="password" className="label">
+            <span className="label-text">
+              Password<span className="text-red-400">*</span>
+            </span>
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="$ecr3tKey."
+            className="input input-bordered"
+            required
+          />
+        </div>
       </div>
-      <Button type="submit" variant="gradient" fullWidth className="mt-8">
+      <button type="submit" className="btn btn-block mt-8">
         Submit
-      </Button>
+      </button>
     </form>
   );
 };

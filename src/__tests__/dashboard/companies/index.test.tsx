@@ -22,13 +22,6 @@ jest.mock("@/components/Layout/dashboard", () => ({
   default: (props: { children: any }) => <>{props.children}</>,
 }));
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 describe("Dashboard Companies Page", () => {
   afterEach(() => {
     jest.resetAllMocks();

@@ -1,5 +1,3 @@
-import { Typography } from "@material-tailwind/react";
-
 export type AddressProps = {
   address: string;
   sub_district: string;
@@ -15,14 +13,14 @@ const Address = (props: AddressProps) => {
   if (address) address = address.replaceAll(/,\s/g, "\r\n");
 
   return (
-    <div data-testid="address">
-      <Typography className="whitespace-pre-wrap">{address}</Typography>
-      <Typography>
+    <div data-testid="address" className="prose">
+      <p className="whitespace-pre-wrap">{address}</p>
+      <p>
         Kec. {props.sub_district}, {props.city}
-      </Typography>
-      <Typography>
+      </p>
+      <p>
         {props.province} - {props.zip_code}
-      </Typography>
+      </p>
     </div>
   );
 };

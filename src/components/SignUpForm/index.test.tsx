@@ -1,14 +1,7 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SignUpForm from ".";
-
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
 
 describe("SignUp Form Component", () => {
   afterEach(() => {
@@ -85,8 +78,10 @@ describe("SignUp Form Component", () => {
     );
     const alert = screen.queryByRole("alert");
 
-    expect(alert).toBeInTheDocument();
-    expect(alert).toHaveTextContent(testdata.message);
+    waitFor(() => {
+      expect(alert).toBeInTheDocument();
+      expect(alert).toHaveTextContent(testdata.message);
+    });
   });
 
   it("everytimes password change make sure password and confirm password are the same", async () => {

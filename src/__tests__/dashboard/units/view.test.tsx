@@ -70,7 +70,7 @@ describe("Dashboard View Companies Page", () => {
     render(<ViewPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(0);
+      expect(routerPush).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -93,7 +93,7 @@ describe("Dashboard View Companies Page", () => {
     render(<ViewPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(1);
+      expect(routerPush).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -253,7 +253,7 @@ describe("Dashboard View Companies Page", () => {
     render(<ViewPage />);
 
     await waitFor(() => {
-      expect(routerPush).toBeCalledTimes(0);
+      expect(routerPush).toHaveBeenCalledTimes(0);
     });
   });
 });

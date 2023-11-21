@@ -3,13 +3,6 @@ import userEvent from "@testing-library/user-event";
 
 import SignInForm from ".";
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 describe("SignIn Form", () => {
   afterEach(() => {
     cleanup();
@@ -56,7 +49,7 @@ describe("SignIn Form", () => {
     const message = "some";
 
     render(<SignInForm alertProps={{ type: "error", children: message }} />);
-    const alert = screen.getByRole("alert");
+    const alert = screen.queryByRole("alert");
 
     expect(alert).toHaveTextContent(message);
   });

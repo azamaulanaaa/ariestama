@@ -1,14 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import UserEvent from "@testing-library/user-event";
 
-import Alert from ".";
-
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
+import Alert, { AlertProps } from ".";
 
 describe("Alert component", () => {
   afterEach(() => {
@@ -16,52 +9,67 @@ describe("Alert component", () => {
     jest.resetAllMocks();
   });
 
-  it("render success alert", () => {
-    const testdata = {
+  it("render success alert", async () => {
+    const alertProps = {
       type: "success",
-      message: "msg",
+      children: "msg",
     };
 
-    render(<Alert type={testdata.type as any}>{testdata.message}</Alert>);
-    const alert = screen.queryByRole("alert");
-    const closeButton = screen.queryByRole("button");
+    render(<Alert {...(alertProps as AlertProps)} />);
+    const alert = screen.getByRole("alert");
+    const closeButton = screen.queryByTestId("close-button");
 
-    expect(alert).toBeInTheDocument();
-    expect(alert).toHaveTextContent(testdata.message);
+    expect(alert).toHaveTextContent(alertProps.children as string);
     expect(closeButton).not.toBeInTheDocument();
   });
 
-  it("render error alert", () => {
-    const testdata = {
+  it("render error alert", async () => {
+    const alertProps: AlertProps = {
       type: "error",
-      message: "msg",
+      children: "msg",
     };
 
-    render(<Alert type={testdata.type as any}>{testdata.message}</Alert>);
-    const alert = screen.queryByRole("alert");
-    const closeButton = screen.queryByRole("button");
+    render(<Alert {...alertProps} />);
+    const alert = screen.getByRole("alert");
+    const closeButton = screen.queryByTestId("close-button");
 
-    expect(alert).toBeInTheDocument();
-    expect(alert).toHaveTextContent(testdata.message);
+    expect(alert).toHaveTextContent(alertProps.children as string);
     expect(closeButton).not.toBeInTheDocument();
   });
 
-  it("call onClose function when cross icon is clicked", async () => {
-    const testdata = {
-      message: "msg",
+  it("success alert call onClose function when cross icon is clicked", async () => {
+    const alertProps: AlertProps = {
+      type: "success",
+      children: "msg",
+      onClose: jest.fn(),
     };
-    const handleClose = jest.fn();
     const user = UserEvent.setup();
 
-    render(
-      <Alert type="error" onClose={handleClose}>
-        {testdata.message}
-      </Alert>,
-    );
+    render(<Alert {...alertProps} />);
 
-    const closeButton = screen.getByRole("button");
+    const alert = screen.getByRole("alert");
+    const closeButton = screen.getByTestId("close-button");
 
+    expect(alert).toHaveTextContent(alertProps.children as string);
     await user.click(closeButton);
-    expect(handleClose).toHaveBeenCalledTimes(1);
+    expect(alertProps.onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("error alert call onClose function when cross icon is clicked", async () => {
+    const alertProps: AlertProps = {
+      type: "error",
+      children: "msg",
+      onClose: jest.fn(),
+    };
+    const user = UserEvent.setup();
+
+    render(<Alert {...alertProps} />);
+
+    const alert = screen.getByRole("alert");
+    const closeButton = screen.getByTestId("close-button");
+
+    expect(alert).toHaveTextContent(alertProps.children as string);
+    await user.click(closeButton);
+    expect(alertProps.onClose).toHaveBeenCalledTimes(1);
   });
 });

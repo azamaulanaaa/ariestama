@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
-import { Button, Navbar } from "@material-tailwind/react";
-import { BiSolidBell, BiSolidHome, BiUser } from "react-icons/bi";
+import { BiSolidBell, BiSolidHome, BiSolidUser } from "react-icons/bi";
 import Link from "next/link";
 
 type NavItemProps = {
@@ -10,20 +9,17 @@ type NavItemProps = {
 
 function NavItem(props: NavItemProps) {
   return (
-    <Link href={props.href} legacyBehavior passHref>
-      <Button
-        variant="text"
-        className="flex-auto flex justify-center py-4 text-2xl"
-      >
-        {props.children}
-      </Button>
-    </Link>
+    <li className="flex-auto">
+      <Link href={props.href} legacyBehavior passHref>
+        <a className="btn btn-ghost btn-block text-2xl">{props.children}</a>
+      </Link>
+    </li>
   );
 }
 
-function NavList() {
+function Footer() {
   return (
-    <div className="flex gap-4 text-gray-800">
+    <ul className="menu menu-lg menu-horizontal bg-base-200 w-full fixed bottom-0">
       <NavItem href="/dashboard">
         <BiSolidHome />
       </NavItem>
@@ -31,18 +27,10 @@ function NavList() {
         <BiSolidBell />
       </NavItem>
       <NavItem href="/dashboard/account">
-        <BiUser />
+        <BiSolidUser />
       </NavItem>
-    </div>
+    </ul>
   );
 }
-
-const Footer = () => {
-  return (
-    <Navbar fullWidth className="absolute bottom-0 border-t-2 border-gray p-0">
-      <NavList />
-    </Navbar>
-  );
-};
 
 export default Footer;

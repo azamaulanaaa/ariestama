@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
 
 import DefaultLayout from "@/components/Layout/default";
 import SignInForm, { SignInFormData } from "@/components/SignInForm";
@@ -46,40 +39,23 @@ function SignIn() {
     <DefaultLayout>
       <div className="grid h-screen place-items-center">
         <Loading isLoading={loading}>
-          <Card className="w-[350px]">
-            <CardHeader
-              variant="gradient"
-              color="gray"
-              className="grid place-items-center h-28"
-            >
-              <Typography variant="h3" color="white">
-                Sign In
-              </Typography>
-            </CardHeader>
-            <CardBody>
+          <div className="card md:card-bordered md:shadow-md w-[350px]">
+            <div className="card-body prose">
+              <h1>Sign In</h1>
               <SignInForm
                 onSubmit={handleSubmit}
                 alertProps={
                   !error ? undefined : { type: "error", children: error.text }
                 }
               />
-            </CardBody>
-            <CardFooter>
-              <Typography variant="small" className="flex justify-center">
+              <p className="flex justify-center">
                 Doni&lsquo;t have an account?
                 <Link href="/signup" passHref legacyBehavior>
-                  <Typography
-                    as="a"
-                    variant="small"
-                    color="gray"
-                    className="ml-1 font-bold"
-                  >
-                    Sign up
-                  </Typography>
+                  <a className="ml-[1ex] font-medium">Sign up</a>
                 </Link>
-              </Typography>
-            </CardFooter>
-          </Card>
+              </p>
+            </div>
+          </div>
         </Loading>
       </div>
     </DefaultLayout>

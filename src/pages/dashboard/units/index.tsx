@@ -1,4 +1,3 @@
-import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +8,7 @@ import { useSessionContext } from "@/components/SessionContext";
 import UnitsTable, { UnitsItemData } from "@/components/UnitsTable";
 import Config from "@/config";
 import { TableData } from "@/components/Table";
+import { BiSolidPlusSquare } from "react-icons/bi";
 
 function Units() {
   const session = useSessionContext();
@@ -41,21 +41,19 @@ function Units() {
         isReady={session.user !== undefined}
         redirectUrl={Config.Url.Dashboard}
       >
-        <Card>
-          <CardBody className="flex flex-col gap-4">
+        <div className="card card-bordered bg-base-100 shadow-md">
+          <div className="card-body prose prose-a:no_underline max-w-none">
             <div className="flex justify-between">
-              <Typography variant="h3" as="h1" color="blue-gray">
-                Units
-              </Typography>
+              <h1>Units</h1>
               <Link href="/dashboard/units/insert" passHref legacyBehavior>
-                <Button size="md" variant="gradient">
-                  Insert
-                </Button>
+                <a className="btn">
+                  <BiSolidPlusSquare className="h-5 w-5" />
+                </a>
               </Link>
             </div>
             <UnitsTable items={items} onClick={handleClick} />
-          </CardBody>
-        </Card>
+          </div>
+        </div>
       </ProtectedPage>
     </DashboardLayout>
   );

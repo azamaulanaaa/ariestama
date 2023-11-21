@@ -1,13 +1,6 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardFooter,
-  Typography,
-} from "@material-tailwind/react";
 
 import DefaultLayout from "@/components/Layout/default";
 import { useSessionContext } from "@/components/SessionContext";
@@ -51,35 +44,18 @@ function SignUp() {
     <DefaultLayout>
       <div className="grid h-screen place-items-center">
         <Loading isLoading={loading}>
-          <Card className="w-[350px]">
-            <CardHeader
-              variant="gradient"
-              color="gray"
-              className="grid place-items-center h-28"
-            >
-              <Typography variant="h3" color="white">
-                Sign Up
-              </Typography>
-            </CardHeader>
-            <CardBody>
+          <div className="card md:card-bordered md:shadow-md w-[350px]">
+            <div className="card-body prose">
+              <h1>Sign Up</h1>
               <SignUpForm onSubmit={handleSubmit} alertProps={alertProps} />
-            </CardBody>
-            <CardFooter>
-              <Typography variant="small" className="flex justify-center">
+              <p>
                 Already have an account?
                 <Link href="/signin" passHref legacyBehavior>
-                  <Typography
-                    as="a"
-                    variant="small"
-                    color="gray"
-                    className="ml-1 font-bold"
-                  >
-                    Sign in
-                  </Typography>
+                  <a className="ml-[1ex] font-medium">Sign in</a>
                 </Link>
-              </Typography>
-            </CardFooter>
-          </Card>
+              </p>
+            </div>
+          </div>
         </Loading>
       </div>
     </DefaultLayout>

@@ -2,13 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import UserEvent from "@testing-library/user-event";
 import InsertUnitForm from ".";
 
-jest.mock("material-ripple-effects", () => ({
-  __esModule: true,
-  default: () => ({
-    create() {},
-  }),
-}));
-
 describe("InsertUnitForm Component", () => {
   afterEach(cleanup);
 
@@ -148,12 +141,21 @@ describe("InsertUnitForm Component", () => {
     };
 
     render(<InsertUnitForm defaultValues={testdata.defaultValue} />);
-    const serial_number_input = screen.getByLabelText(/serial number/i);
-    const series_input = screen.getByLabelText(/series/i);
-    const brand_input = screen.getByLabelText(/brand/i);
-    const oem_input = screen.getByLabelText(/original equipment manufacture/i);
-    const yom_input = screen.getByLabelText(/year of manufacture/i);
-    const made_in_input = screen.getByLabelText(/made in/i);
+    const serial_number_input = screen.queryByLabelText(/serial number/i);
+    const series_input = screen.queryByLabelText(/series/i);
+    const brand_input = screen.queryByLabelText(/brand/i);
+    const oem_input = screen.queryByLabelText(
+      /original equipment manufacture/i,
+    );
+    const yom_input = screen.queryByLabelText(/year of manufacture/i);
+    const made_in_input = screen.queryByLabelText(/made in/i);
+
+    expect(serial_number_input).toBeInTheDocument();
+    expect(series_input).toBeInTheDocument();
+    expect(brand_input).toBeInTheDocument();
+    expect(oem_input).toBeInTheDocument();
+    expect(yom_input).toBeInTheDocument();
+    expect(made_in_input).toBeInTheDocument();
 
     expect(serial_number_input).toHaveValue(
       testdata.defaultValue.serial_number,

@@ -19,7 +19,6 @@ type AlertData = {
   id: string;
   type: "success" | "error";
   message: string;
-  open: boolean;
 };
 
 export type AlertsAction = AddAlert | RemoveAlert;
@@ -30,14 +29,12 @@ const alertsReducer = (alertState: AlertData[], action: AlertsAction) => {
       return [
         ...alertState,
         {
-          open: true,
           ...action,
         },
       ];
     case "remove":
-      return alertState.map((data) => {
-        if (data.id == action.id) data.open = false;
-        return data;
+      return alertState.filter((data) => {
+        return data.id != action.id;
       });
     default:
       throw Error("alert action kind is unknown.");
