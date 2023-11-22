@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
-import DefaultLayout from "@/components/Layout/default";
-import { useSessionContext } from "@/components/SessionContext";
+import DefaultLayout from "@/layout/Default";
+import { useSessionContext } from "@/contexts/Session";
 import Loading from "@/components/Loading";
 import Config from "@/config";
 

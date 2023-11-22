@@ -21,7 +21,7 @@ const Loading = (props: LoadingProps) => {
 };
 
 const Container = ({ hidden }: { hidden?: boolean }) => {
-  if (hidden) return <div></div>;
+  if (hidden) return null;
   return (
     <div
       className="

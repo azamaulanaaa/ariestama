@@ -1,10 +1,11 @@
 import type { AppProps } from "next/app";
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
-import { SessionContextProvider } from "@/components/SessionContext";
 
-import "../global.css";
-import Database from "@/libs/Database";
-import { AlertsSystemProvider } from "@/components/AlertsSystem";
+import "@/assets/global.css";
+import Database from "@/services/database";
+import { SessionContextProvider } from "@/contexts/Session";
+import { AlertsContextProvider, useAlertsContext } from "@/contexts/Alerts";
+import Toasts from "@/features/notification/Toasts/toasts";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const supabaseClient = createPagesBrowserClient();
@@ -12,11 +13,26 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <SessionContextProvider database={database}>
-      <AlertsSystemProvider>
+      <AlertsContextProvider>
         <Component {...pageProps} />
-      </AlertsSystemProvider>
+        <Toasted />
+      </AlertsContextProvider>
     </SessionContextProvider>
   );
+}
+
+function Toasted() {
+  const alert = useAlertsContext();
+
+  const toastsData = alert.state.map((data) => ({
+    autoCloseDuration: 5000,
+    onClose: () => {
+      alert.dispatch({ kind: "remove", id: data.id });
+    },
+    ...data,
+  }));
+
+  return <Toasts data={toastsData} />;
 }
 
 export default MyApp;

@@ -1,7 +1,7 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 
 import SignOutPage from "@/pages/signout";
-import Database from "@/libs/Database";
+import Database from "@/services/database";
 import Config from "@/config";
 
 const useRouter = jest.fn();
@@ -12,7 +12,8 @@ jest.mock("next/router", () => ({
 }));
 
 const useSessionContext = jest.fn();
-jest.mock("@/components/SessionContext", () => ({
+jest.mock("@/contexts/Session", () => ({
+  __esModule: true,
   useSessionContext() {
     return useSessionContext();
   },

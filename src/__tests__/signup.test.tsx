@@ -1,21 +1,33 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import Database from "@/libs/Database";
+import Database from "@/services/database";
 import SignUp from "@/pages/signup";
 import Config from "@/config";
 
 const useRouter = jest.fn();
 jest.mock("next/router", () => ({
+  __esModule: true,
   useRouter() {
     return useRouter();
   },
 }));
 
 const useSessionContext = jest.fn();
-jest.mock("@/components/SessionContext", () => ({
+jest.mock("@/contexts/Session", () => ({
+  __esModule: true,
   useSessionContext() {
     return useSessionContext();
+  },
+}));
+
+const useAlertsContext = {
+  dispatch: jest.fn(),
+};
+jest.mock("@/contexts/Alerts", () => ({
+  __esModule: true,
+  useAlertsContext() {
+    return useAlertsContext;
   },
 }));
 
@@ -35,13 +47,11 @@ describe("SignUp Page", () => {
 
     render(<SignUp />);
 
-    await waitFor(() => {
-      screen.getByRole("form");
-      screen.getByLabelText(/email/i);
-      screen.getByLabelText(/^password/i);
-      screen.getByLabelText(/confirm password/i);
-      screen.getByRole("button");
-    });
+    screen.getByRole("form");
+    screen.getByLabelText(/email/i);
+    screen.getByLabelText(/^password/i);
+    screen.getByLabelText(/confirm password/i);
+    screen.getByRole("button");
   });
 
   it("redirect for signed user", async () => {
@@ -53,10 +63,8 @@ describe("SignUp Page", () => {
 
     render(<SignUp />);
 
-    await waitFor(() => {
-      expect(push).toBeCalledTimes(1);
-      expect(push).toBeCalledWith(Config.Url.Dashboard);
-    });
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledWith(Config.Url.Dashboard);
   });
 
   it("render error alert on fail signup", async () => {
@@ -82,6 +90,13 @@ describe("SignUp Page", () => {
       database: database,
       user: null,
     });
+
+    useAlertsContext.dispatch.mockImplementationOnce((action) => {
+      expect(action.kind).toEqual("add");
+      expect(action.type).toEqual("error");
+      expect(action.message).toEqual(testdata.error.text);
+    });
+
     const user = userEvent.setup();
 
     render(<SignUp />);
@@ -96,16 +111,10 @@ describe("SignUp Page", () => {
     await user.type(input_confirm_password, testdata.form.password);
     await user.click(button);
 
-    await waitFor(() => {
-      const alert = screen.queryByRole("alert");
-
-      expect(alert).toBeInTheDocument();
-      expect(alert).toHaveTextContent(testdata.error.text);
-      expect(signUpFn).toBeCalledTimes(1);
-      expect(signUpFn).toBeCalledWith({
-        email: testdata.form.email,
-        password: testdata.form.password,
-      });
+    expect(signUpFn).toHaveBeenCalledTimes(1);
+    expect(signUpFn).toHaveBeenCalledWith({
+      email: testdata.form.email,
+      password: testdata.form.password,
     });
   });
 
@@ -128,6 +137,12 @@ describe("SignUp Page", () => {
       database: database,
       user: null,
     });
+
+    useAlertsContext.dispatch.mockImplementationOnce((action) => {
+      expect(action.kind).toEqual("add");
+      expect(action.type).toEqual("success");
+    });
+
     const user = userEvent.setup();
 
     render(<SignUp />);
@@ -142,15 +157,10 @@ describe("SignUp Page", () => {
     await user.type(input_confirm_password, testdata.form.password);
     await user.click(button);
 
-    await waitFor(() => {
-      const alert = screen.queryByRole("alert");
-
-      expect(alert).toBeInTheDocument();
-      expect(signUpFn).toBeCalledTimes(1);
-      expect(signUpFn).toBeCalledWith({
-        email: testdata.form.email,
-        password: testdata.form.password,
-      });
+    expect(signUpFn).toHaveBeenCalledTimes(1);
+    expect(signUpFn).toHaveBeenCalledWith({
+      email: testdata.form.email,
+      password: testdata.form.password,
     });
   });
 
