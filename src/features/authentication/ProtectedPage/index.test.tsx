@@ -1,9 +1,10 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 
 import ProtectedPage from ".";
 
 const useRouter = jest.fn();
 jest.mock("next/router", () => ({
+  __esModule: true,
   useRouter() {
     return useRouter();
   },
@@ -16,9 +17,10 @@ describe("Protected Content Component", () => {
   });
 
   it("render child correctly if has access", () => {
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-    });
+    };
+    useRouter.mockReturnValue(router);
 
     const url = "http://localhost/";
 
@@ -28,15 +30,19 @@ describe("Protected Content Component", () => {
       </ProtectedPage>,
     );
 
-    screen.getByTestId("child");
+    const child = screen.queryByTestId("child");
+    const status = screen.queryByRole("status", { hidden: true });
+
+    expect(child).toBeVisible();
+    expect(status).not.toBeVisible();
   });
 
   it("redirect to given url if has no access", async () => {
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
-      push: routerPush,
+    const router = {
+      push: jest.fn(),
       isReady: true,
-    });
+    };
+    useRouter.mockReturnValue(router);
 
     const url = "http://localhost/";
 
@@ -46,16 +52,15 @@ describe("Protected Content Component", () => {
       </ProtectedPage>,
     );
 
-    await waitFor(() => {
-      expect(routerPush).toHaveBeenCalledTimes(1);
-      expect(routerPush).toHaveBeenCalledWith(url);
-    });
+    expect(router.push).toHaveBeenCalledWith(url);
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
-  it("render loading animation if access on verification", () => {
-    useRouter.mockReturnValue({
+  it("render loading animation if the access on verification", () => {
+    const router = {
       isReady: true,
-    });
+    };
+    useRouter.mockReturnValue(router);
 
     const url = "http://localhost/";
 
@@ -65,6 +70,8 @@ describe("Protected Content Component", () => {
       </ProtectedPage>,
     );
 
-    screen.getByRole("status");
+    const loading = screen.getByRole("status", { hidden: true });
+
+    expect(loading).toBeVisible();
   });
 });

@@ -1,6 +1,7 @@
-import { useRouter } from "next/router";
 import { ReactNode } from "react";
-import Loading from "@/components/Loading";
+import { useRouter } from "next/router";
+
+import Loading from "../Loading";
 
 export type ProtectedPageProps = {
   children: ReactNode;
