@@ -7,14 +7,16 @@ describe("Loading Base Component", () => {
 
   it("render child if not loading", () => {
     render(
-      <Loading>
+      <Loading isLoading={false}>
         <div data-testid="child"></div>
       </Loading>,
     );
-    screen.getByTestId("child");
-    const status = screen.queryByRole("status");
 
-    expect(status).not.toBeInTheDocument();
+    const child = screen.getByTestId("child");
+    const status = screen.getByRole("status", { hidden: true });
+
+    expect(child).toBeVisible();
+    expect(status).not.toBeVisible();
   });
 
   it("render loading animation if loading", () => {
@@ -23,13 +25,18 @@ describe("Loading Base Component", () => {
         <div data-testid="child"></div>
       </Loading>,
     );
-    screen.getByRole("status");
+
+    const child = screen.getByTestId("child");
+    const status = screen.getByRole("status", { hidden: true });
+
+    expect(child).toBeVisible();
+    expect(status).toBeVisible();
   });
 
   it("render loading animation if no child", () => {
     render(<Loading />);
-    const status = screen.queryByRole("status");
+    const status = screen.getByRole("status", { hidden: true });
 
-    expect(status).toBeInTheDocument();
+    expect(status).toBeVisible();
   });
 });
