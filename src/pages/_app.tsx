@@ -1,15 +1,13 @@
 import type { AppProps } from "next/app";
-import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
 
 import "@/assets/global.css";
-import Database from "@/services/database";
 import { SessionContextProvider } from "@/contexts/Session";
 import { AlertsContextProvider, useAlertsContext } from "@/contexts/Alerts";
 import Toasts from "@/features/notification/Toasts/toasts";
+import { newDatabase } from "@/services/database";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const supabaseClient = createPagesBrowserClient();
-  const database = new Database(supabaseClient);
+  const database = newDatabase();
 
   return (
     <SessionContextProvider database={database}>
