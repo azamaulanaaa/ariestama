@@ -1,12 +1,19 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SignInPage from "@/pages/signin";
 import Config from "@/config";
-import Database from "@/services/database";
 
 const useRouter = jest.fn();
 jest.mock("next/router", () => ({
+  __esModule: true,
   useRouter() {
     return useRouter();
   },
@@ -36,24 +43,87 @@ describe("SignIn Page", () => {
     jest.resetAllMocks();
   });
 
-  it("render SignIn form when all ready", () => {
-    useRouter.mockReturnValue({ isReady: true });
-    useSessionContext.mockReturnValue({ userPermission: {} });
+  it("render SignIn form when all ready", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    render(<SignInPage />);
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+    };
+    useSessionContext.mockReturnValue({ database });
 
-    const loading = screen.queryByRole("status");
+    await act(async () => {
+      render(<SignInPage />);
+    });
 
-    screen.getByRole("form");
-
-    expect(loading).not.toBeInTheDocument();
+    screen.getByTestId("SignInForm");
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 
-  it("renders Alert and maintains input data for incorrect signin", async () => {
+  it("send correct data to database", async () => {
+    const testdata = {
+      form: {
+        email: "some@email.com",
+        password: "some",
+      },
+    };
+
+    const router = {
+      isReady: true,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        signInWithPassword: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+    };
+    useSessionContext.mockReturnValue({ database });
+
+    const user = userEvent.setup();
+
+    await act(async () => {
+      render(<SignInPage />);
+    });
+
+    const signInForm = screen.getByTestId("SignInForm");
+    const email_input = within(signInForm).getByLabelText(/Email/);
+    const password_input = within(signInForm).getByLabelText(/Password/);
+    const button = within(signInForm).getByRole("button");
+
+    await user.type(email_input, testdata.form.email);
+    await user.type(password_input, testdata.form.password);
+
+    expect(database.auth.signInWithPassword).toHaveBeenCalledTimes(0);
+
+    await user.click(button);
+
+    expect(database.auth.signInWithPassword).toHaveBeenCalledWith(
+      testdata.form,
+    );
+    expect(database.auth.signInWithPassword).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders Alert and maintains input value for incorrect signin", async () => {
     const testdata = {
       error: {
         code: "code",
-        text: "some",
+        message: "some",
       },
       form: {
         email: "some@email.com",
@@ -61,98 +131,163 @@ describe("SignIn Page", () => {
       },
     };
 
-    useRouter.mockReturnValue({ isReady: true });
+    const router = {
+      isReady: true,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        signInWithPassword: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: testdata.error,
+        }),
+      },
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
 
     useAlertsContext.dispatch.mockImplementationOnce((action) => {
       expect(action.kind).toEqual("add");
       expect(action.type).toEqual("error");
     });
 
-    const database = new Database({} as any);
-    jest.spyOn(database.auth, "SignIn").mockResolvedValue(testdata.error);
-    useSessionContext.mockReturnValue({
-      database: database,
-      user: null,
-    });
     const user = userEvent.setup();
 
-    render(<SignInPage />);
+    await act(async () => {
+      render(<SignInPage />);
+    });
 
-    const input_email = screen.getByLabelText(/email/i);
-    const input_password = screen.getByLabelText(/password/i);
-    const button = screen.getByRole("button", { name: /submit/i });
+    const signInForm = screen.getByTestId("SignInForm");
+    const email_input = within(signInForm).getByLabelText(/Email/);
+    const password_input = within(signInForm).getByLabelText(/Password/);
+    const button = within(signInForm).getByRole("button");
 
-    await user.type(input_email, testdata.form.email);
-    await user.type(input_password, testdata.form.password);
+    await user.type(email_input, testdata.form.email);
+    await user.type(password_input, testdata.form.password);
+
+    expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(0);
+
     await user.click(button);
 
-    expect(input_email).toHaveValue(testdata.form.email);
-    expect(input_password).toHaveValue(testdata.form.password);
+    expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
+
+    expect(email_input).toHaveValue(testdata.form.email);
+    expect(password_input).toHaveValue(testdata.form.password);
   });
 
   it("redirect to dashboard for success signin", async () => {
-    const push = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push });
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.auth, "SignIn").mockResolvedValue(null);
-
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        signInWithPassword: jest.fn().mockResolvedValue({
+          data: { session: {} },
+          error: null,
+        } as any),
+      },
+    };
     useSessionContext.mockReturnValue({
-      database: database,
-      user: null,
+      database,
     });
+
     const user = userEvent.setup();
 
-    render(<SignInPage />);
+    await act(async () => {
+      render(<SignInPage />);
+    });
 
-    const input_email = screen.getByLabelText(/email/i);
-    const input_password = screen.getByLabelText(/password/i);
-    const button = screen.getByRole("button", { name: /submit/i });
+    const signInForm = screen.getByTestId("SignInForm");
+    const email_input = within(signInForm).getByLabelText(/Email/);
+    const password_input = within(signInForm).getByLabelText(/Password/);
+    const button = within(signInForm).getByRole("button");
 
-    await user.type(input_email, "some@email.com");
-    await user.type(input_password, "some");
+    await user.type(email_input, "some@email.com");
+    await user.type(password_input, "some");
     await user.click(button);
 
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(0);
+    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
   it("redirect to dashboard for signed user", async () => {
-    const push = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push });
-    useSessionContext.mockReturnValue({ user: {} as any });
+    const router = { isReady: true, push: jest.fn() };
+    useRouter.mockReturnValue(router);
 
-    render(<SignInPage />);
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: {} },
+          error: null,
+        }),
+      },
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
 
-    expect(push).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    await act(async () => {
+      render(<SignInPage />);
+    });
+
+    await waitFor(() => {
+      expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    });
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
-  it("render loading is submit response on process", async () => {
-    const push = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push });
+  it("render loading when form response on process", async () => {
+    const router = {
+      isReady: true,
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.auth, "SignIn").mockResolvedValue(null);
-
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+        signInWithPassword: jest.fn().mockReturnValue({ then: () => {} }),
+      },
+    };
     useSessionContext.mockReturnValue({
-      database: database,
-      user: null,
+      database,
     });
     const user = userEvent.setup();
 
-    render(<SignInPage />);
+    await act(async () => {
+      render(<SignInPage />);
+    });
 
-    const input_email = screen.getByLabelText(/email/i);
-    const input_password = screen.getByLabelText(/password/i);
-    const button = screen.getByRole("button", { name: /submit/i });
-
-    await user.type(input_email, "some@email.com");
-    await user.type(input_password, "some");
-    user.click(button);
+    const loading = screen.queryByRole("status", { hidden: true });
+    const signInForm = screen.getByTestId("SignInForm");
+    const email_input = within(signInForm).getByLabelText(/Email/);
+    const password_input = within(signInForm).getByLabelText(/Password/);
+    const button = within(signInForm).getByRole("button");
 
     await waitFor(() => {
-      screen.getByRole("status");
+      expect(loading).not.toBeVisible();
     });
+
+    await user.type(email_input, "some@email.com");
+    await user.type(password_input, "some");
+    await user.click(button);
+
+    expect(loading).toBeVisible();
   });
 });

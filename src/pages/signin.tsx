@@ -1,50 +1,71 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 
 import DefaultLayout from "@/layout/Default";
-import SignInForm, {
-  SignInFormData,
-} from "@/features/authentication/SignInForm";
+import SignInForm from "@/features/authentication/SignInForm";
 import { useSessionContext } from "@/contexts/Session";
-import Loading from "@/components/Loading";
 import Config from "@/config";
 import { useAlertsContext } from "@/contexts/Alerts";
+import useUserSession from "@/hooks/useUserSession";
+import ProtectedPage from "@/features/authentication/ProtectedPage";
 
-function SignIn() {
-  const router = useRouter();
+const SignInPage = () => {
   const session = useSessionContext();
   const alerts = useAlertsContext();
 
+  const userSession = useUserSession(session.database);
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [succesSignIn, setSuccesSignIn] = useState<boolean>(false);
 
-  if (session.user && router.isReady) router.push(Config.Url.Dashboard);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData.entries());
 
-  const handleSubmit = async (data: SignInFormData) => {
     setLoading(true);
 
-    const error = await session.database.auth.SignIn({
-      email: data.email,
-      password: data.password,
-    });
+    session.database.auth
+      .signInWithPassword({
+        email: data.email.toString(),
+        password: data.password.toString(),
+      })
+      .then(({ data, error }) => {
+        if (error) {
+          alerts.dispatch({
+            kind: "add",
+            id: Date.now().toString(),
+            type: "error",
+            message: error.message,
+          });
+          setLoading(false);
+        }
+        if (data.session) {
+          setSuccesSignIn(true);
+          setLoading(false);
+        }
+      });
+  };
 
-    if (error) {
+  useEffect(() => {
+    if (userSession?.error) {
       alerts.dispatch({
         kind: "add",
         id: Date.now().toString(),
         type: "error",
-        message: error.text,
+        message: userSession.error.message,
       });
-      setLoading(false);
-    } else {
-      router.push(Config.Url.Dashboard);
     }
-  };
+  }, [userSession]);
 
   return (
-    <DefaultLayout>
-      <div className="grid h-screen place-items-center">
-        <Loading isLoading={loading}>
+    <ProtectedPage
+      hasAccess={userSession?.data.session == null && !succesSignIn}
+      isReady={!(userSession == null || loading)}
+      redirectUrl={Config.Url.Dashboard}
+    >
+      <DefaultLayout>
+        <div className="grid h-screen place-items-center">
           <div className="card md:card-bordered md:shadow-md max-w-[350px]">
             <div className="card-body prose max-w-none">
               <h1>Sign In</h1>
@@ -57,10 +78,10 @@ function SignIn() {
               </p>
             </div>
           </div>
-        </Loading>
-      </div>
-    </DefaultLayout>
+        </div>
+      </DefaultLayout>
+    </ProtectedPage>
   );
-}
+};
 
-export default SignIn;
+export default SignInPage;
