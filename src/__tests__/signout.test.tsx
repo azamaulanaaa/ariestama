@@ -1,7 +1,6 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 
 import SignOutPage from "@/pages/signout";
-import Database from "@/services/database";
 import Config from "@/config";
 
 const useRouter = jest.fn();
@@ -19,6 +18,16 @@ jest.mock("@/contexts/Session", () => ({
   },
 }));
 
+const useAlertsContext = {
+  dispatch: jest.fn(),
+};
+jest.mock("@/contexts/Alerts", () => ({
+  __esModule: true,
+  useAlertsContext() {
+    return useAlertsContext;
+  },
+}));
+
 describe("SignOut Page", () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -26,43 +35,76 @@ describe("SignOut Page", () => {
   });
 
   it("show loading animation while on process", async () => {
-    useRouter.mockReturnValue({ isReady: true, push: jest.fn() });
+    const router = {
+      isReady: true,
+      psuh: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    const SignOut = jest
-      .spyOn(database.auth, "SignOut")
-      .mockResolvedValue(null);
-
+    const database = {
+      auth: {
+        signOut: jest.fn().mockReturnValue({ then: () => {} }),
+      },
+    };
     useSessionContext.mockReturnValue({
-      database: database,
-      userPermission: null,
+      database,
     });
 
     render(<SignOutPage />);
-    await waitFor(() => {
-      expect(SignOut).toHaveBeenCalledTimes(1);
-      screen.getByRole("status");
-    });
+
+    const loading = screen.getByRole("status", { hidden: true });
+
+    expect(loading).toBeVisible();
   });
 
   it("call signout function then redirect", async () => {
-    const push = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push });
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.auth, "SignOut").mockResolvedValue(null);
+    const database = {
+      auth: {
+        signOut: jest.fn().mockResolvedValue({ error: null }),
+      },
+    };
+    useSessionContext.mockReturnValue({ database });
 
-    useSessionContext.mockReturnValue({
-      database: database,
-      userPermission: null,
+    act(() => {
+      render(<SignOutPage />);
+    });
+
+    expect(database.auth.signOut).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(router.push).toHaveBeenCalledWith(Config.Url.SignIn);
+    });
+    expect(router.push).toHaveBeenCalledTimes(1);
+  });
+
+  it("render alert is something goes wrong", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        signOut: jest.fn().mockResolvedValue({ error: { message: "some" } }),
+      },
+    };
+    useSessionContext.mockReturnValue({ database });
+
+    useAlertsContext.dispatch.mockImplementationOnce((action) => {
+      expect(action.kind).toEqual("add");
+      expect(action.type).toEqual("error");
     });
 
     render(<SignOutPage />);
 
     await waitFor(() => {
-      expect(database.auth.SignOut).toHaveBeenCalledTimes(1);
-      expect(push).toHaveBeenCalledTimes(1);
-      expect(push).toHaveBeenCalledWith(Config.Url.SignIn);
+      expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
     });
   });
 });

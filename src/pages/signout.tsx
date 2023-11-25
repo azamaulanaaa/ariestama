@@ -1,28 +1,43 @@
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
+import Config from "@/config";
 import DefaultLayout from "@/layout/Default";
 import { useSessionContext } from "@/contexts/Session";
-import Loading from "@/components/Loading";
-import Config from "@/config";
+import { useAlertsContext } from "@/contexts/Alerts";
+import ProtectedPage from "@/features/authentication/ProtectedPage";
 
-const SignOut = () => {
-  const router = useRouter();
+const SignOutPage = () => {
   const session = useSessionContext();
+  const alerts = useAlertsContext();
 
-  if (router.isReady) {
-    session.database.auth.SignOut().then((error) => {
-      if (error) return;
-      router.push(Config.Url.SignIn);
+  const [ready, setReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    session.database.auth.signOut().then(({ error }) => {
+      if (error) {
+        alerts.dispatch({
+          kind: "add",
+          id: Date.now().toString(),
+          type: "error",
+          message: error.message,
+        });
+      } else {
+        setReady(true);
+      }
     });
-  }
+  }, []);
 
   return (
-    <DefaultLayout>
-      <div className="grid h-screen place-items-centers">
-        <Loading />
-      </div>
-    </DefaultLayout>
+    <ProtectedPage
+      redirectUrl={Config.Url.SignIn}
+      hasAccess={false}
+      isReady={ready}
+    >
+      <DefaultLayout>
+        <div className="h-screen"></div>
+      </DefaultLayout>
+    </ProtectedPage>
   );
 };
 
-export default SignOut;
+export default SignOutPage;
