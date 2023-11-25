@@ -1,40 +1,15 @@
-import { FormEvent, ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState, HTMLAttributes } from "react";
 
-export interface SignUpFormProps {
-  onSubmit?: (data: SignUpFormData) => void;
-}
-
-export interface SignUpFormData {
-  email: string;
-  password: string;
-}
+export type SignUpFormProps = Omit<HTMLAttributes<HTMLFormElement>, "children">;
 
 const SignUpForm = (props: SignUpFormProps) => {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
-
   const [passwordMatch, setPasswordMatch] = useState<boolean>(true);
   const [passwordEnoughLength, setPasswordEnoughLength] =
     useState<boolean>(true);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (
-      !props.onSubmit ||
-      !emailRef.current ||
-      !passwordRef.current ||
-      !confirmPasswordRef.current
-    )
-      return;
-
-    if (!validatePassword) return;
-
-    props.onSubmit({
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    });
-  };
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
   const validatePassword = () => {
     if (!passwordRef.current || !confirmPasswordRef.current) return;
@@ -65,7 +40,7 @@ const SignUpForm = (props: SignUpFormProps) => {
   };
 
   return (
-    <form role="form" onSubmit={handleSubmit}>
+    <form data-testid="SignUpForm" role="form" {...props}>
       <div className="form-control">
         <label htmlFor="email" className="label">
           <span className="label-text">
@@ -102,15 +77,14 @@ const SignUpForm = (props: SignUpFormProps) => {
         />
       </div>
       <div className="form-control">
-        <label htmlFor="confirm-password" className="label">
+        <label htmlFor="confirmPassword" className="label">
           <span className="label-text">
             Confirm Password<span className="text-red-400">*</span>
           </span>
         </label>
         <input
           ref={confirmPasswordRef}
-          id="confirm-password"
-          name="confirm-password"
+          id="confirmPassword"
           type="password"
           className={
             "input input-bordered" +

@@ -2,6 +2,7 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SignUpForm from ".";
+import { FormEvent } from "react";
 
 describe("SignUp Form Component", () => {
   afterEach(() => {
@@ -12,16 +13,16 @@ describe("SignUp Form Component", () => {
   it("default render", () => {
     render(<SignUpForm />);
 
-    const form = screen.queryByRole("form");
-    const input_email = screen.queryByLabelText(/email/i);
-    const input_password = screen.queryByLabelText(/^password/i);
-    const input_confirmPassword = screen.queryByLabelText(/confirm password/i);
-    const button = screen.queryByRole("button");
+    screen.getByTestId("SignUpForm");
+    screen.getByRole("form");
+    const email_input = screen.getByLabelText(/Email/);
+    const password_input = screen.getByLabelText(/^Password/);
+    const confirmPassword_input = screen.getByLabelText(/Confirm Password/);
+    const button = screen.getByRole("button");
 
-    expect(form).toBeInTheDocument();
-    expect(input_email).toBeInTheDocument();
-    expect(input_password).toBeInTheDocument();
-    expect(input_confirmPassword).toBeInTheDocument();
+    expect(email_input).toHaveDisplayValue("");
+    expect(password_input).toHaveDisplayValue("");
+    expect(confirmPassword_input).toHaveDisplayValue("");
     expect(button).toHaveTextContent(/submit/i);
   });
 
@@ -32,24 +33,33 @@ describe("SignUp Form Component", () => {
     };
 
     const handleSubmit = jest.fn();
+    const handleSubmitWrapper = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const data = Object.fromEntries(formData.entries());
+
+      handleSubmit(data);
+    };
+
     const user = userEvent.setup();
 
-    render(<SignUpForm onSubmit={handleSubmit} />);
+    render(<SignUpForm onSubmit={handleSubmitWrapper} />);
 
-    const input_email = screen.getByLabelText(/email/i);
-    const input_password = screen.getByLabelText(/^password/i);
-    const input_confirm_password = screen.getByLabelText(/confirm password/i);
-    const btn_submit = screen.getByRole("button");
+    const email_input = screen.getByLabelText(/Email/);
+    const password_input = screen.getByLabelText(/^Password/);
+    const confirmPassword_input = screen.getByLabelText(/Confirm Password/);
+    const button = screen.getByRole("button");
 
-    await user.type(input_email, testdata.email);
-    await user.type(input_password, testdata.password);
-    await user.type(input_confirm_password, testdata.password);
+    await user.type(email_input, testdata.email);
+    await user.type(password_input, testdata.password);
+    await user.type(confirmPassword_input, testdata.password);
 
     expect(handleSubmit).toHaveBeenCalledTimes(0);
-    await user.click(btn_submit).then(() => {
-      expect(handleSubmit).toHaveBeenCalledTimes(1);
+    await user.click(button);
+    await waitFor(() => {
       expect(handleSubmit).toHaveBeenCalledWith(testdata);
     });
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
 
   it("everytimes password change make sure password and confirm password are the same", async () => {
@@ -57,16 +67,16 @@ describe("SignUp Form Component", () => {
 
     render(<SignUpForm />);
 
-    const input_password = screen.getByLabelText(/^password/i);
-    const input_confirm_password = screen.getByLabelText(/confirm password/i);
+    const password_input = screen.getByLabelText(/^Password/);
+    const confirmPassword_input = screen.getByLabelText(/Confirm Password/);
 
-    expect(input_confirm_password).toBeInvalid();
-    await user.type(input_password, "some").then(() => {
-      expect(input_confirm_password).toBeInvalid();
+    expect(confirmPassword_input).toBeInvalid();
+    await user.type(password_input, "some").then(() => {
+      expect(confirmPassword_input).toBeInvalid();
     });
-    await user.type(input_confirm_password, "some2");
-    await user.type(input_password, "2").then(() => {
-      expect(input_confirm_password).toBeValid();
+    await user.type(confirmPassword_input, "some2");
+    await user.type(password_input, "2").then(() => {
+      expect(confirmPassword_input).toBeValid();
     });
   });
 
