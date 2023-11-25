@@ -1,17 +1,17 @@
 import { createContext, ReactNode, useContext } from "react";
-import Database from "@/services/database";
-import useUser, { User } from "./useUser";
+import { SupabaseClient } from "@supabase/supabase-js";
+
+import { Database } from "@/services/database/supabase";
 
 export type Session = {
-  database: Database;
-  user: User | null | undefined;
+  database: SupabaseClient<Database>;
 };
 
 const SessionContext = createContext<Session>({} as Session);
 
 export interface SessionProviderProps {
   children: ReactNode;
-  database: Database;
+  database: SupabaseClient<Database>;
 }
 
 export const SessionContextProvider = (props: SessionProviderProps) => {
@@ -19,7 +19,6 @@ export const SessionContextProvider = (props: SessionProviderProps) => {
     <SessionContext.Provider
       value={{
         database: props.database,
-        user: useUser(props.database),
       }}
     >
       {props.children}
