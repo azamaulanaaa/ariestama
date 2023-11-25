@@ -1,3 +1,4 @@
+import { FormEvent } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -11,15 +12,16 @@ describe("SignIn Form", () => {
   it("render properly", () => {
     render(<SignInForm />);
 
-    const form = screen.queryByRole("form");
-    const input_email = screen.queryByLabelText(/email/i);
-    const input_password = screen.queryByLabelText(/password/i);
-    const button = screen.queryByRole("button");
+    screen.getByTestId("SignInForm")
+    screen.getByRole("form");
+    const email_input = screen.getByLabelText(/Email/);
+    const password_input = screen.getByLabelText(/Password/);
+    const button = screen.getByRole("button");
 
-    expect(form).toBeInTheDocument();
-    expect(input_email).toBeInTheDocument();
-    expect(input_password).toBeInTheDocument();
-    expect(button).toBeInTheDocument();
+    expect(email_input).toHaveDisplayValue("");
+    expect(password_input).toHaveDisplayValue("");
+    expect(password_input).toHaveAttribute("type", "password");
+    expect(button).toHaveTextContent(/Submit/);
   });
 
   it("call onSubmit when form is submited", async () => {
@@ -27,21 +29,29 @@ describe("SignIn Form", () => {
       email: "name@example.com",
       password: "password",
     };
+
     const handleSubmit = jest.fn();
+    const handleSubmitWrapper = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const data = Object.fromEntries(formData.entries());
+
+      handleSubmit(data);
+    };
+
     const user = userEvent.setup();
 
-    render(<SignInForm onSubmit={handleSubmit} />);
+    render(<SignInForm onSubmit={handleSubmitWrapper} />);
 
-    const input_email = screen.getByLabelText(/email/i);
-    const input_password = screen.getByLabelText(/password/i);
-    const btn_submit = screen.getByRole("button");
+    const email_input = screen.getByLabelText(/email/i);
+    const password_input = screen.getByLabelText(/password/i);
+    const button = screen.getByRole("button");
 
-    await user.type(input_email, testdata.email);
-    await user.type(input_password, testdata.password);
+    await user.type(email_input, testdata.email);
+    await user.type(password_input, testdata.password);
+    await user.click(button);
 
-    await user.click(btn_submit).then(() => {
-      expect(handleSubmit).toHaveBeenCalledTimes(1);
-      expect(handleSubmit).toHaveBeenCalledWith(testdata);
-    });
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalledWith(testdata);
   });
 });

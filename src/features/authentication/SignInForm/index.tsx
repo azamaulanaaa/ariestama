@@ -1,35 +1,10 @@
-import { FormEvent } from "react";
+import { HTMLAttributes } from "react";
 
-interface SignInFormProps {
-  onSubmit?: (data: SignInFormData) => void;
-}
-
-export interface SignInFormData {
-  email: string;
-  password: string;
-}
+export type SignInFormProps = Omit<HTMLAttributes<HTMLFormElement>, "children">;
 
 const SignInForm = (props: SignInFormProps) => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!props.onSubmit) return;
-
-    const form = event.currentTarget;
-    const form_data = new FormData(form);
-
-    const email_form = form_data.get("email");
-    const password_form = form_data.get("password");
-
-    if (!email_form || !password_form) return;
-
-    props.onSubmit({
-      email: email_form.toString(),
-      password: password_form.toString(),
-    });
-  };
-
   return (
-    <form role="form" onSubmit={handleSubmit}>
+    <form data-testid="SignInForm" role="form" {...props}>
       <div className="form-control">
         <label htmlFor="email" className="label">
           <span className="label-text">
@@ -40,9 +15,9 @@ const SignInForm = (props: SignInFormProps) => {
           id="email"
           name="email"
           type="email"
-          placeholder="example@domain.com"
-          className="input input-bordered"
+          autoComplete="on"
           required
+          className="input input-bordered"
         />
       </div>
       <div className="form-control">
@@ -55,9 +30,9 @@ const SignInForm = (props: SignInFormProps) => {
           id="password"
           name="password"
           type="password"
-          placeholder="$ecr3tKey."
-          className="input input-bordered"
+          autoComplete="current-password"
           required
+          className="input input-bordered"
         />
       </div>
       <button type="submit" className="btn btn-block mt-8">
