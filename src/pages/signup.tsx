@@ -1,55 +1,63 @@
-import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 
 import DefaultLayout from "@/layout/Default";
 import { useSessionContext } from "@/contexts/Session";
-import Loading from "@/components/Loading";
-import SignUpForm, {
-  SignUpFormData,
-} from "@/features/authentication/SignUpForm";
+import SignUpForm from "@/features/authentication/SignUpForm";
 import Config from "@/config";
 import { useAlertsContext } from "@/contexts/Alerts";
+import useUserSession from "@/hooks/useUserSession";
+import ProtectedPage from "@/features/authentication/ProtectedPage";
 
-function SignUp() {
-  const router = useRouter();
+function SignUpPage() {
   const session = useSessionContext();
   const alert = useAlertsContext();
 
+  const userSession = useUserSession(session.database);
+
   const [loading, setLoading] = useState<boolean>(false);
 
-  if (session.user && router.isReady) router.push(Config.Url.Dashboard);
-
-  const handleSubmit = async (data: SignUpFormData) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setLoading(true);
-    const error = await session.database.auth.SignUp({
-      email: data.email,
-      password: data.password,
-    });
-    if (error) {
-      alert.dispatch({
-        kind: "add",
-        id: Date.now().toString(),
-        type: "error",
-        message: error.text,
+
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    session.database.auth
+      .signUp({
+        email: data.email.toString(),
+        password: data.password.toString(),
+      })
+      .then(({ error }) => {
+        if (error) {
+          alert.dispatch({
+            kind: "add",
+            id: Date.now().toString(),
+            type: "error",
+            message: error.message,
+          });
+          setLoading(false);
+        } else {
+          alert.dispatch({
+            kind: "add",
+            id: Date.now().toString(),
+            type: "success",
+            message: "Sign up successful. Check your email for verification.",
+          });
+        }
+        setLoading(false);
       });
-      setLoading(false);
-      return;
-    }
-    alert.dispatch({
-      kind: "add",
-      id: Date.now().toString(),
-      type: "success",
-      message: "Sign up successful. Check your email for verification.",
-    });
-    setLoading(false);
-    return;
   };
 
   return (
-    <DefaultLayout>
-      <div className="grid h-screen place-items-center">
-        <Loading isLoading={loading}>
+    <ProtectedPage
+      redirectUrl={Config.Url.Dashboard}
+      hasAccess={userSession?.data.session == null}
+      isReady={!(userSession == null || loading)}
+    >
+      <DefaultLayout>
+        <div className="grid h-screen place-items-center">
           <div className="card md:card-bordered md:shadow-md max-w-[350px]">
             <div className="card-body prose max-w-none">
               <h1>Sign Up</h1>
@@ -62,10 +70,10 @@ function SignUp() {
               </p>
             </div>
           </div>
-        </Loading>
-      </div>
-    </DefaultLayout>
+        </div>
+      </DefaultLayout>
+    </ProtectedPage>
   );
 }
 
-export default SignUp;
+export default SignUpPage;
