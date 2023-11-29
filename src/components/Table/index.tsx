@@ -14,8 +14,8 @@ export interface TableProps<K extends string> {
 
 const Table = <K extends string>(props: TableProps<K>) => {
   return (
-    <div className="overflow-scroll">
-      <table className="table-auto border-collapse w-full text-left rounded">
+    <div className="overflow-x-scroll">
+      <table className="table">
         <TableHeader data={props.headers} />
         <TableBody
           data={props.items}
@@ -33,15 +33,10 @@ type TableHeaderProps<K extends string> = {
 
 const TableHeader = <K extends string>(props: TableHeaderProps<K>) => {
   return (
-    <thead className="bg-gray-300 text-gray-700">
-      <tr className="border-b">
+    <thead>
+      <tr>
         {Object.entries(props.data).map(([key, value]: [string, any]) => (
-          <th
-            key={key}
-            className="p-4 border-b border-blue-gray-100 bg-blue-gray-50"
-          >
-            <h4 className="font-normal leading-none opacity-70">{value}</h4>
-          </th>
+          <th key={key}>{value}</th>
         ))}
       </tr>
     </thead>
@@ -65,21 +60,9 @@ const TableBody = <K extends string>(props: TableBodyProps<K>) => {
   return (
     <tbody className="cursor-pointer">
       {props.data.map((data, index) => (
-        <tr
-          key={index}
-          className="even:bg-blue-gray-50/50 hover:bg-blue-gray-50"
-          onClick={genHandleClick(data)}
-        >
+        <tr key={index} onClick={genHandleClick(data)} className="hover">
           {props.dataKey.map((key) => {
-            let value = data[key];
-            if (typeof value == "string" || typeof value == "number")
-              value = <p className="font-normal">{value}</p>;
-
-            return (
-              <td key={key} className="p-4">
-                {value}
-              </td>
-            );
+            return <td key={key}>{data[key]}</td>;
           })}
         </tr>
       ))}
