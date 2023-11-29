@@ -1,71 +1,27 @@
-import { FormEvent, ChangeEvent, useState, useEffect } from "react";
+import { HTMLAttributes } from "react";
 
-export type InsertCompanyData = {
-  name: string;
-  branch: string;
-  address: string;
-  sub_district: string;
-  city: string;
-  province: string;
-  zip_code: number;
+type BaseFormProps = Omit<
+  HTMLAttributes<HTMLFormElement>,
+  "children" | "defaultValue"
+>;
+
+export type CompanyFormProps = BaseFormProps & {
+  defaultValue?: {
+    name?: string;
+    branch?: string;
+    address?: string;
+    sub_district?: string;
+    city?: string;
+    province?: string;
+    zip_code?: string;
+  };
 };
 
-export type InsertCompanyFormProps = {
-  onSubmit?: (data: InsertCompanyData) => void;
-  defaultValues?: InsertCompanyData;
-};
-
-const InsertCompanyForm = (props: InsertCompanyFormProps) => {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!props.onSubmit) return;
-
-    const form = event.currentTarget;
-    const form_data = new FormData(form);
-
-    const name_form = form_data.get("name");
-    const branch_form = form_data.get("branch");
-    const address_form = form_data.get("address");
-    const subdistrict_form = form_data.get("subdistrict");
-    const city_form = form_data.get("city");
-    const province_form = form_data.get("province");
-    const zipcode_form = form_data.get("zipcode");
-
-    if (
-      !name_form ||
-      !branch_form ||
-      !address_form ||
-      !subdistrict_form ||
-      !city_form ||
-      !province_form ||
-      !zipcode_form
-    )
-      return;
-
-    props.onSubmit({
-      name: name_form.toString(),
-      branch: branch_form.toString(),
-      address: address_form.toString(),
-      sub_district: subdistrict_form.toString(),
-      city: city_form.toString(),
-      province: province_form.toString(),
-      zip_code: Number(zipcode_form.toString()),
-    });
-  };
-
-  const [name, setName] = useState<string>("");
-  useEffect(() => {
-    if (props.defaultValues) {
-      setName(props.defaultValues.name);
-    }
-  }, [props.defaultValues]);
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value.toUpperCase());
-  };
+const CompanyForm = (props: CompanyFormProps) => {
+  const { defaultValue: defaultValues, ...formProps } = props;
 
   return (
-    <form data-testid="InsertCompanyForm" role="form" onSubmit={handleSubmit}>
+    <form data-testid="CompanyForm" role="form" {...formProps}>
       <div className="grid md:grid-cols-2 gap-4">
         <div className="form-control">
           <label htmlFor="name" className="label">
@@ -77,9 +33,8 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
             id="name"
             name="name"
             type="text"
+            defaultValue={defaultValues?.name}
             required
-            onChange={handleNameChange}
-            value={name}
             className="input input-bordered"
           />
         </div>
@@ -93,8 +48,8 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
             id="branch"
             name="branch"
             type="text"
+            defaultValue={defaultValues?.branch}
             required
-            defaultValue={props.defaultValues?.branch}
             className="input input-bordered"
           />
         </div>
@@ -108,23 +63,23 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
             id="address"
             name="address"
             type="address"
+            defaultValue={defaultValues?.address}
             required
-            defaultValue={props.defaultValues?.address}
             className="input input-bordered"
           />
         </div>
         <div className="form-control">
-          <label htmlFor="subdistrict" className="label">
+          <label htmlFor="sub_district" className="label">
             <span className="label-text">
               Sub-District<span className="text-red-400">*</span>
             </span>
           </label>
           <input
-            id="subdistrict"
-            name="subdistrict"
+            id="sub_district"
+            name="sub_district"
             type="text"
+            defaultValue={defaultValues?.sub_district}
             required
-            defaultValue={props.defaultValues?.sub_district}
             className="input input-bordered"
           />
         </div>
@@ -138,8 +93,8 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
             id="city"
             name="city"
             type="text"
+            defaultValue={defaultValues?.city}
             required
-            defaultValue={props.defaultValues?.city}
             className="input input-bordered"
           />
         </div>
@@ -153,23 +108,23 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
             id="province"
             name="province"
             type="text"
+            defaultValue={defaultValues?.province}
             required
-            defaultValue={props.defaultValues?.province}
             className="input input-bordered"
           />
         </div>
         <div className="form-control">
-          <label htmlFor="zipcode" className="label">
+          <label htmlFor="zip_code" className="label">
             <span className="label-text">
               Zip Code<span className="text-red-400">*</span>
             </span>
           </label>
           <input
-            id="zipcode"
-            name="zipcode"
+            id="zip_code"
+            name="zip_code"
             type="number"
+            defaultValue={props.defaultValue?.zip_code}
             required
-            defaultValue={props.defaultValues?.zip_code}
             className="input input-bordered"
           />
         </div>
@@ -181,4 +136,4 @@ const InsertCompanyForm = (props: InsertCompanyFormProps) => {
   );
 };
 
-export default InsertCompanyForm;
+export default CompanyForm;
