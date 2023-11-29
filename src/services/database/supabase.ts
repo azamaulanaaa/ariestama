@@ -37,34 +37,6 @@ export interface Database {
           }
         ]
       }
-      bookkeeping_account_cateogry: {
-        Row: {
-          created_at: string
-          id: number
-          name: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          name: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          name?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "bookkeeping_account_cateogry_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       bookkeeping_transaction: {
         Row: {
           created_at: string
@@ -288,23 +260,84 @@ export interface Database {
           created_at: string
           id: string
           name: string
-          permission: Json
         }
         Insert: {
           created_at?: string
           id: string
           name: string
-          permission?: Json
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          permission?: Json
         }
         Relationships: [
           {
             foreignKeyName: "user_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      user_permission: {
+        Row: {
+          bookkeeping_account_insert: boolean
+          bookkeeping_account_read: boolean
+          bookkeeping_account_update: boolean
+          bookkeeping_transaction_insert: boolean
+          bookkeeping_transaction_read: boolean
+          bookkeeping_transaction_update: boolean
+          caculators_safety: boolean
+          company_insert: boolean
+          company_read: boolean
+          company_update: boolean
+          created_at: string
+          id: string
+          unit_insert: boolean
+          unit_read: boolean
+          unit_update: boolean
+          user_permission_update: boolean
+        }
+        Insert: {
+          bookkeeping_account_insert?: boolean
+          bookkeeping_account_read?: boolean
+          bookkeeping_account_update?: boolean
+          bookkeeping_transaction_insert?: boolean
+          bookkeeping_transaction_read?: boolean
+          bookkeeping_transaction_update?: boolean
+          caculators_safety?: boolean
+          company_insert?: boolean
+          company_read?: boolean
+          company_update?: boolean
+          created_at?: string
+          id: string
+          unit_insert?: boolean
+          unit_read?: boolean
+          unit_update?: boolean
+          user_permission_update?: boolean
+        }
+        Update: {
+          bookkeeping_account_insert?: boolean
+          bookkeeping_account_read?: boolean
+          bookkeeping_account_update?: boolean
+          bookkeeping_transaction_insert?: boolean
+          bookkeeping_transaction_read?: boolean
+          bookkeeping_transaction_update?: boolean
+          caculators_safety?: boolean
+          company_insert?: boolean
+          company_read?: boolean
+          company_update?: boolean
+          created_at?: string
+          id?: string
+          unit_insert?: boolean
+          unit_read?: boolean
+          unit_update?: boolean
+          user_permission_update?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_permission_id_fkey"
             columns: ["id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
