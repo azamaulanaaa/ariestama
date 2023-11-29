@@ -13,7 +13,7 @@ const SignInPage = () => {
   const session = useSessionContext();
   const alerts = useAlertsContext();
 
-  const userSession = useUserSession(session.database);
+  const user = useUserSession(session.database);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [succesSignIn, setSuccesSignIn] = useState<boolean>(false);
@@ -48,20 +48,20 @@ const SignInPage = () => {
   };
 
   useEffect(() => {
-    if (userSession?.error) {
+    if (user.session?.error) {
       alerts.dispatch({
         kind: "add",
         id: Date.now().toString(),
         type: "error",
-        message: userSession.error.message,
+        message: user.session?.error.message,
       });
     }
-  }, [userSession]);
+  }, [user]);
 
   return (
     <ProtectedPage
-      hasAccess={userSession?.data.session == null && !succesSignIn}
-      isReady={!(userSession == null || loading)}
+      hasAccess={user.session?.data.session == null && !succesSignIn}
+      isReady={!(user.session == null || loading)}
       redirectUrl={Config.Url.Dashboard}
     >
       <DefaultLayout>

@@ -231,10 +231,15 @@ describe("SignIn Page", () => {
     const database = {
       auth: {
         getSession: jest.fn().mockResolvedValue({
-          data: { session: {} },
+          data: { session: { user: { id: {} } } },
           error: null,
         }),
       },
+      from: () => ({
+        select: () => ({
+          eq: () => ({ then: () => {} }),
+        }),
+      }),
     };
     useSessionContext.mockReturnValue({
       database,

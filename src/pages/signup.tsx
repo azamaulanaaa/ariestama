@@ -13,7 +13,7 @@ function SignUpPage() {
   const session = useSessionContext();
   const alert = useAlertsContext();
 
-  const userSession = useUserSession(session.database);
+  const user = useUserSession(session.database);
 
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -53,8 +53,8 @@ function SignUpPage() {
   return (
     <ProtectedPage
       redirectUrl={Config.Url.Dashboard}
-      hasAccess={userSession?.data.session == null}
-      isReady={!(userSession == null || loading)}
+      hasAccess={user.session?.data.session == null}
+      isReady={!(user.session == null || loading)}
     >
       <DefaultLayout>
         <div className="grid h-screen place-items-center">
