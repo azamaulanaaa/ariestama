@@ -1,7 +1,7 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
-import CompaniesPage from "@/pages/company";
+import { act, cleanup, render, screen, within } from "@testing-library/react";
+
 import Config from "@/config";
-import Database from "@/services/database";
+import CompaniesPage from "@/pages/company";
 
 const useRouter = jest.fn();
 jest.mock("next/router", () => ({
@@ -19,6 +19,16 @@ jest.mock("@/contexts/Session", () => ({
   },
 }));
 
+const useAlertsContext = {
+  dispatch: jest.fn(),
+};
+jest.mock("@/contexts/Alerts", () => ({
+  __esModule: true,
+  useAlertsContext() {
+    return useAlertsContext;
+  },
+}));
+
 jest.mock("@/layout/Dashboard", () => ({
   __esModule: true,
   default: (props: { children: any }) => <>{props.children}</>,
@@ -31,52 +41,104 @@ describe("Dashboard Companies Page", () => {
   });
 
   it("redirect to dashboard if user does not have read company permission", async () => {
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.company, "gets").mockResolvedValue({} as any);
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: false }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      }),
+    };
     useSessionContext.mockReturnValue({
       database: database,
-      user: {
-        permission: {},
-      },
     });
 
-    render(<CompaniesPage />);
-
-    await waitFor(() => {
-      expect(routerPush).toHaveBeenCalledTimes(1);
-      expect(routerPush).toHaveBeenCalledWith(Config.Url.Dashboard);
+    await act(async () => {
+      render(<CompaniesPage />);
     });
+
+    screen.getByTestId("CompaniesTable");
+
+    expect(database.auth.getSession).toHaveBeenCalledTimes(1);
+    expect(database.from).toHaveBeenCalledTimes(2);
+    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
   it("stays in page if user has company read permission", async () => {
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.company, "gets").mockResolvedValue({} as any);
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      }),
+    };
     useSessionContext.mockReturnValue({
       database: database,
-      user: {
-        permission: {
-          company_read: true,
-        },
-      },
     });
 
-    render(<CompaniesPage />);
-
-    await waitFor(() => {
-      expect(routerPush).toHaveBeenCalledTimes(0);
+    await act(async () => {
+      render(<CompaniesPage />);
     });
+
+    screen.getByTestId("CompaniesTable");
+
+    expect(database.auth.getSession).toHaveBeenCalledTimes(1);
+    expect(database.from).toHaveBeenCalledTimes(2);
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 
   it("render table header if user has company read permission", async () => {
@@ -84,28 +146,55 @@ describe("Dashboard Companies Page", () => {
       headers: ["Name", "Branch", "City", "Province"],
     };
 
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    jest.spyOn(database.company, "gets").mockResolvedValue({} as any);
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      }),
+    };
     useSessionContext.mockReturnValue({
       database: database,
-      user: {
-        permission: { company_read: true },
-      },
     });
 
-    render(<CompaniesPage />);
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
 
-    await waitFor(() => {
-      const colheaders = screen.getAllByRole("columnheader");
-      testdata.headers.forEach((header, index) => {
-        expect(colheaders[index]).toHaveTextContent(header);
-      });
+    const table = screen.getByTestId("CompaniesTable");
+    const colheaders = within(table).getAllByRole("columnheader");
+
+    expect(database.auth.getSession).toHaveBeenCalledTimes(1);
+    expect(database.from).toHaveBeenCalledTimes(2);
+    testdata.headers.forEach((header, index) => {
+      expect(colheaders[index]).toHaveTextContent(header);
     });
   });
 
@@ -122,38 +211,117 @@ describe("Dashboard Companies Page", () => {
       ],
     };
 
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    const database = new Database({} as any);
-    const companylist = jest.spyOn(database.company, "gets").mockResolvedValue({
-      data: testdata.items,
-      ...({} as any),
-    });
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: (table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: jest
+                .fn()
+                .mockResolvedValue({ data: testdata.items, error: null }),
+            };
+          default:
+        }
+      },
+    };
     useSessionContext.mockReturnValue({
       database: database,
-      user: {
-        permission: { company_read: true },
+    });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    const table = screen.getByTestId("CompaniesTable");
+    const rows = within(table).getAllByRole("row");
+
+    expect(rows).toHaveLength(testdata.items.length + 1);
+    testdata.items.forEach((item, index) => {
+      const row = rows[index + 1];
+      expect(row).toHaveTextContent(item.name);
+      expect(row).toHaveTextContent(item.branch);
+      expect(row).toHaveTextContent(item.city);
+      expect(row).toHaveTextContent(item.province);
+    });
+  });
+
+  it("render alert for error fetching data", async () => {
+    const testdata = {
+      error: {
+        message: "error",
       },
+    };
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: (table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: jest
+                .fn()
+                .mockResolvedValue({ data: null, error: testdata.error }),
+            };
+          default:
+        }
+      },
+    };
+    useSessionContext.mockReturnValue({
+      database: database,
     });
 
-    render(<CompaniesPage />);
-
-    await waitFor(() => {
-      expect(companylist).toHaveBeenCalledTimes(1);
-
-      const rows = screen.getAllByRole("row");
-      expect(rows).toHaveLength(testdata.items.length + 1);
-      testdata.items.forEach((item, index) => {
-        const row = rows[index + 1];
-        expect(row).toHaveTextContent(item.name);
-        expect(row).toHaveTextContent(item.branch);
-        expect(row).toHaveTextContent(item.city);
-        expect(row).toHaveTextContent(item.province);
-      });
+    useAlertsContext.dispatch.mockImplementation((action) => {
+      expect(action.kind).toEqual("add");
+      expect(action.type).toEqual("error");
+      expect(action.message).toEqual(testdata.error.message);
     });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    screen.getByTestId("CompaniesTable");
+
+    expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
   });
 });
