@@ -44,7 +44,7 @@ function Companies() {
   const handleClick = (data: TableData<keyof CompaniesItemData>) => {
     if (!router.isReady) return;
     router.push({
-      pathname: Config.Url + "/view",
+      pathname: Config.Url.Company + "/view",
       query: { id: data.id?.toString() },
     });
   };

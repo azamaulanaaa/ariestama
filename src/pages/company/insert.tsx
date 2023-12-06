@@ -56,7 +56,7 @@ const InsertCompany = () => {
               message: "Success insert a new company.",
             });
             router.push({
-              pathname: "/company/view",
+              pathname: Config.Url.Company + "/view",
               query: { id: data[0].id },
             });
           }
