@@ -1,4 +1,9 @@
-import { MouseEvent, ReactNode } from "react";
+import { HTMLAttributes, MouseEvent, ReactNode } from "react";
+
+type BaseTableProps = Omit<
+  HTMLAttributes<HTMLTableElement>,
+  "children" | "onClick"
+>;
 
 export type TableData<K extends string> = {
   [key in K]: ReactNode;
@@ -6,21 +11,23 @@ export type TableData<K extends string> = {
 
 export type TableHeader<K extends string> = Partial<TableData<K>>;
 
-export interface TableProps<K extends string> {
+export type TableProps<K extends string> = BaseTableProps & {
   headers: TableHeader<K>;
   items: TableData<K>[];
   onClick?: (data: TableData<K>) => void;
-}
+};
 
 const Table = <K extends string>(props: TableProps<K>) => {
+  const { headers, items, onClick, ...baseProps } = props;
+
   return (
     <div className="overflow-x-scroll">
-      <table className="table">
-        <TableHeader data={props.headers} />
+      <table className="table" {...baseProps}>
+        <TableHeader data={headers} />
         <TableBody
-          data={props.items}
-          dataKey={Object.keys(props.headers) as K[]}
-          onClick={props.onClick}
+          data={items}
+          dataKey={Object.keys(headers) as K[]}
+          onClick={onClick}
         />
       </table>
     </div>
