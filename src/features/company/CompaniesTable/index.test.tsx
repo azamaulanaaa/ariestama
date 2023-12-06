@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CompaniesTable from ".";
 
@@ -18,7 +18,9 @@ describe("Companies Table Component", () => {
 
     render(<CompaniesTable items={[]} />);
 
-    const colHeaders = screen.getAllByRole("columnheader");
+    const table = screen.getByTestId("CompaniesTable");
+    const colHeaders = within(table).getAllByRole("columnheader");
+
     Object.entries(headers).forEach(([_, value], index) => {
       expect(colHeaders[index]).toHaveTextContent(value);
     });
@@ -44,8 +46,8 @@ describe("Companies Table Component", () => {
 
     render(<CompaniesTable items={items} />);
 
-    screen.getByRole("table");
-    const rows = screen.getAllByRole("row");
+    const table = screen.getByTestId("CompaniesTable");
+    const rows = within(table).getAllByRole("row");
 
     expect(rows).toHaveLength(items.length + 1);
     items.forEach((item, index) => {
@@ -77,7 +79,8 @@ describe("Companies Table Component", () => {
     ];
 
     render(<CompaniesTable items={items} />);
-    const rows = screen.getAllByRole("row");
+    const table = screen.getByTestId("CompaniesTable");
+    const rows = within(table).getAllByRole("row");
 
     items.forEach(async (item, index) => {
       const row = rows[index + 1];

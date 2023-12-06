@@ -22,7 +22,12 @@ const CompaniesTable = (props: CompaniesTableProps) => {
   };
 
   return (
-    <Table headers={headers} items={props.items} onClick={props.onClick} />
+    <Table
+      data-testid="CompaniesTable"
+      headers={headers}
+      items={props.items}
+      onClick={props.onClick}
+    />
   );
 };
 
