@@ -1,6 +1,6 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Database from "@/services/database";
+
 import Config from "@/config";
 import InsertCompanyPage from "@/pages/company/insert";
 
@@ -41,257 +41,393 @@ describe("Dashboard Insert Company Page", () => {
   });
 
   it("redirect to dashboard if user does not have company insert permission", async () => {
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    useSessionContext.mockReturnValue({
-      user: {
-        permission: {},
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
       },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: false }],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
     });
 
-    render(<InsertCompanyPage />);
-
-    await waitFor(() => {
-      expect(routerPush).toHaveBeenCalledTimes(1);
-      expect(routerPush).toHaveBeenCalledWith(Config.Url.Dashboard);
+    await act(async () => {
+      render(<InsertCompanyPage />);
     });
+
+    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
   it("stays in page if user has company insert permission", async () => {
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({
+    const router = {
       isReady: true,
-      push: routerPush,
-    });
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: true }],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
     useSessionContext.mockReturnValue({
-      user: { permission: { company_insert: true } },
+      database,
     });
 
-    render(<InsertCompanyPage />);
-
-    await waitFor(() => {
-      expect(routerPush).toHaveBeenCalledTimes(0);
+    await act(async () => {
+      render(<InsertCompanyPage />);
     });
+
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 
-  it("render insert company form", () => {
-    useRouter.mockReturnValue({ isReady: true });
+  it("render insert company form", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    useSessionContext.mockReturnValue({
-      user: {
-        permission: { company_insert: true },
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
       },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: true }],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
     });
 
-    render(<InsertCompanyPage />);
+    await act(async () => {
+      render(<InsertCompanyPage />);
+    });
 
-    const form = screen.queryByRole("form");
-    const button = screen.queryByRole("button");
-    const input_name = screen.queryByLabelText(/name/i);
-    const input_branch = screen.queryByLabelText(/branch/i);
-    const input_address = screen.queryByLabelText(/address/i);
-    const input_sub_district = screen.queryByLabelText(/sub-district/i);
-    const input_city = screen.queryByLabelText(/city/i);
-    const input_province = screen.queryByLabelText(/province/i);
-    const input_zip_code = screen.queryByLabelText(/zip code/i);
-
-    expect(form).toBeInTheDocument();
-    expect(button).toBeInTheDocument();
-    expect(input_name).toBeInTheDocument();
-    expect(input_branch).toBeInTheDocument();
-    expect(input_address).toBeInTheDocument();
-    expect(input_sub_district).toBeInTheDocument();
-    expect(input_city).toBeInTheDocument();
-    expect(input_province).toBeInTheDocument();
-    expect(input_zip_code).toBeInTheDocument();
+    screen.getByTestId("CompanyForm");
   });
 
   it("call onSubmit function when button pressed", async () => {
     const testdata = {
       data: {
-        name: "NAME",
+        name: "name",
         branch: "branch",
-        address: "addresss",
-        sub_district: "sub_district",
+        address: "address",
+        sub_district: "sub district",
         city: "city",
         province: "province",
-        zip_code: 2000,
+        user_id: "001",
+        zip_code: 1234,
       },
     };
 
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const company_db = {
+      insert: jest.fn().mockReturnValue({
+        select: jest.fn().mockResolvedValue({}),
+      }),
+    };
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: testdata.data.user_id } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return company_db;
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
     const user = userEvent.setup();
 
-    useRouter.mockReturnValue({ isReady: true, push: jest.fn() });
-
-    const database = new Database({} as any);
-    const insertCompany = jest
-      .spyOn(database.company, "insert")
-      .mockResolvedValue({
-        error: null,
-        ...({} as any),
-      });
-    useSessionContext.mockReturnValue({
-      database: database,
-      user: {
-        permission: {
-          company_inser: true,
-        },
-      },
+    await act(async () => {
+      render(<InsertCompanyPage />);
     });
 
-    render(<InsertCompanyPage />);
+    const form = screen.getByTestId("CompanyForm");
+    const button = within(form).getByRole("button");
+    const name_input = within(form).getByLabelText(/Name/);
+    const branch_input = within(form).getByLabelText(/Branch/);
+    const address_input = within(form).getByLabelText(/Address/);
+    const sub_district_input = within(form).getByLabelText(/Sub-District/);
+    const city_input = within(form).getByLabelText(/City/);
+    const province_input = within(form).getByLabelText(/Province/);
+    const zip_code_input = within(form).getByLabelText(/Zip Code/);
 
-    const button = screen.getByRole("button");
-    const input_name = screen.getByLabelText(/name/i);
-    const input_branch = screen.getByLabelText(/branch/i);
-    const input_address = screen.getByLabelText(/address/i);
-    const input_sub_district = screen.getByLabelText(/sub-district/i);
-    const input_city = screen.getByLabelText(/city/i);
-    const input_province = screen.getByLabelText(/province/i);
-    const input_zip_code = screen.getByLabelText(/zip code/i);
-
-    await user.type(input_name, testdata.data.name);
-    await user.type(input_branch, testdata.data.branch);
-    await user.type(input_address, testdata.data.address);
-    await user.type(input_sub_district, testdata.data.sub_district);
-    await user.type(input_city, testdata.data.city);
-    await user.type(input_province, testdata.data.province);
-    await user.type(input_zip_code, String(testdata.data.zip_code));
+    await user.type(name_input, testdata.data.name);
+    await user.type(branch_input, testdata.data.branch);
+    await user.type(address_input, testdata.data.address);
+    await user.type(sub_district_input, testdata.data.sub_district);
+    await user.type(city_input, testdata.data.city);
+    await user.type(province_input, testdata.data.province);
+    await user.type(zip_code_input, String(testdata.data.zip_code));
     await user.click(button);
 
-    expect(insertCompany).toHaveBeenCalledTimes(1);
-    expect(insertCompany).toHaveBeenCalledWith({
-      name: testdata.data.name,
-      branch: testdata.data.branch,
-      address: testdata.data.address,
-      sub_district: testdata.data.sub_district,
-      city: testdata.data.city,
-      province: testdata.data.province,
-      zip_code: testdata.data.zip_code,
-    });
+    expect(company_db.insert).toHaveBeenCalledWith(testdata.data);
+    expect(company_db.insert).toHaveBeenCalledTimes(1);
   });
 
   it("it call success alert then redirect for success insert", async () => {
     const testdata = {
       data: {
-        name: "NAME",
+        id: "1234",
+        name: "name",
         branch: "branch",
         address: "addresss",
         sub_district: "sub_district",
         city: "city",
         province: "province",
         zip_code: 2000,
+        user_id: "000",
       },
     };
 
-    const user = userEvent.setup();
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    useAlertsContext.dispatch.mockImplementationOnce((action) => {
+    const company_db = {
+      insert: jest.fn().mockReturnValue({
+        select: jest.fn().mockResolvedValue({
+          data: [testdata.data],
+          error: null,
+        }),
+      }),
+    };
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: testdata.data.user_id } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return company_db;
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    useAlertsContext.dispatch.mockImplementation((action) => {
       expect(action.kind).toEqual("add");
       expect(action.type).toEqual("success");
     });
 
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push: routerPush });
+    const user = userEvent.setup();
 
-    const database = new Database({} as any);
-    jest.spyOn(database.company, "insert").mockResolvedValue({
-      error: null,
-      ...({} as any),
-    });
-    useSessionContext.mockReturnValue({
-      database: database,
-      user: {
-        id: "some",
-        permission: {
-          company_insert: true,
-        },
-      },
+    await act(async () => {
+      render(<InsertCompanyPage />);
     });
 
-    render(<InsertCompanyPage />);
+    const form = screen.getByTestId("CompanyForm");
+    const button = within(form).getByRole("button");
+    const name_input = within(form).getByLabelText(/Name/);
+    const branch_input = within(form).getByLabelText(/Branch/);
+    const address_input = within(form).getByLabelText(/Address/);
+    const input_sub_district = within(form).getByLabelText(/Sub-District/);
+    const city_input = within(form).getByLabelText(/City/);
+    const province_input = within(form).getByLabelText(/Province/);
+    const zip_code_input = within(form).getByLabelText(/Zip Code/);
 
-    const button = screen.getByRole("button");
-    const input_name = screen.getByLabelText(/name/i);
-    const input_branch = screen.getByLabelText(/branch/i);
-    const input_address = screen.getByLabelText(/address/i);
-    const input_sub_district = screen.getByLabelText(/sub-district/i);
-    const input_city = screen.getByLabelText(/city/i);
-    const input_province = screen.getByLabelText(/province/i);
-    const input_zip_code = screen.getByLabelText(/zip code/i);
-
-    await user.type(input_name, testdata.data.name);
-    await user.type(input_branch, testdata.data.branch);
-    await user.type(input_address, testdata.data.address);
+    await user.type(name_input, testdata.data.name);
+    await user.type(branch_input, testdata.data.branch);
+    await user.type(address_input, testdata.data.address);
     await user.type(input_sub_district, testdata.data.sub_district);
-    await user.type(input_city, testdata.data.city);
-    await user.type(input_province, testdata.data.province);
-    await user.type(input_zip_code, String(testdata.data.zip_code));
+    await user.type(city_input, testdata.data.city);
+    await user.type(province_input, testdata.data.province);
+    await user.type(zip_code_input, String(testdata.data.zip_code));
     await user.click(button);
 
     expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
-    expect(routerPush).toHaveBeenCalledTimes(1);
+    expect(router.push).toHaveBeenCalledTimes(1);
+    expect(router.push).toHaveBeenCalledWith({
+      pathname: Config.Url.Company + "/view",
+      query: { id: testdata.data.id },
+    });
   });
 
   it("it call error alert for error insert", async () => {
     const testdata = {
       data: {
-        name: "NAME",
+        id: "1234",
+        name: "name",
         branch: "branch",
         address: "addresss",
         sub_district: "sub_district",
         city: "city",
         province: "province",
         zip_code: 2000,
+        user_id: "000",
       },
     };
 
-    const user = userEvent.setup();
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
 
-    useAlertsContext.dispatch.mockImplementationOnce((action) => {
+    const company_db = {
+      insert: jest.fn().mockReturnValue({
+        select: jest.fn().mockResolvedValue({
+          data: [],
+          error: {
+            message: "message",
+          },
+        }),
+      }),
+    };
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: testdata.data.user_id } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return company_db;
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    useAlertsContext.dispatch.mockImplementation((action) => {
       expect(action.kind).toEqual("add");
       expect(action.type).toEqual("error");
     });
 
-    const routerPush = jest.fn();
-    useRouter.mockReturnValue({ isReady: true, push: routerPush });
+    const user = userEvent.setup();
 
-    const database = new Database({} as any);
-    jest.spyOn(database.company, "insert").mockResolvedValue({
-      error: {} as any,
-      ...({} as any),
-    });
-    useSessionContext.mockReturnValue({
-      database: database,
-      user: { id: "some", permission: { company_insert: true } },
+    await act(async () => {
+      render(<InsertCompanyPage />);
     });
 
-    render(<InsertCompanyPage />);
+    const form = screen.getByTestId("CompanyForm");
+    const button = within(form).getByRole("button");
+    const name_input = within(form).getByLabelText(/Name/);
+    const branch_input = within(form).getByLabelText(/Branch/);
+    const address_input = within(form).getByLabelText(/Address/);
+    const sub_disctrict_input = within(form).getByLabelText(/Sub-District/);
+    const city_input = within(form).getByLabelText(/City/);
+    const province_input = within(form).getByLabelText(/Province/);
+    const zip_code_input = within(form).getByLabelText(/Zip Code/);
 
-    const button = screen.getByRole("button");
-    const input_name = screen.getByLabelText(/name/i);
-    const input_branch = screen.getByLabelText(/branch/i);
-    const input_address = screen.getByLabelText(/address/i);
-    const input_sub_district = screen.getByLabelText(/sub-district/i);
-    const input_city = screen.getByLabelText(/city/i);
-    const input_province = screen.getByLabelText(/province/i);
-    const input_zip_code = screen.getByLabelText(/zip code/i);
-
-    await user.type(input_name, testdata.data.name);
-    await user.type(input_branch, testdata.data.branch);
-    await user.type(input_address, testdata.data.address);
-    await user.type(input_sub_district, testdata.data.sub_district);
-    await user.type(input_city, testdata.data.city);
-    await user.type(input_province, testdata.data.province);
-    await user.type(input_zip_code, String(testdata.data.zip_code));
+    await user.type(name_input, testdata.data.name);
+    await user.type(branch_input, testdata.data.branch);
+    await user.type(address_input, testdata.data.address);
+    await user.type(sub_disctrict_input, testdata.data.sub_district);
+    await user.type(city_input, testdata.data.city);
+    await user.type(province_input, testdata.data.province);
+    await user.type(zip_code_input, String(testdata.data.zip_code));
     await user.click(button);
 
     expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
-    expect(routerPush).toHaveBeenCalledTimes(0);
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 });
