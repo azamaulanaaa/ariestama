@@ -3,18 +3,25 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { BiSolidPencil } from "react-icons/bi";
 
-import DashboardLayout from "@/layout/Dashboard";
-import ProtectedPage from "@/features/authentication/ProtectedPage";
-import { useSessionContext } from "@/contexts/Session";
-import DenseDisplay from "@/components/DenseDisplay";
-import type { Company } from "@/services/database";
 import Config from "@/config";
+import { useAlertsContext } from "@/contexts/Alerts";
+import { useSessionContext } from "@/contexts/Session";
+import ProtectedPage from "@/features/authentication/ProtectedPage";
+import DashboardLayout from "@/layout/Dashboard";
+import DenseDisplay from "@/components/DenseDisplay";
+import type { DatabaseRaw } from "@/services/database";
+import useUserSession from "@/hooks/useUserSession";
 
 const ViewCompanies = () => {
+  const alerts = useAlertsContext();
   const session = useSessionContext();
+  const user = useUserSession(session.database);
   const router = useRouter();
 
-  const defaultCompanyData: Company = {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [companyData, setCompanyData] = useState<
+    DatabaseRaw["public"]["Tables"]["company"]["Row"]
+  >({
     id: "",
     name: "",
     branch: "",
@@ -24,56 +31,72 @@ const ViewCompanies = () => {
     province: "",
     zip_code: 0,
     user_id: "",
-  };
-
-  const [companyData, setCompanyData] = useState<Company>(defaultCompanyData);
-  const [loading, setLoading] = useState<boolean>(true);
+    created_at: "",
+  });
 
   useEffect(() => {
-    if (session.user?.permission.company_read == true && router.isReady) {
-      const { id: query_id } = router.query;
+    const { id } = router.query;
 
-      let id = query_id as string;
-      if (query_id == undefined) return;
-      if (Array.isArray(query_id[0])) id = query_id[0];
-
-      session.database.company.getsById(id).then((items) => {
-        if (items.error) {
-          return;
-        }
-        setCompanyData(items.data[0]);
-      });
+    if (id) {
+      session.database
+        .from("company")
+        .select()
+        .eq("id", id.toString())
+        .then(({ data, error }) => {
+          if (error) {
+            alerts.dispatch({
+              kind: "add",
+              id: Date.now().toString(),
+              type: "error",
+              message: error.message,
+            });
+          }
+          if (data != null) {
+            if (data.length > 0) {
+              setCompanyData(data[0]);
+              setLoading(false);
+            } else {
+              alerts.dispatch({
+                kind: "add",
+                id: Date.now().toString(),
+                type: "error",
+                message: "No company data is found.",
+              });
+            }
+          }
+        });
     }
-
-    setLoading(false);
-  }, [session, router]);
+  }, [router.query.id]);
 
   return (
-    <DashboardLayout>
-      <ProtectedPage
-        hasAccess={session.user?.permission.company_read == true}
-        isReady={session.user !== undefined && !loading}
-        redirectUrl={Config.Url.SignIn}
-      >
+    <ProtectedPage
+      hasAccess={user.permission?.data?.company_read == true}
+      isReady={user.permission?.data != null && loading == false}
+      redirectUrl={Config.Url.Dashboard}
+    >
+      <DashboardLayout>
         <div className="card card-bordered bg-base-100 shadow-md">
           <div className="card-body prose prose-a:no-underline max-w-none">
             <div className="flex flex-row justify-between items-start">
               <div>
-                <h1 data-testid="company-name">{companyData.name}</h1>
-                <h2 data-testid="company-branch">{companyData.branch}</h2>
+                <h1 data-testid="company-name" className="m-0">
+                  {companyData.name}
+                </h1>
+                <h2 data-testid="company-branch" className="m-0">
+                  {companyData.branch}
+                </h2>
               </div>
               <Link
-                href={"/company/edit?id=" + companyData.id}
+                href={Config.Url.Company + "/edit?id=" + companyData.id}
                 passHref
                 legacyBehavior
               >
-                <a className="btn">
-                  <BiSolidPencil className="w-5 h-5" />
+                <a className="btn btn-sm">
+                  <BiSolidPencil />
                 </a>
               </Link>
             </div>
             <DenseDisplay
-              variant="column"
               keys={{
                 address: "Address",
                 sub_district: "Sub District",
@@ -85,8 +108,8 @@ const ViewCompanies = () => {
             />
           </div>
         </div>
-      </ProtectedPage>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ProtectedPage>
   );
 };
 
