@@ -404,7 +404,7 @@ describe("Dashboard Edit Company Page", () => {
         name: "nama",
         branch: "branch",
         address: "address",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 1000,
@@ -464,7 +464,7 @@ describe("Dashboard Edit Company Page", () => {
     const name_input = within(form).getByLabelText(/name/i);
     const branch_input = within(form).getByLabelText(/branch/i);
     const address_input = within(form).getByLabelText(/address/i);
-    const sub_district_input = within(form).getByLabelText(/sub-district/i);
+    const district_input = within(form).getByLabelText(/district/i);
     const city_input = within(form).getByLabelText(/city/i);
     const province_input = within(form).getByLabelText(/province/i);
     const zip_code_input = within(form).getByLabelText(/zip code/i);
@@ -472,9 +472,7 @@ describe("Dashboard Edit Company Page", () => {
     expect(name_input).toHaveDisplayValue(testdata.companyData.name);
     expect(branch_input).toHaveDisplayValue(testdata.companyData.branch);
     expect(address_input).toHaveDisplayValue(testdata.companyData.address);
-    expect(sub_district_input).toHaveDisplayValue(
-      testdata.companyData.sub_district,
-    );
+    expect(district_input).toHaveDisplayValue(testdata.companyData.district);
     expect(city_input).toHaveDisplayValue(testdata.companyData.city);
     expect(province_input).toHaveDisplayValue(testdata.companyData.province);
     expect(zip_code_input).toHaveDisplayValue(
@@ -497,7 +495,7 @@ describe("Dashboard Edit Company Page", () => {
         name: "NAME",
         branch: "branch",
         address: "address",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 1000,
@@ -575,7 +573,7 @@ describe("Dashboard Edit Company Page", () => {
       name: testdata.newName,
       branch: testdata.companyData.branch,
       address: testdata.companyData.address,
-      sub_district: testdata.companyData.sub_district,
+      district: testdata.companyData.district,
       city: testdata.companyData.city,
       province: testdata.companyData.province,
       zip_code: testdata.companyData.zip_code,
@@ -602,7 +600,7 @@ describe("Dashboard Edit Company Page", () => {
         name: "NAME",
         branch: "branch",
         address: "address",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 1000,

@@ -33,7 +33,7 @@ const InsertCompany = () => {
           name: data.name.toString(),
           branch: data.branch.toString(),
           address: data.address.toString(),
-          sub_district: data.sub_district.toString(),
+          district: data.district.toString(),
           city: data.city.toString(),
           province: data.province.toString(),
           zip_code: parseInt(data.zip_code.toString()),

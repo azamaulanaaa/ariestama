@@ -15,7 +15,7 @@ describe("InsertCompanyForm Component", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const sub_district_input = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -24,7 +24,7 @@ describe("InsertCompanyForm Component", () => {
     expect(name_input).toHaveDisplayValue("");
     expect(branch_input).toHaveDisplayValue("");
     expect(address_input).toHaveDisplayValue("");
-    expect(sub_district_input).toHaveDisplayValue("");
+    expect(district_input).toHaveDisplayValue("");
     expect(city_input).toHaveDisplayValue("");
     expect(province_input).toHaveDisplayValue("");
     expect(zip_code_input).toHaveDisplayValue("");
@@ -36,7 +36,7 @@ describe("InsertCompanyForm Component", () => {
         name: "NAME",
         branch: "branch",
         address: "address",
-        sub_district: "subdistrict",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: "1000",
@@ -61,7 +61,7 @@ describe("InsertCompanyForm Component", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const sub_district_input = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -69,7 +69,7 @@ describe("InsertCompanyForm Component", () => {
     await user.type(name_input, testdata.data.name);
     await user.type(branch_input, testdata.data.branch);
     await user.type(address_input, testdata.data.address);
-    await user.type(sub_district_input, testdata.data.sub_district);
+    await user.type(district_input, testdata.data.district);
     await user.type(city_input, testdata.data.city);
     await user.type(province_input, testdata.data.province);
     await user.type(zip_code_input, testdata.data.zip_code);
@@ -124,18 +124,18 @@ describe("InsertCompanyForm Component", () => {
     expect(address_input).toBeValid();
   });
 
-  it("sub_district input cannot be empty", async () => {
+  it("district input cannot be empty", async () => {
     const user = UserEvent.setup();
 
     render(<CompanyForm />);
 
-    const sub_district_input = screen.getByLabelText(/Sub-District/);
+    const district_input = screen.getByLabelText(/District/);
 
-    expect(sub_district_input).toBeInvalid();
+    expect(district_input).toBeInvalid();
 
-    await user.type(sub_district_input, "kecamatan");
+    await user.type(district_input, "kecamatan");
 
-    expect(sub_district_input).toBeValid();
+    expect(district_input).toBeValid();
   });
 
   it("city input cannot be empty", async () => {
@@ -205,7 +205,7 @@ describe("InsertCompanyForm Component", () => {
         name: "NAME",
         branch: "branch",
         address: "address",
-        sub_district: "subdistrict",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: "1000",
@@ -218,7 +218,7 @@ describe("InsertCompanyForm Component", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const sub_district_input = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -226,9 +226,7 @@ describe("InsertCompanyForm Component", () => {
     expect(name_input).toHaveDisplayValue(testdata.defaultValue.name);
     expect(branch_input).toHaveDisplayValue(testdata.defaultValue.branch);
     expect(address_input).toHaveDisplayValue(testdata.defaultValue.address);
-    expect(sub_district_input).toHaveDisplayValue(
-      testdata.defaultValue.sub_district,
-    );
+    expect(district_input).toHaveDisplayValue(testdata.defaultValue.district);
     expect(city_input).toHaveDisplayValue(testdata.defaultValue.city);
     expect(province_input).toHaveDisplayValue(testdata.defaultValue.province);
     expect(zip_code_input).toHaveDisplayValue(testdata.defaultValue.zip_code);

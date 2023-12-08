@@ -95,10 +95,10 @@ export interface Database {
           branch: string
           city: string
           created_at: string
+          district: string
           id: string
           name: string
           province: string
-          sub_district: string
           user_id: string
           zip_code: number
         }
@@ -107,10 +107,10 @@ export interface Database {
           branch: string
           city: string
           created_at?: string
+          district: string
           id?: string
           name: string
           province: string
-          sub_district: string
           user_id: string
           zip_code: number
         }
@@ -119,10 +119,10 @@ export interface Database {
           branch?: string
           city?: string
           created_at?: string
+          district?: string
           id?: string
           name?: string
           province?: string
-          sub_district?: string
           user_id?: string
           zip_code?: number
         }

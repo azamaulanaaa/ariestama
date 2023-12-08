@@ -10,7 +10,7 @@ export type CompanyFormProps = BaseFormProps & {
     name?: string;
     branch?: string;
     address?: string;
-    sub_district?: string;
+    district?: string;
     city?: string;
     province?: string;
     zip_code?: string;
@@ -69,16 +69,16 @@ const CompanyForm = (props: CompanyFormProps) => {
           />
         </div>
         <div className="form-control">
-          <label htmlFor="sub_district" className="label">
+          <label htmlFor="district" className="label">
             <span className="label-text">
-              Sub-District<span className="text-red-400">*</span>
+              District<span className="text-red-400">*</span>
             </span>
           </label>
           <input
-            id="sub_district"
-            name="sub_district"
+            id="district"
+            name="district"
             type="text"
-            defaultValue={defaultValues?.sub_district}
+            defaultValue={defaultValues?.district}
             required
             className="input input-bordered"
           />

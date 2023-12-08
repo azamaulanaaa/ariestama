@@ -251,7 +251,7 @@ describe("Dashboard Insert Company Page", () => {
         name: "name",
         branch: "branch",
         address: "address",
-        sub_district: "sub district",
+        district: "district",
         city: "city",
         province: "province",
         user_id: "001",
@@ -309,7 +309,7 @@ describe("Dashboard Insert Company Page", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const sub_district_input = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -317,7 +317,7 @@ describe("Dashboard Insert Company Page", () => {
     await user.type(name_input, testdata.data.name);
     await user.type(branch_input, testdata.data.branch);
     await user.type(address_input, testdata.data.address);
-    await user.type(sub_district_input, testdata.data.sub_district);
+    await user.type(district_input, testdata.data.district);
     await user.type(city_input, testdata.data.city);
     await user.type(province_input, testdata.data.province);
     await user.type(zip_code_input, String(testdata.data.zip_code));
@@ -334,7 +334,7 @@ describe("Dashboard Insert Company Page", () => {
         name: "name",
         branch: "branch",
         address: "addresss",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 2000,
@@ -400,7 +400,7 @@ describe("Dashboard Insert Company Page", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const input_sub_district = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -408,7 +408,7 @@ describe("Dashboard Insert Company Page", () => {
     await user.type(name_input, testdata.data.name);
     await user.type(branch_input, testdata.data.branch);
     await user.type(address_input, testdata.data.address);
-    await user.type(input_sub_district, testdata.data.sub_district);
+    await user.type(district_input, testdata.data.district);
     await user.type(city_input, testdata.data.city);
     await user.type(province_input, testdata.data.province);
     await user.type(zip_code_input, String(testdata.data.zip_code));
@@ -429,7 +429,7 @@ describe("Dashboard Insert Company Page", () => {
         name: "name",
         branch: "branch",
         address: "addresss",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 2000,
@@ -497,7 +497,7 @@ describe("Dashboard Insert Company Page", () => {
     const name_input = within(form).getByLabelText(/Name/);
     const branch_input = within(form).getByLabelText(/Branch/);
     const address_input = within(form).getByLabelText(/Address/);
-    const sub_disctrict_input = within(form).getByLabelText(/Sub-District/);
+    const district_input = within(form).getByLabelText(/District/);
     const city_input = within(form).getByLabelText(/City/);
     const province_input = within(form).getByLabelText(/Province/);
     const zip_code_input = within(form).getByLabelText(/Zip Code/);
@@ -505,7 +505,7 @@ describe("Dashboard Insert Company Page", () => {
     await user.type(name_input, testdata.data.name);
     await user.type(branch_input, testdata.data.branch);
     await user.type(address_input, testdata.data.address);
-    await user.type(sub_disctrict_input, testdata.data.sub_district);
+    await user.type(district_input, testdata.data.district);
     await user.type(city_input, testdata.data.city);
     await user.type(province_input, testdata.data.province);
     await user.type(zip_code_input, String(testdata.data.zip_code));
