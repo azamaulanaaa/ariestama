@@ -40,7 +40,88 @@ describe("Dashboard Insert Company Page", () => {
     cleanup();
   });
 
-  it("redirect to dashboard if user does not have company insert permission", async () => {
+  it("redirect if user is not login", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: false }],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<InsertCompanyPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledWith(Config.Url.SignIn);
+    expect(router.push).toHaveBeenCalledTimes(1);
+  });
+
+  it("stay on the page if user is login", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: "id" } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_insert: false }],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<InsertCompanyPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledTimes(0);
+  });
+
+  it("render block if user does not have company insert permission", async () => {
     const router = {
       isReady: true,
       push: jest.fn(),
@@ -77,11 +158,12 @@ describe("Dashboard Insert Company Page", () => {
       render(<InsertCompanyPage />);
     });
 
-    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
-    expect(router.push).toHaveBeenCalledTimes(1);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).toBeVisible();
   });
 
-  it("stays in page if user has company insert permission", async () => {
+  it("no blocker if user has company insert permission", async () => {
     const router = {
       isReady: true,
       push: jest.fn(),
@@ -118,7 +200,9 @@ describe("Dashboard Insert Company Page", () => {
       render(<InsertCompanyPage />);
     });
 
-    expect(router.push).toHaveBeenCalledTimes(0);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).not.toBeVisible();
   });
 
   it("render insert company form", async () => {

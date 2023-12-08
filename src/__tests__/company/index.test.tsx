@@ -40,7 +40,100 @@ describe("Dashboard Companies Page", () => {
     cleanup();
   });
 
-  it("redirect to dashboard if user does not have read company permission", async () => {
+  it("redirect if user is not login", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: false }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database: database,
+    });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledWith(Config.Url.SignIn);
+    expect(router.push).toHaveBeenCalledTimes(1);
+  });
+
+  it("stay on the page if user is login", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: "id" } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: false }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database: database,
+    });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledTimes(0);
+  });
+
+  it("render blocker if user does not have read company permission", async () => {
     const router = {
       isReady: true,
       push: jest.fn(),
@@ -84,14 +177,14 @@ describe("Dashboard Companies Page", () => {
     });
 
     screen.getByTestId("CompaniesTable");
+    const blocker = screen.getByTestId("blocker");
 
     expect(database.auth.getSession).toHaveBeenCalledTimes(1);
     expect(database.from).toHaveBeenCalledTimes(2);
-    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
-    expect(router.push).toHaveBeenCalledTimes(1);
+    expect(blocker).toBeVisible();
   });
 
-  it("stays in page if user has company read permission", async () => {
+  it("no blocker if user has company read permission", async () => {
     const router = {
       isReady: true,
       push: jest.fn(),
@@ -135,10 +228,11 @@ describe("Dashboard Companies Page", () => {
     });
 
     screen.getByTestId("CompaniesTable");
+    const blocker = screen.getByTestId("blocker");
 
     expect(database.auth.getSession).toHaveBeenCalledTimes(1);
     expect(database.from).toHaveBeenCalledTimes(2);
-    expect(router.push).toHaveBeenCalledTimes(0);
+    expect(blocker).not.toBeVisible();
   });
 
   it("render table header if user has company read permission", async () => {

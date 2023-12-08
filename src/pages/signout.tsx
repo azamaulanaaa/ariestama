@@ -5,12 +5,13 @@ import DefaultLayout from "@/layout/Default";
 import { useSessionContext } from "@/contexts/Session";
 import { useAlertsContext } from "@/contexts/Alerts";
 import ProtectedPage from "@/features/authentication/ProtectedPage";
+import Loading from "@/features/authentication/Loading";
 
 const SignOutPage = () => {
   const session = useSessionContext();
   const alerts = useAlertsContext();
 
-  const [ready, setReady] = useState<boolean>(false);
+  const [hasAccess, setHasAccess] = useState<boolean>(true);
 
   useEffect(() => {
     session.database.auth.signOut().then(({ error }) => {
@@ -22,19 +23,17 @@ const SignOutPage = () => {
           message: error.message,
         });
       } else {
-        setReady(true);
+        setHasAccess(false);
       }
     });
   }, []);
 
   return (
-    <ProtectedPage
-      redirectUrl={Config.Url.SignIn}
-      hasAccess={false}
-      isReady={ready}
-    >
+    <ProtectedPage redirectUrl={Config.Url.SignIn} hasAccess={hasAccess}>
       <DefaultLayout>
-        <div className="h-screen"></div>
+        <Loading isLoading={true}>
+          <div className="h-screen grid place-items-center"></div>
+        </Loading>
       </DefaultLayout>
     </ProtectedPage>
   );

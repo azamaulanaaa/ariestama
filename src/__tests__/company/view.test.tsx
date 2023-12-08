@@ -40,7 +40,120 @@ describe("Dashboard View Companies Page", () => {
     jest.resetAllMocks();
   });
 
-  it("let user stay on the page if user have permission", async () => {
+  it("redirect if user is not login", async () => {
+    const testdata = {
+      routerQuery: { id: "id" },
+      userPermission: {
+        company_read: true,
+      },
+    };
+
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+      query: testdata.routerQuery,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [testdata.userPermission],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<ViewPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledWith(Config.Url.SignIn);
+    expect(router.push).toHaveBeenCalledTimes(1);
+  });
+
+  it("stay on the page if user is login", async () => {
+    const testdata = {
+      routerQuery: { id: "id" },
+      userPermission: {
+        company_read: true,
+      },
+    };
+
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+      query: testdata.routerQuery,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: "id" } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [testdata.userPermission],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<ViewPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledTimes(0);
+  });
+
+  it("no blocker if user have permission", async () => {
     const testdata = {
       routerQuery: { id: "id" },
       userPermission: {
@@ -93,10 +206,12 @@ describe("Dashboard View Companies Page", () => {
       render(<ViewPage />);
     });
 
-    expect(router.push).toHaveBeenCalledTimes(0);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).not.toBeVisible();
   });
 
-  it("redirect user if user does not have permission", async () => {
+  it("render blocker if user does not have permission", async () => {
     const testdata = {
       routerQuery: {
         id: "id",
@@ -135,6 +250,7 @@ describe("Dashboard View Companies Page", () => {
             return {
               select: () => ({
                 eq: jest.fn().mockResolvedValue({
+                  data: [{}],
                   error: null,
                 }),
               }),
@@ -151,9 +267,9 @@ describe("Dashboard View Companies Page", () => {
       render(<ViewPage />);
     });
 
-    expect(database.auth.getSession).toHaveBeenCalledTimes(1);
-    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
-    expect(router.push).toHaveBeenCalledTimes(1);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).toBeVisible();
   });
 
   it("send alert if no data found", async () => {

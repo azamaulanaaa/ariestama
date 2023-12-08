@@ -8,6 +8,7 @@ import Config from "@/config";
 import { useAlertsContext } from "@/contexts/Alerts";
 import useUserSession from "@/hooks/useUserSession";
 import ProtectedPage from "@/features/authentication/ProtectedPage";
+import Loading from "@/features/authentication/Loading";
 
 function SignUpPage() {
   const session = useSessionContext();
@@ -52,16 +53,17 @@ function SignUpPage() {
 
   return (
     <ProtectedPage
-      redirectUrl={Config.Url.Dashboard}
       hasAccess={user.session?.data.session == null}
-      isReady={!(user.session == null || loading)}
+      redirectUrl={Config.Url.Dashboard}
     >
       <DefaultLayout>
         <div className="grid h-screen place-items-center">
           <div className="card md:card-bordered md:shadow-md max-w-[350px]">
             <div className="card-body prose max-w-none">
               <h1>Sign Up</h1>
-              <SignUpForm onSubmit={handleSubmit} />
+              <Loading isLoading={loading}>
+                <SignUpForm onSubmit={handleSubmit} />
+              </Loading>
               <p>
                 Already have an account?
                 <Link href="/signin" passHref legacyBehavior>

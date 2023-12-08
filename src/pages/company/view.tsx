@@ -11,6 +11,8 @@ import DashboardLayout from "@/layout/Dashboard";
 import DenseDisplay from "@/components/DenseDisplay";
 import type { DatabaseRaw } from "@/services/database";
 import useUserSession from "@/hooks/useUserSession";
+import Loading from "@/features/authentication/Loading";
+import ProtectedContent from "@/features/authentication/ProtectedContent";
 
 const ViewCompanies = () => {
   const alerts = useAlertsContext();
@@ -70,42 +72,47 @@ const ViewCompanies = () => {
 
   return (
     <ProtectedPage
-      hasAccess={user.permission?.data?.company_read == true}
-      isReady={user.permission?.data != null && loading == false}
-      redirectUrl={Config.Url.Dashboard}
+      hasAccess={user.session?.data.session != null || !user.isReady}
+      redirectUrl={Config.Url.SignIn}
     >
       <DashboardLayout>
         <div className="card card-bordered bg-base-100 shadow-md">
           <div className="card-body prose prose-a:no-underline max-w-none">
-            <div className="flex flex-row justify-between items-start">
-              <div>
-                <h1 data-testid="company-name" className="m-0">
-                  {companyData.name}
-                </h1>
-                <h2 data-testid="company-branch" className="m-0">
-                  {companyData.branch}
-                </h2>
-              </div>
-              <Link
-                href={Config.Url.Company + "/edit?id=" + companyData.id}
-                passHref
-                legacyBehavior
-              >
-                <a className="btn btn-sm">
-                  <BiSolidPencil />
-                </a>
-              </Link>
-            </div>
-            <DenseDisplay
-              keys={{
-                address: "Address",
-                sub_district: "Sub District",
-                city: "City",
-                province: "Province",
-                zip_code: "Zip Code",
-              }}
-              values={companyData}
-            />
+            <ProtectedContent
+              isLocked={user.permission?.data?.company_read === false}
+            >
+              <Loading isLoading={loading}>
+                <div className="flex flex-row justify-between items-start">
+                  <div>
+                    <h1 data-testid="company-name" className="m-0">
+                      {companyData.name}
+                    </h1>
+                    <h2 data-testid="company-branch" className="m-0">
+                      {companyData.branch}
+                    </h2>
+                  </div>
+                  <Link
+                    href={Config.Url.Company + "/edit?id=" + companyData.id}
+                    passHref
+                    legacyBehavior
+                  >
+                    <a className="btn btn-sm">
+                      <BiSolidPencil />
+                    </a>
+                  </Link>
+                </div>
+                <DenseDisplay
+                  keys={{
+                    address: "Address",
+                    sub_district: "Sub District",
+                    city: "City",
+                    province: "Province",
+                    zip_code: "Zip Code",
+                  }}
+                  values={companyData}
+                />
+              </Loading>
+            </ProtectedContent>
           </div>
         </div>
       </DashboardLayout>

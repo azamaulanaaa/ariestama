@@ -9,6 +9,8 @@ import DashboardLayout from "@/layout/Dashboard";
 import useUserSession from "@/hooks/useUserSession";
 import { DatabaseRaw } from "@/services/database";
 import CompanyForm from "@/features/company/CompanyForm";
+import Loading from "@/features/authentication/Loading";
+import ProtectedContent from "@/features/authentication/ProtectedContent";
 
 const EditCompany = () => {
   const alerts = useAlertsContext();
@@ -114,26 +116,31 @@ const EditCompany = () => {
 
   return (
     <ProtectedPage
-      hasAccess={
-        user.permission?.data?.company_read == true &&
-        user.permission?.data?.company_update == true
-      }
-      isReady={user.permission?.data != null && !loading && router.isReady}
-      redirectUrl={Config.Url.Dashboard}
+      hasAccess={user.session?.data.session != null || !user.isReady}
+      redirectUrl={Config.Url.SignIn}
     >
       <DashboardLayout>
         <div className="card card-bordered bg-base-100 shadow-md">
           <div className="card-body prose max-w-none">
             <h1>Edit Company</h1>
-            <CompanyForm
-              onSubmit={handleSubmit}
-              defaultValue={{
-                ...companyData,
-                zip_code: companyData.zip_code
-                  ? String(companyData.zip_code)
-                  : "",
-              }}
-            />
+            <ProtectedContent
+              isLocked={
+                user.permission?.data?.company_read === false ||
+                user.permission?.data?.company_update === false
+              }
+            >
+              <Loading isLoading={loading}>
+                <CompanyForm
+                  onSubmit={handleSubmit}
+                  defaultValue={{
+                    ...companyData,
+                    zip_code: companyData.zip_code
+                      ? String(companyData.zip_code)
+                      : "",
+                  }}
+                />
+              </Loading>
+            </ProtectedContent>
           </div>
         </div>
       </DashboardLayout>

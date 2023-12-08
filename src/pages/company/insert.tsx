@@ -8,6 +8,8 @@ import useUserSession from "@/hooks/useUserSession";
 import DashboardLayout from "@/layout/Dashboard";
 import ProtectedPage from "@/features/authentication/ProtectedPage";
 import CompanyForm from "@/features/company/CompanyForm";
+import Loading from "@/features/authentication/Loading";
+import ProtectedContent from "@/features/authentication/ProtectedContent";
 
 const InsertCompany = () => {
   const alerts = useAlertsContext();
@@ -68,15 +70,20 @@ const InsertCompany = () => {
 
   return (
     <ProtectedPage
-      hasAccess={user.permission?.data?.company_insert == true}
-      isReady={user.permission?.data != null && !loading && router.isReady}
-      redirectUrl={Config.Url.Dashboard}
+      hasAccess={user.session?.data.session != null || !user.isReady}
+      redirectUrl={Config.Url.SignIn}
     >
       <DashboardLayout>
         <div className="card card-bordered bg-base-100 shadow-md">
           <div className="card-body prose max-w-none">
             <h1>Insert Company</h1>
-            <CompanyForm onSubmit={handleSubmit} />
+            <ProtectedContent
+              isLocked={user.permission?.data?.company_insert === false}
+            >
+              <Loading isLoading={loading}>
+                <CompanyForm onSubmit={handleSubmit} />
+              </Loading>
+            </ProtectedContent>
           </div>
         </div>
       </DashboardLayout>

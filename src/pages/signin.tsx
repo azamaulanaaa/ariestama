@@ -8,6 +8,7 @@ import Config from "@/config";
 import { useAlertsContext } from "@/contexts/Alerts";
 import useUserSession from "@/hooks/useUserSession";
 import ProtectedPage from "@/features/authentication/ProtectedPage";
+import Loading from "@/features/authentication/Loading";
 
 const SignInPage = () => {
   const session = useSessionContext();
@@ -61,7 +62,6 @@ const SignInPage = () => {
   return (
     <ProtectedPage
       hasAccess={user.session?.data.session == null && !succesSignIn}
-      isReady={!(user.session == null || loading)}
       redirectUrl={Config.Url.Dashboard}
     >
       <DefaultLayout>
@@ -69,13 +69,15 @@ const SignInPage = () => {
           <div className="card md:card-bordered md:shadow-md max-w-[350px]">
             <div className="card-body prose max-w-none">
               <h1>Sign In</h1>
-              <SignInForm onSubmit={handleSubmit} />
-              <p className="flex justify-center">
-                Don&lsquo;t have an account?
-                <Link href="/signup" passHref legacyBehavior>
-                  <a className="ml-[1ex] font-medium">Sign up</a>
-                </Link>
-              </p>
+              <Loading isLoading={loading}>
+                <SignInForm onSubmit={handleSubmit} />
+                <p className="flex justify-center">
+                  Don&lsquo;t have an account?
+                  <Link href="/signup" passHref legacyBehavior>
+                    <a className="ml-[1ex] font-medium">Sign up</a>
+                  </Link>
+                </p>
+              </Loading>
             </div>
           </div>
         </div>

@@ -98,7 +98,118 @@ describe("Dashboard Edit Company Page", () => {
     screen.getByTestId("CompanyForm");
   });
 
-  it("redirect if user does not have company_read permission", async () => {
+  it("redirect if user is not login", async () => {
+    const testdata = {
+      routerQuery: { id: "id" },
+    };
+
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+      query: testdata.routerQuery,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: null },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [],
+                  error: null,
+                }),
+              }),
+            };
+
+          case "company":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<EditPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledWith(Config.Url.SignIn);
+    expect(router.push).toHaveBeenCalledTimes(1);
+  });
+
+  it("stay on the page if user is login", async () => {
+    const testdata = {
+      routerQuery: { id: "id" },
+    };
+
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+      query: testdata.routerQuery,
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: "id" } } },
+          error: null,
+        }),
+      },
+      from: jest.fn().mockImplementation((table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [],
+                  error: null,
+                }),
+              }),
+            };
+
+          case "company":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [],
+                  error: null,
+                }),
+              }),
+            };
+          default:
+        }
+      }),
+    };
+    useSessionContext.mockReturnValue({
+      database,
+    });
+
+    await act(async () => {
+      render(<EditPage />);
+    });
+
+    expect(router.push).toHaveBeenCalledTimes(0);
+  });
+
+  it("render blocker if user does not have company_read permission", async () => {
     const testdata = {
       routerQuery: { id: "id" },
       userPermission: {
@@ -154,10 +265,12 @@ describe("Dashboard Edit Company Page", () => {
       render(<EditPage />);
     });
 
-    expect(router.push).toHaveBeenCalledTimes(1);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).toBeVisible();
   });
 
-  it("redirect if user does not have company_update permission", async () => {
+  it("render blocker if user does not have company_update permission", async () => {
     const testdata = {
       routerQuery: { id: "id" },
       userPermission: {
@@ -213,11 +326,12 @@ describe("Dashboard Edit Company Page", () => {
       render(<EditPage />);
     });
 
-    expect(router.push).toHaveBeenCalledWith(Config.Url.Dashboard);
-    expect(router.push).toHaveBeenCalledTimes(1);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).toBeVisible();
   });
 
-  it("stay on page if user have company_read and company_update permission", async () => {
+  it("no blocker if user have company_read and company_update permission", async () => {
     const testdata = {
       routerQuery: { id: "id" },
       userPermission: {
@@ -273,7 +387,9 @@ describe("Dashboard Edit Company Page", () => {
       render(<EditPage />);
     });
 
-    expect(router.push).toHaveBeenCalledTimes(0);
+    const blocker = screen.getByTestId("blocker");
+
+    expect(blocker).not.toBeVisible();
   });
 
   it("render company data", async () => {

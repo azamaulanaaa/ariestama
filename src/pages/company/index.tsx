@@ -13,6 +13,7 @@ import CompaniesTable, {
   CompaniesItemData,
 } from "@/features/company/CompaniesTable";
 import { TableData } from "@/components/Table";
+import ProtectedContent from "@/features/authentication/ProtectedContent";
 
 function Companies() {
   const alerts = useAlertsContext();
@@ -50,12 +51,11 @@ function Companies() {
   };
 
   return (
-    <DashboardLayout>
-      <ProtectedPage
-        hasAccess={user.permission?.data?.company_read == true}
-        isReady={user.permission?.data != null && router.isReady}
-        redirectUrl={Config.Url.Dashboard}
-      >
+    <ProtectedPage
+      hasAccess={user.session?.data.session != null || !user.isReady}
+      redirectUrl={Config.Url.SignIn}
+    >
+      <DashboardLayout>
         <div className="card card-bordered bg-base-100 shadow-md">
           <div className="card-body prose prose-a:no-underline max-w-none">
             <div className="flex flex-row justify-between">
@@ -72,11 +72,15 @@ function Companies() {
                 </Link>
               </div>
             </div>
-            <CompaniesTable items={items} onClick={handleClick} />
+            <ProtectedContent
+              isLocked={user.permission?.data?.company_read === false}
+            >
+              <CompaniesTable items={items} onClick={handleClick} />
+            </ProtectedContent>
           </div>
         </div>
-      </ProtectedPage>
-    </DashboardLayout>
+      </DashboardLayout>
+    </ProtectedPage>
   );
 }
 
