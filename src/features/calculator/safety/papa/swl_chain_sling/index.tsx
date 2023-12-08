@@ -36,7 +36,10 @@ function SWLChainSlingCalculator() {
   };
 
   return (
-    <form className="grid grid-rows-1 gap-4">
+    <form
+      data-testid="SWLChainSlingCalculator"
+      className="grid grid-rows-1 gap-4"
+    >
       <div className="form-control">
         <label htmlFor="grade" className="label">
           <span className="label-text">
