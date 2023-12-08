@@ -9,7 +9,7 @@ interface DashboardMobileLayoutProps {
 const DashboardMobileLayout = (props: DashboardMobileLayoutProps) => {
   return (
     <div>
-      <div className="p-4">{props.children}</div>
+      <div>{props.children}</div>
       <Footer />
     </div>
   );
