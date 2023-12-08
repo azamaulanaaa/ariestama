@@ -40,7 +40,7 @@ function Companies() {
           });
         }
       });
-  }, [session.database]);
+  }, [alerts, session.database]);
 
   const handleClick = (data: TableData<keyof CompaniesItemData>) => {
     if (!router.isReady) return;

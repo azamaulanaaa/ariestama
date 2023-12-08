@@ -26,7 +26,7 @@ const SignOutPage = () => {
         setHasAccess(false);
       }
     });
-  }, []);
+  }, [alerts]);
 
   return (
     <ProtectedPage redirectUrl={Config.Url.SignIn} hasAccess={hasAccess}>

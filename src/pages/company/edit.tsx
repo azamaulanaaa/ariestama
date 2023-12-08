@@ -66,7 +66,7 @@ const EditCompany = () => {
           }
         });
     }
-  }, [router.query.id]);
+  }, [alerts, router.query.id]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     setLoading(true);

@@ -68,7 +68,7 @@ const ViewCompanies = () => {
           }
         });
     }
-  }, [router.query.id]);
+  }, [alerts, router.query.id]);
 
   return (
     <ProtectedPage

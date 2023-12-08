@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, use, useEffect, useState } from "react";
 import Link from "next/link";
 
 import DefaultLayout from "@/layout/Default";
@@ -57,7 +57,7 @@ const SignInPage = () => {
         message: user.session?.error.message,
       });
     }
-  }, [user]);
+  }, [alerts, user]);
 
   return (
     <ProtectedPage
