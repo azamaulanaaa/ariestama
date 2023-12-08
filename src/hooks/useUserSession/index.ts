@@ -4,6 +4,8 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 
 const useUserSession = (database: Database) => {
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   const [session, setSession] = useState<
     | {
         data: {
@@ -48,10 +50,12 @@ const useUserSession = (database: Database) => {
             }
           });
       }
+
+      setIsReady(true);
     });
   }, [database]);
 
-  return { session, permission };
+  return { session, permission, isReady };
 };
 
 export default useUserSession;
