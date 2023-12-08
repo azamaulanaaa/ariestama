@@ -28,7 +28,7 @@ const ViewCompanies = () => {
     name: "",
     branch: "",
     address: "",
-    sub_district: "",
+    district: "",
     city: "",
     province: "",
     zip_code: 0,
