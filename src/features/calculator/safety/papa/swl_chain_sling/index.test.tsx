@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { act, cleanup, render, screen, within } from "@testing-library/react";
 import SWLChainSlingCalculator from ".";
 import UserEvent from "@testing-library/user-event";
 
@@ -7,8 +7,10 @@ describe("SWL Chain Sling Calculator Components", () => {
     cleanup();
   });
 
-  it("render default", () => {
-    render(<SWLChainSlingCalculator />);
+  it("render default", async () => {
+    await act(async () => {
+      render(<SWLChainSlingCalculator />);
+    });
 
     const form = screen.getByTestId("SWLChainSlingCalculator");
     const grade = within(form).getByLabelText(/Grade/);
@@ -25,7 +27,9 @@ describe("SWL Chain Sling Calculator Components", () => {
 
     const user = UserEvent.setup();
 
-    render(<SWLChainSlingCalculator />);
+    await act(async () => {
+      render(<SWLChainSlingCalculator />);
+    });
 
     const form = screen.getByTestId("SWLChainSlingCalculator");
     const grade = within(form).getByLabelText(/Grade/);
@@ -33,6 +37,7 @@ describe("SWL Chain Sling Calculator Components", () => {
     const swl = within(form).getByLabelText(/Safety Working Load \(SWL\)/);
 
     await user.selectOptions(grade, data.grade);
+    await user.clear(diameterOfChain);
     await user.type(diameterOfChain, data.diameter);
 
     expect(swl).toHaveDisplayValue(data.swl);

@@ -69,7 +69,7 @@ function SWLChainSlingCalculator() {
           name="diameterOfChain"
           type="number"
           onChange={handleChangeDiameterOfChain}
-          value={diameterOfChain}
+          value={diameterOfChain.toString()}
           required
           className={
             "input input-bordered " + conditionalClassName_diameterOfChain()
