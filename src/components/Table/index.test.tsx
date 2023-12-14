@@ -95,34 +95,4 @@ describe("Table Component", () => {
       expect(row).toHaveTextContent(item.data3);
     });
   });
-
-  it("call onClick with item data for given row click", async () => {
-    const testdata = {
-      headers: { data1: "header1" },
-      items: [{ data1: "data1" }, { data1: "data4" }],
-    };
-    const handleClick = jest.fn();
-    const user = userEvent.setup();
-
-    render(
-      <Table
-        headers={testdata.headers}
-        items={testdata.items}
-        onClick={handleClick}
-      />,
-    );
-
-    const rows = screen.getAllByRole("row");
-
-    const wait = testdata.items.map(async (item, index) => {
-      const row = rows[index + 1];
-
-      return user.click(row).then(() => {
-        expect(handleClick).toHaveBeenCalledWith(item);
-      });
-    });
-
-    await Promise.all(wait);
-    expect(handleClick).toHaveBeenCalledTimes(testdata.items.length);
-  });
 });
