@@ -1,5 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import UnitsTable from ".";
 
 describe("Units Table Component", () => {
@@ -15,6 +14,7 @@ describe("Units Table Component", () => {
         brand: "Brand",
         yom: "Year of Manufacture",
         made_in: "Made In",
+        view_url: "",
       },
     };
 
@@ -40,6 +40,7 @@ describe("Units Table Component", () => {
           brand: "Merek 0",
           yom: 2000,
           made_in: "Negara Pembuat 0",
+          view_url: "1",
         },
         {
           id: "id 2",
@@ -48,6 +49,7 @@ describe("Units Table Component", () => {
           brand: "Merek 1",
           yom: 2000,
           made_in: "Negara Pembuat 1",
+          view_url: "2",
         },
       ],
     };
@@ -59,52 +61,14 @@ describe("Units Table Component", () => {
     expect(rows).toHaveLength(testdata.items.length + 1);
     testdata.items.forEach((item, index) => {
       const row = rows[index + 1];
+      const button = within(row).getByRole("link");
+
       expect(row).toHaveTextContent(item.serial_number);
       expect(row).toHaveTextContent(item.brand);
       expect(row).toHaveTextContent(item.series);
       expect(row).toHaveTextContent(String(item.yom));
       expect(row).toHaveTextContent(item.made_in);
+      expect(button).toHaveAttribute("href", item.view_url);
     });
-  });
-
-  it("call onCilck for item clicked", async () => {
-    const testdata = {
-      items: [
-        {
-          id: "id 1",
-          serial_number: "000",
-          series: "Series 0",
-          brand: "Merek 0",
-          oem: "OEM 0",
-          yom: 2000,
-          made_in: "Negara Pembuat 0",
-        },
-        {
-          id: "id 2",
-          serial_number: "001",
-          series: "Series 1",
-          brand: "Merek 1",
-          oem: "OEM 1",
-          yom: 2000,
-          made_in: "Negara Pembuat 1",
-        },
-      ],
-    };
-    const handleClick = jest.fn();
-    const user = userEvent.setup();
-
-    render(<UnitsTable items={testdata.items} onClick={handleClick} />);
-    const rows = screen.getAllByRole("row");
-
-    const wait = testdata.items.map(async (item, index) => {
-      const row = rows[index + 1];
-
-      return user.click(row).then(() => {
-        expect(handleClick).toBeCalledWith(item);
-      });
-    });
-
-    await Promise.all(wait);
-    expect(handleClick).toBeCalledTimes(testdata.items.length);
   });
 });

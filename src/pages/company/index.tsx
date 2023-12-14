@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { BiSolidPlusSquare } from "react-icons/bi";
 
 import { useSessionContext } from "@/contexts/Session";
@@ -12,14 +11,12 @@ import ProtectedPage from "@/features/authentication/ProtectedPage";
 import CompaniesTable, {
   CompaniesItemData,
 } from "@/features/company/CompaniesTable";
-import { TableData } from "@/components/Table";
 import ProtectedContent from "@/features/authentication/ProtectedContent";
 
 function Companies() {
   const alerts = useAlertsContext();
   const session = useSessionContext();
   const user = useUserSession(session.database);
-  const router = useRouter();
 
   const [items, setItems] = useState<CompaniesItemData[]>([]);
 
@@ -29,7 +26,11 @@ function Companies() {
       .select()
       .then(({ data, error }) => {
         if (data) {
-          setItems(data);
+          const displayItem = data.map((item) => ({
+            ...item,
+            view_url: Config.Url.Company + "/view?id=" + item.id,
+          }));
+          setItems(displayItem);
         }
         if (error) {
           alerts.dispatch({
@@ -41,14 +42,6 @@ function Companies() {
         }
       });
   }, [alerts, session.database]);
-
-  const handleClick = (data: TableData<keyof CompaniesItemData>) => {
-    if (!router.isReady) return;
-    router.push({
-      pathname: Config.Url.Company + "/view",
-      query: { id: data.id?.toString() },
-    });
-  };
 
   return (
     <ProtectedPage
@@ -75,7 +68,7 @@ function Companies() {
             <ProtectedContent
               isLocked={user.permission?.data?.company_read === false}
             >
-              <CompaniesTable items={items} onClick={handleClick} />
+              <CompaniesTable items={items} />
             </ProtectedContent>
           </div>
         </div>

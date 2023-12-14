@@ -1,4 +1,5 @@
-import Table, { TableData } from "@/components/Table";
+import Table from "@/components/Table";
+import ViewButton from "./view_button";
 
 export interface UnitsItemData {
   id: string;
@@ -7,11 +8,11 @@ export interface UnitsItemData {
   brand: string;
   yom: number;
   made_in: string;
+  view_url: string;
 }
 
 export interface UnitsTableProps {
   items: UnitsItemData[];
-  onClick?: (itemData: TableData<keyof UnitsItemData>) => void;
 }
 
 const UnitsTable = (props: UnitsTableProps) => {
@@ -21,11 +22,15 @@ const UnitsTable = (props: UnitsTableProps) => {
     brand: "Brand",
     yom: "Year of Manufacture",
     made_in: "Made In",
+    view_url: "",
   };
 
-  return (
-    <Table headers={headers} items={props.items} onClick={props.onClick} />
-  );
+  const items = props.items.map((item) => ({
+    ...item,
+    view_url: <ViewButton href={item.view_url} />,
+  }));
+
+  return <Table headers={headers} items={items} />;
 };
 
 export default UnitsTable;
