@@ -418,4 +418,100 @@ describe("Dashboard Companies Page", () => {
 
     expect(useAlertsContext.dispatch).toHaveBeenCalledTimes(1);
   });
+
+  it("show loading animation while fetching", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: (table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: () => ({
+                then: () => {},
+              }),
+            };
+          default:
+        }
+      },
+    };
+    useSessionContext.mockReturnValue({
+      database: database,
+    });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    const card = screen.getByTestId("CompaniesTable-Card");
+    const status = within(card).getByRole("status", { hidden: true });
+
+    expect(status).toBeVisible();
+  });
+
+  it("hide loading animation after fetched", async () => {
+    const router = {
+      isReady: true,
+      push: jest.fn(),
+    };
+    useRouter.mockReturnValue(router);
+
+    const database = {
+      auth: {
+        getSession: jest.fn().mockResolvedValue({
+          data: { session: { user: { id: {} } } },
+          error: null,
+        }),
+      },
+      from: (table: string) => {
+        switch (table) {
+          case "user_permission":
+            return {
+              select: () => ({
+                eq: jest.fn().mockResolvedValue({
+                  data: [{ company_read: true }],
+                  error: null,
+                }),
+              }),
+            };
+          case "company":
+            return {
+              select: jest.fn().mockResolvedValue({ data: [], error: null }),
+            };
+          default:
+        }
+      },
+    };
+    useSessionContext.mockReturnValue({
+      database: database,
+    });
+
+    await act(async () => {
+      render(<CompaniesPage />);
+    });
+
+    const card = screen.getByTestId("CompaniesTable-Card");
+    const status = within(card).getByRole("status", { hidden: true });
+
+    expect(status).not.toBeVisible();
+  });
 });

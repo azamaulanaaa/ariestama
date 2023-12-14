@@ -12,12 +12,14 @@ import CompaniesTable, {
   CompaniesItemData,
 } from "@/features/company/CompaniesTable";
 import ProtectedContent from "@/features/authentication/ProtectedContent";
+import Loading from "@/features/authentication/Loading";
 
 function Companies() {
   const alerts = useAlertsContext();
   const session = useSessionContext();
   const user = useUserSession(session.database);
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<CompaniesItemData[]>([]);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ function Companies() {
             message: error.message,
           });
         }
+        setLoading(false);
       });
   }, [alerts, session.database]);
 
@@ -49,7 +52,10 @@ function Companies() {
       redirectUrl={Config.Url.SignIn}
     >
       <DashboardLayout>
-        <div className="card card-bordered bg-base-100 shadow-md">
+        <div
+          data-testid="CompaniesTable-Card"
+          className="card card-bordered bg-base-100 shadow-md"
+        >
           <div className="card-body prose prose-a:no-underline max-w-none">
             <div className="flex flex-row justify-between">
               <h1>Companies</h1>
@@ -68,7 +74,9 @@ function Companies() {
             <ProtectedContent
               isLocked={user.permission?.data?.company_read === false}
             >
-              <CompaniesTable items={items} />
+              <Loading isLoading={loading}>
+                <CompaniesTable items={items} />
+              </Loading>
             </ProtectedContent>
           </div>
         </div>
