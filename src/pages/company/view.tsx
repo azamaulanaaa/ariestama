@@ -104,7 +104,7 @@ const ViewCompanies = () => {
                 <DenseDisplay
                   keys={{
                     address: "Address",
-                    sub_district: "Sub District",
+                    district: "District",
                     city: "City",
                     province: "Province",
                     zip_code: "Zip Code",

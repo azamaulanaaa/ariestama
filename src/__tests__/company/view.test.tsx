@@ -343,7 +343,7 @@ describe("Dashboard View Companies Page", () => {
       },
       keys: {
         address: "Address",
-        sub_district: "Sub District",
+        district: "District",
         city: "City",
         province: "Province",
         zip_code: "Zip Code",
@@ -353,7 +353,7 @@ describe("Dashboard View Companies Page", () => {
         name: "name",
         branch: "branch",
         address: "address",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 1000,
@@ -408,13 +408,13 @@ describe("Dashboard View Companies Page", () => {
     });
 
     const address_tag = screen.getByTestId("key_address");
-    const sub_district_tag = screen.getByTestId("key_sub_district");
+    const district_tag = screen.getByTestId("key_district");
     const city_tag = screen.getByTestId("key_city");
     const province_tag = screen.getByTestId("key_province");
     const zip_code_tag = screen.getByTestId("key_zip_code");
 
     expect(address_tag).toHaveTextContent(testdata.keys.address);
-    expect(sub_district_tag).toHaveTextContent(testdata.keys.sub_district);
+    expect(district_tag).toHaveTextContent(testdata.keys.district);
     expect(city_tag).toHaveTextContent(testdata.keys.city);
     expect(province_tag).toHaveTextContent(testdata.keys.province);
     expect(zip_code_tag).toHaveTextContent(String(testdata.keys.zip_code));
@@ -431,7 +431,7 @@ describe("Dashboard View Companies Page", () => {
         name: "name",
         branch: "branch",
         address: "address",
-        sub_district: "sub_district",
+        district: "district",
         city: "city",
         province: "province",
         zip_code: 1000,
@@ -487,7 +487,7 @@ describe("Dashboard View Companies Page", () => {
     const name_tag = screen.getByTestId("company-name");
     const branch_tag = screen.getByTestId("company-branch");
     const address_tag = screen.getByTestId("value_address");
-    const sub_district_tag = screen.getByTestId("value_sub_district");
+    const district_tag = screen.getByTestId("value_district");
     const city_tag = screen.getByTestId("value_city");
     const province_tag = screen.getByTestId("value_province");
     const zip_code_tag = screen.getByTestId("value_zip_code");
@@ -495,9 +495,7 @@ describe("Dashboard View Companies Page", () => {
     expect(name_tag).toHaveTextContent(testdata.companyData.name);
     expect(branch_tag).toHaveTextContent(testdata.companyData.branch);
     expect(address_tag).toHaveTextContent(testdata.companyData.address);
-    expect(sub_district_tag).toHaveTextContent(
-      testdata.companyData.sub_district,
-    );
+    expect(district_tag).toHaveTextContent(testdata.companyData.district);
     expect(city_tag).toHaveTextContent(testdata.companyData.city);
     expect(province_tag).toHaveTextContent(testdata.companyData.province);
     expect(zip_code_tag).toHaveTextContent(
