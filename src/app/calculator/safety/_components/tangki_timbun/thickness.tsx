@@ -21,7 +21,7 @@ const Thickness = () => {
         corrosionAllowable,
       );
 
-      return result.toFixed(2);
+      return result.toFixed(1);
     } catch (error) {
       return NaN;
     }
@@ -67,7 +67,7 @@ const Thickness = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Design Specific Gravity Liquid</span>
-          <span className="label-text-alt">(Raw Molases)</span>
+          <span className="label-text-alt">kilo gram per meter cubic</span>
         </div>
         <input
           type="number"
