@@ -178,6 +178,61 @@ export const Forklift = {
   },
 };
 
+export const Rope = {
+  SafetyFactor: {
+    wire_sling: 5,
+    wire_running: 3.5,
+  },
+
+  /**
+   * Calculate Safety Working Load of wire rope sling
+   *
+   * @param diameter - diameter of the wire rope in inch.
+   * @param grade - grade of the wire rope is one of [1770].
+   *
+   * @returns Safety Working Load in ton.
+   */
+  swlWireSling(diameter: number, grade: number): number {
+    const zDiameter = z.number().positive().parse(diameter);
+    const zGrade = z.literal(1770).parse(grade);
+
+    if (zGrade == 1770) {
+      return zDiameter ** 2 * 8;
+    }
+
+    return NaN;
+  },
+
+  /**
+   * Calculate Safety Working Load of running wire rope
+   *
+   * @param diameter - diameter of the wire rope in inch.
+   * @param reavingNumber - number of reaving used in the rope.
+   * @param grade - grade of the wire rope is one of [1770].
+   *
+   * @returns Safety Working Load in kilo gram.
+   */
+  swlWireRunning(
+    diameter: number,
+    reavingNumber: number,
+    grade: number,
+  ): number {
+    const zDiameter = z.number().positive().parse(diameter);
+    const zReavingNumber = z.number().int().positive().parse(reavingNumber);
+    const zGrade = z.literal(1770).parse(grade);
+
+    if (zGrade == 1770) {
+      return (
+        (this.SafetyFactor.wire_sling / this.SafetyFactor.wire_running) *
+        this.swlWireSling(zDiameter, zGrade) *
+        zReavingNumber
+      );
+    }
+
+    return NaN;
+  },
+};
+
 export const General = {
   /**
    * Calculate ratio beban realtive to swl
@@ -192,5 +247,20 @@ export const General = {
     const zWeight = z.number().positive().parse(weight);
 
     return zWeight / zSwl;
+  },
+
+  /**
+   * Calculate breaking strength of an SWL for given safety factor
+   *
+   * @param swl - safety working load in kilo gram.
+   * @param safetyFactor - constanta of safety factor
+   *
+   * @returns breaking strength in kilo gram
+   */
+  breakingStrength(swl: number, safetyFactor: number): number {
+    const zSwl = z.number().parse(swl);
+    const zSafetyFactor = z.number().parse(safetyFactor);
+
+    return zSwl * zSafetyFactor;
   },
 };

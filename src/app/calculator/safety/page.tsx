@@ -5,6 +5,7 @@ import InstalasiPenyalurPetir from "./_components/instalasi_penyalur_petir";
 import Lingkungan from "./_components/lingkungan";
 import Chain from "./_components/chain";
 import Forklift from "./_components/forklfit";
+import Rope from "./_components/rope";
 
 const calculator: Record<string, ReactNode> = {
   "Chain - SWL Block": <Chain.SWLBlock />,
@@ -14,6 +15,7 @@ const calculator: Record<string, ReactNode> = {
     <InstalasiPenyalurPetir.RadiusConventional />
   ),
   "Lingkungan - Anchor Resultante": <Lingkungan.AnchorResultante />,
+  "Rope - SWL Wire": <Rope.SwlRunningRope />,
   "Tangki Timbun - Thickness": <TangkiTimbun.Thickness />,
 };
 
