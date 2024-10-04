@@ -87,7 +87,7 @@ const SWLFork = () => {
           <span className="label-text-alt">centi meter</span>
         </div>
         <select
-          className="input input-bordered w-full text-right"
+          className="select select-bordered w-full text-right"
           value={loadCenterFork}
           onChange={(e) => {
             setLoadCenterFork(parseFloat(e.target.value));
