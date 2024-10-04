@@ -4,10 +4,12 @@ import TangkiTimbun from "./_components/tangki_timbun";
 import InstalasiPenyalurPetir from "./_components/instalasi_penyalur_petir";
 import Lingkungan from "./_components/lingkungan";
 import Chain from "./_components/chain";
+import Forklift from "./_components/forklfit";
 
 const calculator: Record<string, ReactNode> = {
   "Chain - SWL Block": <Chain.SWLBlock />,
   "Chain - SWL Sling": <Chain.SWLSling />,
+  "Forklift - SWL Fork": <Forklift.SWLFork />,
   "Instalasi Penyalur Petir - Radius Konvensional": (
     <InstalasiPenyalurPetir.RadiusConventional />
   ),
@@ -21,7 +23,7 @@ const SafetyCalculator = () => {
   const Calculator = useMemo(() => calculator[type] || "", [type]);
 
   return (
-    <div className="flex flex-col gap-2 m-2">
+    <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <select
