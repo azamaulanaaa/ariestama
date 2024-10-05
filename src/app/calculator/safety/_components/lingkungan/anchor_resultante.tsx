@@ -18,8 +18,8 @@ const AnchorResultante = () => {
   }, [alpha, mass]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Alpha</span>
@@ -48,7 +48,7 @@ const AnchorResultante = () => {
           }}
         />
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Resultante</span>

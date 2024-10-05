@@ -33,8 +33,8 @@ const SwlWireRope = () => {
   }, [diameter, reavingNumber, grade]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Diameter</span>
@@ -76,10 +76,11 @@ const SwlWireRope = () => {
           <option value="1770">1770</option>
         </select>
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
+      <div className="divider">Wire Rope Sling</div>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">SWL Wire Rope Sling</span>
+          <span className="label-text">Safety Working Load (SWL)</span>
           <span className="label-text-alt">ton</span>
         </div>
         <input
@@ -91,7 +92,7 @@ const SwlWireRope = () => {
       </label>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">Breaking Strength Wire Rope Sling</span>
+          <span className="label-text">Breaking Strength</span>
           <span className="label-text-alt">ton</span>
         </div>
         <input
@@ -101,9 +102,10 @@ const SwlWireRope = () => {
           value={breakingStrenghSling.toFixed(1)}
         />
       </label>
+      <div className="divider">Running Wire Rope</div>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">SWL Running Wire Rope</span>
+          <span className="label-text">Safety Working Load (SWL)</span>
           <span className="label-text-alt">ton</span>
         </div>
         <input

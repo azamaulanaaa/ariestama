@@ -17,8 +17,8 @@ const RadiusKonvensional = () => {
   }, [tinggi]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Tinggi</span>
@@ -33,7 +33,7 @@ const RadiusKonvensional = () => {
           }}
         />
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Radius</span>

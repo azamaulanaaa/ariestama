@@ -19,8 +19,8 @@ const SWLBLock = () => {
   }, [diameter, reavingNumber, grade]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Diameter</span>
@@ -63,7 +63,7 @@ const SWLBLock = () => {
           <option value="100">100</option>
         </select>
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">SWL</span>

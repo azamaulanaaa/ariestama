@@ -51,8 +51,8 @@ const SWLFork = () => {
   }, [swl, weight]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Kapasitas (A)</span>
@@ -125,7 +125,7 @@ const SWLFork = () => {
           }}
         />
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">SWL Fork</span>
@@ -162,7 +162,7 @@ const SWLFork = () => {
           value={weightPercentToSwl.toFixed(0)}
         />
       </label>
-      <div className="divider">Reference</div>
+      <h2>Reference</h2>
       <img className="w-full" src="/img/swl_fork-0.png" alt="reference" />
     </form>
   );

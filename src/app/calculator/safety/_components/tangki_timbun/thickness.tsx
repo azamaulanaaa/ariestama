@@ -34,8 +34,8 @@ const Thickness = () => {
   ]);
 
   return (
-    <form>
-      <div className="divider">Parameter</div>
+    <form className="prose">
+      <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Diameter</span>
@@ -106,7 +106,7 @@ const Thickness = () => {
           }}
         />
       </label>
-      <div className="divider">Result</div>
+      <h2>Result</h2>
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Minimum Required Thickness</span>
