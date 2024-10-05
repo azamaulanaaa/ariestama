@@ -2,19 +2,25 @@
 
 import { useMemo, useState } from "react";
 import { General, Rope } from "../../_utils/calculation";
+import convert from "convert-units";
 
 const SwlWireRope = () => {
   const [diameter, setDiameter] = useState(0);
   const [reavingNumber, setReavingNumber] = useState(0);
   const [grade, setGrade] = useState(1770);
 
+  const diameterInch = useMemo(
+    () => convert(diameter).from("mm").to("in"),
+    [diameter],
+  );
+
   const swlSling = useMemo(() => {
     try {
-      return Rope.swlWireSling(diameter, grade);
+      return Rope.swlWireSling(diameterInch, grade);
     } catch (error) {
       return NaN;
     }
-  }, [diameter, grade]);
+  }, [diameterInch, grade]);
 
   const breakingStrenghSling = useMemo(() => {
     try {
@@ -26,11 +32,11 @@ const SwlWireRope = () => {
 
   const swlRunning = useMemo(() => {
     try {
-      return Rope.swlWireRunning(diameter, reavingNumber, grade);
+      return Rope.swlWireRunning(diameterInch, reavingNumber, grade);
     } catch (error) {
       return NaN;
     }
-  }, [diameter, reavingNumber, grade]);
+  }, [diameterInch, reavingNumber, grade]);
 
   return (
     <form className="prose">
@@ -38,7 +44,7 @@ const SwlWireRope = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Diameter</span>
-          <span className="label-text-alt">centi meter</span>
+          <span className="label-text-alt">mili meter</span>
         </div>
         <input
           type="number"
