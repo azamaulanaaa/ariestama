@@ -6,11 +6,13 @@ import Lingkungan from "./_components/lingkungan";
 import Chain from "./_components/chain";
 import Forklift from "./_components/forklfit";
 import Rope from "./_components/rope";
+import Hydrant from "./_components/hydrant";
 
 const calculator: Record<string, ReactNode> = {
   "Chain - SWL Block": <Chain.SWLBlock />,
   "Chain - SWL Sling": <Chain.SWLSling />,
   "Forklift - SWL Fork": <Forklift.SWLFork />,
+  "Hydrant - Reservoir": <Hydrant.Reservoir />,
   "Instalasi Penyalur Petir - Radius Konvensional": (
     <InstalasiPenyalurPetir.RadiusConventional />
   ),

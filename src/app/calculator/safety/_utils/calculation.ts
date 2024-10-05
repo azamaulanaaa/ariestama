@@ -233,6 +233,23 @@ export const Rope = {
   },
 };
 
+export const Hydrant = {
+  /**
+   * Calcualte water flow of a nozzle in liter per minute
+   *
+   * @param nozzleInletDiamter - Nozzle Inlet Diameter in mili meter.
+   * @param waterPreasure - Water Preasure of the nozzle in kilo gram per centi meter square.
+   *
+   * @returns water flow in liter per minute.
+   */
+  waterFlow(nozzleInletDiamter: number, waterPreasure: number): number {
+    const zNozzleInletDiamter = z.number().positive().parse(nozzleInletDiamter);
+    const zWaterPreasure = z.number().positive().parse(waterPreasure);
+
+    return 0.653 * zNozzleInletDiamter ** 2 * Math.sqrt(zWaterPreasure);
+  },
+};
+
 export const General = {
   /**
    * Calculate ratio beban realtive to swl
@@ -262,5 +279,37 @@ export const General = {
     const zSafetyFactor = z.number().parse(safetyFactor);
 
     return zSwl * zSafetyFactor;
+  },
+
+  /**
+   * Calculate volume of a cube
+   *
+   * @param height - height of the cube in meter.
+   * @param width - width of the cube in meter.
+   * @param length - length of the cube in meter.
+   *
+   * @returns volume in meter cubic.
+   */
+  volumeCuboid(height: number, width: number, length: number): number {
+    const zHeight = z.number().positive().parse(height);
+    const zWidth = z.number().positive().parse(width);
+    const zLength = z.number().positive().parse(length);
+
+    return zHeight * zWidth * zLength;
+  },
+
+  /**
+   * Calculate volume of a cylinder
+   *
+   * @param diameter - diameter of the cylinder in meter.
+   * @param height - height of the cylinder in meter.
+   *
+   * @returns volume of the cylinder in meter cubic.
+   */
+  volumeCylinder(diameter: number, height: number): number {
+    const zHeight = z.number().positive().parse(height);
+    const zDiameter = z.number().positive().parse(diameter);
+
+    return Math.PI * (zDiameter / 2) ** 2 * zHeight;
   },
 };
