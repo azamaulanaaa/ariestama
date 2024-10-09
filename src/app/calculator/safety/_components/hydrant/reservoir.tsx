@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { General, Hydrant } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
@@ -11,26 +11,28 @@ const Reservoir = () => {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [length, setLength] = useState(0);
+  const [volume, setVolume] = useState(NaN);
 
   const [nozzleInletDiameter, setNozzleInletDiameter] = useState(0);
   const [waterPreasure, setWaterPreasuer] = useState(0);
   const [numberOpenNozzle, setNumberOpenNozzle] = useState(1);
 
-  const volume = useMemo(() => {
+  useMemo(() => {
     try {
-      if (shape == "cylinder") return General.volumeCylinder(diameter, height);
-      if (shape == "cuboid") return General.volumeCuboid(height, width, length);
-
-      return NaN;
+      if (shape == "cylinder")
+        setVolume(
+          convert(General.volumeCylinder(diameter, height)).from("m3").to("l"),
+        );
+      else if (shape == "cuboid")
+        setVolume(
+          convert(General.volumeCuboid(height, width, length))
+            .from("m3")
+            .to("l"),
+        );
     } catch (error) {
-      return NaN;
+      setVolume(NaN);
     }
   }, [shape, diameter, height, width, length]);
-
-  const volumeLiter = useMemo(
-    () => convert(volume).from("m3").to("l"),
-    [volume],
-  );
 
   const waterFlow = useMemo(() => {
     try {
@@ -51,7 +53,7 @@ const Reservoir = () => {
       <div className="divider">Reservoir</div>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">Reservoir Shape</span>
+          <span className="label-text">Shape</span>
         </div>
         <select
           className="select select-bordered w-full text-right"
@@ -62,7 +64,26 @@ const Reservoir = () => {
         >
           <option value="cylinder">Cylinder</option>
           <option value="cuboid">Cuboid</option>
+          <option value="unknown">[Direct Input]</option>
         </select>
+      </label>
+      <label
+        className={classNames("form-control w-full", {
+          hidden: shape != "unknown",
+        })}
+      >
+        <div className="label">
+          <span className="label-text">Volume</span>
+          <span className="label-text-alt">liter</span>
+        </div>
+        <input
+          type="number"
+          className="input input-bordered w-full text-right"
+          value={volume}
+          onChange={(e) => {
+            setVolume(parseFloat(e.target.value));
+          }}
+        />
       </label>
       <label
         className={classNames("form-control w-full", {
@@ -82,7 +103,11 @@ const Reservoir = () => {
           }}
         />
       </label>
-      <label className="form-control w-full">
+      <label
+        className={classNames("form-control w-full", {
+          hidden: shape != "cylinder" && shape != "cuboid",
+        })}
+      >
         <div className="label">
           <span className="label-text">Height</span>
           <span className="label-text-alt">meter</span>
@@ -187,7 +212,7 @@ const Reservoir = () => {
           type="number"
           readOnly
           className="input input-bordered w-full text-right"
-          value={volumeLiter.toFixed(1)}
+          value={volume.toFixed(1)}
         />
       </label>
       <div className="divider">Nozzle</div>
