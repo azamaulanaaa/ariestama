@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { General, Hydrant } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
@@ -12,9 +12,10 @@ const Reservoir = () => {
   const [width, setWidth] = useState(0);
   const [length, setLength] = useState(0);
   const [volume, setVolume] = useState(NaN);
+  const [duration, setDuration] = useState(45);
 
   const [nozzleInletDiameter, setNozzleInletDiameter] = useState(0);
-  const [waterPreasure, setWaterPreasuer] = useState(0);
+  const [waterPreasure, setWaterPreasure] = useState(0);
   const [numberOpenNozzle, setNumberOpenNozzle] = useState(1);
 
   useMemo(() => {
@@ -43,8 +44,8 @@ const Reservoir = () => {
   }, [nozzleInletDiameter, waterPreasure]);
 
   const waterFlow45MinAllNozzle = useMemo(
-    () => waterFlow * 45 * numberOpenNozzle,
-    [waterFlow, numberOpenNozzle],
+    () => waterFlow * duration * numberOpenNozzle,
+    [waterFlow, duration, numberOpenNozzle],
   );
 
   return (
@@ -184,7 +185,7 @@ const Reservoir = () => {
           className="input input-bordered w-full text-right"
           value={waterPreasure}
           onChange={(e) => {
-            setWaterPreasuer(parseFloat(e.target.value));
+            setWaterPreasure(parseFloat(e.target.value));
           }}
         />
       </label>
@@ -200,6 +201,23 @@ const Reservoir = () => {
             setNumberOpenNozzle(parseFloat(e.target.value));
           }}
         />
+      </label>
+      <label className="form-control w-full">
+        <div className="label">
+          <span className="label-text">Nozzle Open Duration</span>
+          <span className="label-text-alt">minute</span>
+        </div>
+        <select
+          className="select select-bordered w-full text-right"
+          value={duration}
+          onChange={(e) => {
+            setDuration(parseFloat(e.target.value));
+          }}
+        >
+          <option value="30">30</option>
+          <option value="45">45</option>
+          <option value="90">90</option>
+        </select>
       </label>
       <h2>Result</h2>
       <div className="divider">Reservoir</div>
@@ -231,7 +249,7 @@ const Reservoir = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Water Volume Needed for All Nozzle</span>
-          <span className="label-text-alt">liter per 45 minute</span>
+          <span className="label-text-alt">liter per {duration} minute</span>
         </div>
         <input
           type="number"
