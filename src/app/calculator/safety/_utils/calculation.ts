@@ -7,7 +7,7 @@ export const TangkiTimbun = {
    * @param diameter - diamter tangki in meter.
    * @param designLiquidLevel - design liquid level
    * @param designSpecificGravityLiquid - design specific gravity liquid in raw molases.
-   * @param allowableStress - allowable stress in meter pascal. the value cannot be 0.
+   * @param allowableStress - allowable stress in mega pascal. the value cannot be 0.
    * @param corrosionAllowance - corrosion allowance in mili meter.
    *
    * @returns minimum required thickness in mili meter.
