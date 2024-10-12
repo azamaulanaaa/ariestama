@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { TangkiTimbun } from "../../_utils/calculation";
+import convert from "convert-units";
 
 const Thickness = () => {
   const [diameter, setDiameter] = useState(0);
@@ -17,7 +18,7 @@ const Thickness = () => {
         diameter,
         designLiquidLevel,
         designSpecificGravityLiquid,
-        allowableStress,
+        convert(allowableStress).from("bar").to("MPa"),
         corrosionAllowable,
       );
 
@@ -67,7 +68,6 @@ const Thickness = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Design Specific Gravity Liquid</span>
-          <span className="label-text-alt">kilo gram per meter cubic</span>
         </div>
         <input
           type="number"
@@ -81,7 +81,7 @@ const Thickness = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Allowable Stress</span>
-          <span className="label-text-alt">meter pascal</span>
+          <span className="label-text-alt">bar</span>
         </div>
         <input
           type="number"
