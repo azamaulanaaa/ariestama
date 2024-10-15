@@ -8,11 +8,13 @@ import Forklift from "./_components/forklfit";
 import Rope from "./_components/rope";
 import Hydrant from "./_components/hydrant";
 import Girder from "./_components/girder";
+import General from "./_components/general";
 
 const calculator: Record<string, ReactNode> = {
   "Chain - SWL Block": <Chain.SWLBlock />,
   "Chain - SWL Sling": <Chain.SWLSling />,
   "Forklift - SWL Fork": <Forklift.SWLFork />,
+  "General - Volume": <General.Volume />,
   "Girder - Deflection": <Girder.Deflection />,
   "Hydrant - Reservoir": <Hydrant.Reservoir />,
   "Instalasi Penyalur Petir - Radius Konvensional": (
