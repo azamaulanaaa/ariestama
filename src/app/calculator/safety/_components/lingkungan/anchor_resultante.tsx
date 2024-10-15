@@ -1,11 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Lingkungan } from "../../_utils/calculation";
+import classNames from "classnames";
 
 const AnchorResultante = () => {
   const [alpha, setAlpha] = useState(0);
   const [mass, setMass] = useState(0);
+
+  const [edited, setEdited] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEdited(true);
+  }, [alpha, mass]);
+
+  const handleNoteClick = () => {
+    setEdited(false);
+  };
 
   const resultante = useMemo(() => {
     try {
@@ -47,6 +58,15 @@ const AnchorResultante = () => {
             setMass(parseFloat(e.target.value));
           }}
         />
+      </label>
+      <div className="divider">Note</div>
+      <label className="form-control w-full">
+        <textarea
+          className={classNames("textarea textarea-bordered h-24", {
+            "textarea-error": edited,
+          })}
+          onClick={handleNoteClick}
+        ></textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">

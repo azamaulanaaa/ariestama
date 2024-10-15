@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TangkiTimbun } from "../../_utils/calculation";
 import convert from "convert-units";
+import classNames from "classnames";
 
 const Thickness = () => {
   const [diameter, setDiameter] = useState(0);
@@ -11,6 +12,21 @@ const Thickness = () => {
     useState(0);
   const [allowableStress, setAllowableStress] = useState(1);
   const [corrosionAllowable, setCorrosionAllowable] = useState(0);
+  const [edited, setEdited] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEdited(true);
+  }, [
+    diameter,
+    designLiquidLevel,
+    designSpecificGravityLiquid,
+    allowableStress,
+    corrosionAllowable,
+  ]);
+
+  const handleNoteClick = () => {
+    setEdited(false);
+  };
 
   const minimum_required_thickness = useMemo(() => {
     try {
@@ -105,6 +121,15 @@ const Thickness = () => {
             setCorrosionAllowable(parseFloat(e.target.value));
           }}
         />
+      </label>
+      <div className="divider">Note</div>
+      <label className="form-control w-full">
+        <textarea
+          className={classNames("textarea textarea-bordered h-24", {
+            "textarea-error": edited,
+          })}
+          onClick={handleNoteClick}
+        ></textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">

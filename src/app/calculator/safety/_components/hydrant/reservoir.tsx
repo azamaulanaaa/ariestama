@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { General, Hydrant } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
@@ -17,6 +17,27 @@ const Reservoir = () => {
   const [nozzleInletDiameter, setNozzleInletDiameter] = useState(0);
   const [waterPreasure, setWaterPreasure] = useState(0);
   const [numberOpenNozzle, setNumberOpenNozzle] = useState(1);
+
+  const [edited, setEdited] = useState(false);
+
+  useEffect(() => {
+    setEdited(true);
+  }, [
+    shape,
+    diameter,
+    height,
+    width,
+    length,
+    volume,
+    duration,
+    nozzleInletDiameter,
+    waterPreasure,
+    numberOpenNozzle,
+  ]);
+
+  const handleNoteClick = () => {
+    setEdited(false);
+  };
 
   useMemo(() => {
     try {
@@ -218,6 +239,15 @@ const Reservoir = () => {
           <option value="45">45</option>
           <option value="90">90</option>
         </select>
+      </label>
+      <div className="divider">Note</div>
+      <label className="form-control w-full">
+        <textarea
+          className={classNames("textarea textarea-bordered h-24", {
+            "textarea-error": edited,
+          })}
+          onClick={handleNoteClick}
+        ></textarea>
       </label>
       <h2>Result</h2>
       <div className="divider">Reservoir</div>

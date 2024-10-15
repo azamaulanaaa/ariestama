@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Forklift, General } from "../../_utils/calculation";
+import classNames from "classnames";
 
 const SWLFork = () => {
   const [capacity, setCapacity] = useState(0);
@@ -9,6 +10,15 @@ const SWLFork = () => {
   const [loadCenterFork, setLoadCenterFork] = useState(55);
   const [weight, setWeight] = useState(0);
   const [loadCenterWeight, setLoadCenterWeight] = useState(0);
+  const [edited, setEdited] = useState(false);
+
+  useEffect(() => {
+    setEdited(true);
+  }, [capacity, cog2fork, loadCenterFork, weight, loadCenterWeight]);
+
+  const handleNoteClick = () => {
+    setEdited(false);
+  };
 
   const swl = useMemo(() => {
     try {
@@ -124,6 +134,15 @@ const SWLFork = () => {
             setLoadCenterWeight(parseFloat(e.target.value));
           }}
         />
+      </label>
+      <div className="divider">Note</div>
+      <label className="form-control w-full">
+        <textarea
+          className={classNames("textarea textarea-bordered h-24", {
+            "textarea-error": edited,
+          })}
+          onClick={handleNoteClick}
+        ></textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">

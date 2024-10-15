@@ -1,13 +1,24 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { General, Rope } from "../../_utils/calculation";
 import convert from "convert-units";
+import classNames from "classnames";
 
 const SwlWireRope = () => {
   const [diameter, setDiameter] = useState(0);
   const [reavingNumber, setReavingNumber] = useState(0);
   const [grade, setGrade] = useState(1770);
+
+  const [edited, setEdited] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEdited(true);
+  }, [diameter, reavingNumber, grade]);
+
+  const handleNoteClick = () => {
+    setEdited(false);
+  };
 
   const diameterInch = useMemo(
     () => convert(diameter).from("mm").to("in"),
@@ -81,6 +92,15 @@ const SwlWireRope = () => {
         >
           <option value="1770">1770</option>
         </select>
+      </label>
+      <div className="divider">Note</div>
+      <label className="form-control w-full">
+        <textarea
+          className={classNames("textarea textarea-bordered h-24", {
+            "textarea-error": edited,
+          })}
+          onClick={handleNoteClick}
+        ></textarea>
       </label>
       <h2>Result</h2>
       <div className="divider">Wire Rope Sling</div>
