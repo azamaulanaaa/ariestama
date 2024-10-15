@@ -34,7 +34,6 @@ const Deflection = () => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Type</span>
-          <span className="label-text-alt">mili meter</span>
         </div>
         <select
           className="select select-bordered w-full text-right"
