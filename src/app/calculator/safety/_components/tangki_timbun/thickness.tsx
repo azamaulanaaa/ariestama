@@ -12,6 +12,8 @@ const Thickness = () => {
     useState(0);
   const [allowableStress, setAllowableStress] = useState(1);
   const [corrosionAllowable, setCorrosionAllowable] = useState(0);
+  const [standart, setStandart] = useState("api-650");
+
   const [edited, setEdited] = useState<boolean>(false);
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const Thickness = () => {
     designSpecificGravityLiquid,
     allowableStress,
     corrosionAllowable,
+    standart,
   ]);
 
   const handleNoteClick = () => {
@@ -52,6 +55,20 @@ const Thickness = () => {
 
   return (
     <form className="prose">
+      <h2>Standart</h2>
+      <label className="form-control w-full">
+        <select
+          className="select select-bordered w-full text-right"
+          value={standart}
+          onChange={(e) => {
+            setStandart(e.target.value);
+          }}
+        >
+          <option value="api-650">
+            American Petroleum Institute (API) - 650
+          </option>
+        </select>
+      </label>
       <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
@@ -66,6 +83,15 @@ const Thickness = () => {
             setDiameter(parseFloat(e.target.value));
           }}
         />
+      </label>
+      <label className="form-control w-full">
+        <div className="label">
+          <span className="label-text">Diameter Type</span>
+        </div>
+        <select className="select select-bordered w-full text-right">
+          <option>Inner</option>
+          <option>Outter</option>
+        </select>
       </label>
       <label className="form-control w-full">
         <div className="label">
