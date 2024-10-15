@@ -11,8 +11,10 @@ import Hydrant from "./_components/hydrant";
 import Girder from "./_components/girder";
 import General from "./_components/general";
 import { useToBlob } from "@hugocxl/react-to-image";
+import Boiler from "./_components/boiler";
 
 const calculator: Record<string, ReactNode> = {
+  "Boiler - Water Tube - Thickness": <Boiler.WaterTubeThickness />,
   "Chain - SWL Block": <Chain.SWLBlock />,
   "Chain - SWL Sling": <Chain.SWLSling />,
   "Forklift - SWL Fork": <Forklift.SWLFork />,
