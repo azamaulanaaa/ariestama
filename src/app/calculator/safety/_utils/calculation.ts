@@ -281,6 +281,114 @@ export const Girder = {
   },
 };
 
+export const Boiler = {
+  /**
+   * Calculate efficiency of ligaments between tube holes in Water Tube
+   *
+   * @param p - ptich of the tube holes in mili meter
+   * @param d - diameter of the tube holes in mili meter
+   *
+   * @returns efficiency without unit
+   */
+  efficiencyLigamentsWaterTubeJIS(p: number, d: number): number {
+    const zProps = z
+      .object({
+        p: z.number(),
+        d: z.number(),
+      })
+      .parse({ p, d });
+
+    return (zProps.p - zProps.d) / zProps.p;
+  },
+
+  /**
+   * Calculate Minimum Plate Thickness of Shells or Domes Subject to Internal Preasure in Water Tube
+   *
+   * @param type - plate type is one of ["ferritic_steel", "austenitic_steel"]
+   * @param pressure - maximum allowable working preasure in kilogram-force per centi meter square
+   * @param innerDiameter - inside diameter of the shell or dome in mili meter
+   * @param sigma - allowable tensile stress of the material used kilogram-force per mili meter square
+   * @param efficiencyLigament - minimum joint efficiency of the part with a longitudinal joint or a ... of openings
+   * @param temperature - temperature of the steam in celcius
+   * @param additionalThickness - additional thickness in mili meter shall be 1 mm
+   *
+   * @returns minimum thickness of the in mili meter
+   */
+  minThicknessShellWaterTubeJIS(
+    type: string,
+    pressure: number,
+    innerDiameter: number,
+    sigma: number,
+    efficiencyLigament: number,
+    temperature: number,
+    additionalThickness: number = 1,
+  ) {
+    const zProps = z
+      .object({
+        type: z.union([
+          z.literal("ferritic_steel"),
+          z.literal("austenitic_steel"),
+        ]),
+        p: z.number(),
+        di: z.number(),
+        sigma: z.number(),
+        pi: z.number(),
+        temp: z.number(),
+        a: z.number().optional().default(1),
+      })
+      .parse({
+        type,
+        p: pressure,
+        di: innerDiameter,
+        sigma,
+        pi: efficiencyLigament,
+        temp: temperature,
+        a: additionalThickness,
+      });
+
+    let k: number = NaN;
+    if (zProps.type == "ferritic_steel") {
+      if (zProps.temp <= 480) k = 0.4;
+      else if (zProps.temp >= 620) k = 0.7;
+      else {
+        const points: [number, number][] = [
+          [480, 0.4],
+          [510, 0.5],
+          [535, 0.7],
+          [565, 0.7],
+          [590, 0.7],
+          [620, 0.7],
+        ];
+
+        k = General.lagrangeInterpolation(points, zProps.temp);
+      }
+    } else if (zProps.type == "austenitic_steel") {
+      if (zProps.temp <= 480) k = 0.4;
+      else if (zProps.temp >= 620) k = 0.7;
+      else {
+        const points: [number, number][] = [
+          [480, 0.4],
+          [510, 0.7],
+          [535, 0.7],
+          [565, 0.7],
+          [590, 0.5],
+          [620, 0.7],
+        ];
+
+        k = General.lagrangeInterpolation(points, zProps.temp);
+      }
+    }
+
+    console.log({ k, zProps });
+
+    return (
+      (zProps.p * zProps.di) /
+        (200 * zProps.sigma * zProps.pi - 2 * zProps.p * (1 - k)) +
+      zProps.a
+    );
+  },
+};
+
 export const General = {
   /**
    * Calculate ratio beban realtive to swl
@@ -342,5 +450,45 @@ export const General = {
     const zDiameter = z.number().positive().parse(diameter);
 
     return Math.PI * (zDiameter / 2) ** 2 * zHeight;
+  },
+
+  /**
+   * Performs Lagrange interpolation to find the value of the polynomial at a given x.
+   *
+   * @param points - An array of Point tuples that define the data points through which the polynomial will pass.
+   * @param x - The x-coordinate at which to evaluate the polynomial.
+   * @returns The interpolated y value corresponding to the given x.
+   *
+   * @example
+   * const points: [number, number][] = [
+   *     [0, 1],
+   *     [1, 2],
+   *     [2, 0],
+   *     [3, 5],
+   *     [4, 4],
+   * ];
+   *
+   * const yValue = lagrangeInterpolation(points, 2.5);
+   * console.log(yValue); // Outputs the interpolated y value at x = 2.5
+   */
+  lagrangeInterpolation(points: [number, number][], x: number): number {
+    let result = 0; // Initialize the result to zero
+    const n = points.length; // Number of points
+
+    // Loop over each point
+    for (let i = 0; i < n; i++) {
+      let term = points[i][1]; // Start with the y-value of the current point
+
+      // Calculate the Lagrange basis polynomial
+      for (let j = 0; j < n; j++) {
+        if (j !== i) {
+          // Multiply by the factors for L_i(x)
+          term *= (x - points[j][0]) / (points[i][0] - points[j][0]);
+        }
+      }
+      result += term; // Add the current term to the result
+    }
+
+    return result; // Return the final interpolated value
   },
 };
