@@ -79,7 +79,7 @@ const WaterTubeThickness = () => {
         <select
           className="select select-bordered w-full text-right"
           value={standart}
-          onkkChange={(e) => {
+          onChange={(e) => {
             setStandart(e.target.value);
           }}
         >
