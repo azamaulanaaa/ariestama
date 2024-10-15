@@ -274,7 +274,7 @@ export const Girder = {
       return (1 / 888) * zProps.lengthOfSpan;
     }
     if (zProps.typee == "double") {
-      return (1 / 666) * zProps.lengthOfSpan;
+      return (1 / 600) * zProps.lengthOfSpan;
     }
 
     return NaN;
