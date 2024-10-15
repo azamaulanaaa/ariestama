@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState, ReactNode } from "react";
+
+import { useMemo, useState, ReactNode, useEffect } from "react";
 import TangkiTimbun from "./_components/tangki_timbun";
 import InstalasiPenyalurPetir from "./_components/instalasi_penyalur_petir";
 import Lingkungan from "./_components/lingkungan";
@@ -9,6 +10,7 @@ import Rope from "./_components/rope";
 import Hydrant from "./_components/hydrant";
 import Girder from "./_components/girder";
 import General from "./_components/general";
+import { useToBlob } from "@hugocxl/react-to-image";
 
 const calculator: Record<string, ReactNode> = {
   "Chain - SWL Block": <Chain.SWLBlock />,
@@ -29,6 +31,16 @@ const SafetyCalculator = () => {
   const [type, setType] = useState<string>("Tangki Timbun - Thickness");
 
   const Calculator = useMemo(() => calculator[type] || "", [type]);
+
+  const [state, convert, captureRef] = useToBlob<HTMLDivElement>();
+  useEffect(() => {
+    if (state.data && state.isSuccess) {
+      const file = new File([state.data], "image.png", { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file] }).catch(() => {});
+      }
+    }
+  }, [state.isSuccess]);
 
   return (
     <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
@@ -51,8 +63,21 @@ const SafetyCalculator = () => {
           </select>
         </div>
       </div>
+      <div ref={captureRef} className="card bg-base-100 shadow-xl">
+        <div className="card-body relative">
+          <div className="absolute inset-0 z-0 opacity-10 rounded-2xl bg-[url('/img/logo.png')] bg-top"></div>
+          <div className="relative z-1 prose">
+            <h1>{type}</h1>
+            {Calculator}
+          </div>
+        </div>
+      </div>
       <div className="card bg-base-100 shadow-xl">
-        <div className="card-body">{Calculator}</div>
+        <div className="card-body flex gap-2">
+          <button className="btn" onClick={convert}>
+            Share
+          </button>
+        </div>
       </div>
     </div>
   );
