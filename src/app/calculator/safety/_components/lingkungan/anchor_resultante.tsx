@@ -3,10 +3,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { Lingkungan } from "../../_utils/calculation";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const AnchorResultante = () => {
-  const [alpha, setAlpha] = useState(0);
-  const [mass, setMass] = useState(0);
+const AnchorResultantePropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type AnchorResultanteProps = z.input<typeof AnchorResultantePropsSchema>;
+
+const AnchorResultante = (props: AnchorResultanteProps) => {
+  const zProps = AnchorResultantePropsSchema.parse(props);
+
+  const [alphaRef, alpha, alphaError] = useNumber(zProps.locale);
+  const [massRef, mass, massError] = useNumber(zProps.locale);
 
   const [edited, setEdited] = useState<boolean>(false);
 
@@ -18,11 +29,11 @@ const AnchorResultante = () => {
     setEdited(false);
   };
 
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
   const resultante = useMemo(() => {
     try {
-      const result = Lingkungan.anchorResultante(alpha, mass);
-
-      return result.toFixed(2);
+      return Lingkungan.anchorResultante(alpha, mass);
     } catch (error) {
       return NaN;
     }
@@ -37,12 +48,11 @@ const AnchorResultante = () => {
           <span className="label-text-alt">degree</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={alpha}
-          onChange={(e) => {
-            setAlpha(parseFloat(e.target.value));
-          }}
+          ref={alphaRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": alphaError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -51,12 +61,11 @@ const AnchorResultante = () => {
           <span className="label-text-alt">kilo gram</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={mass}
-          onChange={(e) => {
-            setMass(parseFloat(e.target.value));
-          }}
+          ref={massRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": massError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -78,7 +87,7 @@ const AnchorResultante = () => {
           type="number"
           readOnly
           className="input input-bordered w-full text-right"
-          value={resultante}
+          value={numberFormatter.format(resultante)}
         />
       </label>
     </form>

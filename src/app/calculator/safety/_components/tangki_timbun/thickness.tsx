@@ -4,14 +4,32 @@ import { useEffect, useMemo, useState } from "react";
 import { TangkiTimbun } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { z } from "zod";
+import { NumberFormatter } from "@internationalized/number";
 
-const Thickness = () => {
-  const [diameter, setDiameter] = useState(0);
-  const [designLiquidLevel, setDesignLiquidLevel] = useState(0);
-  const [designSpecificGravityLiquid, setDesignSpecificGravityLiquid] =
-    useState(0);
-  const [allowableStress, setAllowableStress] = useState(1);
-  const [corrosionAllowable, setCorrosionAllowable] = useState(0);
+const ThicknessPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type ThicknessProps = z.input<typeof ThicknessPropsSchema>;
+
+const Thickness = (props: ThicknessProps) => {
+  const zProps = ThicknessPropsSchema.parse(props);
+
+  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
+  const [designLiquidLevelRef, designLiquidLevel, designLiquidLevelError] =
+    useNumber(zProps.locale);
+  const [
+    designSpecificGravityLiquidRef,
+    designSpecificGravityLiquid,
+    designSpecificGravityLiquidError,
+  ] = useNumber(zProps.locale);
+  const [allowableStressRef, allowableStress, allowableStressError] = useNumber(
+    zProps.locale,
+  );
+  const [corrosionAllowableRef, corrosionAllowable, corrosionAllowableError] =
+    useNumber(zProps.locale);
   const [standart, setStandart] = useState("api-650");
 
   const [edited, setEdited] = useState<boolean>(false);
@@ -31,17 +49,17 @@ const Thickness = () => {
     setEdited(false);
   };
 
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
   const minimum_required_thickness = useMemo(() => {
     try {
-      const result = TangkiTimbun.thickness(
+      return TangkiTimbun.thickness(
         diameter,
         designLiquidLevel,
         designSpecificGravityLiquid,
         convert(allowableStress).from("bar").to("MPa"),
         corrosionAllowable,
       );
-
-      return result.toFixed(1);
     } catch (error) {
       return NaN;
     }
@@ -76,12 +94,11 @@ const Thickness = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={diameter}
-          onChange={(e) => {
-            setDiameter(parseFloat(e.target.value));
-          }}
+          ref={diameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": diameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -99,12 +116,11 @@ const Thickness = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={designLiquidLevel}
-          onChange={(e) => {
-            setDesignLiquidLevel(parseFloat(e.target.value));
-          }}
+          ref={designLiquidLevelRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": designLiquidLevelError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -112,12 +128,11 @@ const Thickness = () => {
           <span className="label-text">Design Specific Gravity Liquid</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={designSpecificGravityLiquid}
-          onChange={(e) => {
-            setDesignSpecificGravityLiquid(parseFloat(e.target.value));
-          }}
+          ref={designSpecificGravityLiquidRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": designSpecificGravityLiquidError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -126,12 +141,11 @@ const Thickness = () => {
           <span className="label-text-alt">bar</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={allowableStress}
-          onChange={(e) => {
-            setAllowableStress(parseFloat(e.target.value));
-          }}
+          ref={allowableStressRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": allowableStressError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -140,12 +154,11 @@ const Thickness = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={corrosionAllowable}
-          onChange={(e) => {
-            setCorrosionAllowable(parseFloat(e.target.value));
-          }}
+          ref={corrosionAllowableRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": corrosionAllowableError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -164,10 +177,10 @@ const Thickness = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={minimum_required_thickness}
+          value={numberFormatter.format(minimum_required_thickness)}
         />
       </label>
     </form>

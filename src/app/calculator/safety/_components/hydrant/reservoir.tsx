@@ -4,19 +4,39 @@ import { useEffect, useMemo, useState } from "react";
 import { General, Hydrant } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const Reservoir = () => {
+const ReservoirPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type ReservoirProps = z.input<typeof ReservoirPropsSchema>;
+
+const Reservoir = (props: ReservoirProps) => {
+  const zProps = ReservoirPropsSchema.parse(props);
+
   const [shape, setShape] = useState("cylinder");
-  const [diameter, setDiameter] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [length, setLength] = useState(0);
-  const [volume, setVolume] = useState(NaN);
-  const [duration, setDuration] = useState(45);
+  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
+  const [heightRef, height, heightError] = useNumber(zProps.locale);
+  const [widthRef, width, widthError] = useNumber(zProps.locale);
+  const [lengthRef, length, lengthError] = useNumber(zProps.locale);
+  const [directVolumeRef, directVolume, directVolumeError] = useNumber(
+    zProps.locale,
+  );
 
-  const [nozzleInletDiameter, setNozzleInletDiameter] = useState(0);
-  const [waterPreasure, setWaterPreasure] = useState(0);
-  const [numberOpenNozzle, setNumberOpenNozzle] = useState(1);
+  const [duration, setDuration] = useState(45);
+  const [
+    nozzleInletDiameterRef,
+    nozzleInletDiameter,
+    nozzleInletDiameterError,
+  ] = useNumber(zProps.locale);
+  const [waterPreasureRef, waterPreasure, waterPreasureError] = useNumber(
+    zProps.locale,
+  );
+  const [numberOpenNozzleRef, numberOpenNozzle, numberOpenNozzleError] =
+    useNumber(zProps.locale);
 
   const [edited, setEdited] = useState(false);
 
@@ -28,7 +48,7 @@ const Reservoir = () => {
     height,
     width,
     length,
-    volume,
+    directVolume,
     duration,
     nozzleInletDiameter,
     waterPreasure,
@@ -39,22 +59,25 @@ const Reservoir = () => {
     setEdited(false);
   };
 
-  useMemo(() => {
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
+  const volume = useMemo(() => {
     try {
       if (shape == "cylinder")
-        setVolume(
-          convert(General.volumeCylinder(diameter, height)).from("m3").to("l"),
-        );
+        return convert(General.volumeCylinder(diameter, height))
+          .from("m3")
+          .to("l");
       else if (shape == "cuboid")
-        setVolume(
-          convert(General.volumeCuboid(height, width, length))
-            .from("m3")
-            .to("l"),
-        );
+        return convert(General.volumeCuboid(height, width, length))
+          .from("m3")
+          .to("l");
+      else if (shape == "direct_input") return directVolume;
+
+      return NaN;
     } catch (error) {
-      setVolume(NaN);
+      return NaN;
     }
-  }, [shape, diameter, height, width, length]);
+  }, [shape, directVolume, diameter, height, width, length]);
 
   const waterFlow = useMemo(() => {
     try {
@@ -86,12 +109,12 @@ const Reservoir = () => {
         >
           <option value="cylinder">Cylinder</option>
           <option value="cuboid">Cuboid</option>
-          <option value="unknown">[Direct Input]</option>
+          <option value="direct_input">[Direct Input]</option>
         </select>
       </label>
       <label
         className={classNames("form-control w-full", {
-          hidden: shape != "unknown",
+          hidden: shape != "direct_input",
         })}
       >
         <div className="label">
@@ -99,12 +122,11 @@ const Reservoir = () => {
           <span className="label-text-alt">liter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={volume}
-          onChange={(e) => {
-            setVolume(parseFloat(e.target.value));
-          }}
+          ref={directVolumeRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": directVolumeError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -117,12 +139,11 @@ const Reservoir = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={diameter}
-          onChange={(e) => {
-            setDiameter(parseFloat(e.target.value));
-          }}
+          ref={diameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": diameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -135,12 +156,11 @@ const Reservoir = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={height}
-          onChange={(e) => {
-            setHeight(parseFloat(e.target.value));
-          }}
+          ref={heightRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": heightError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -153,12 +173,11 @@ const Reservoir = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={width}
-          onChange={(e) => {
-            setWidth(parseFloat(e.target.value));
-          }}
+          ref={widthRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": widthError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -171,12 +190,11 @@ const Reservoir = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={length}
-          onChange={(e) => {
-            setLength(parseFloat(e.target.value));
-          }}
+          ref={lengthRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": lengthError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Nozzle</div>
@@ -186,12 +204,11 @@ const Reservoir = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={nozzleInletDiameter}
-          onChange={(e) => {
-            setNozzleInletDiameter(parseFloat(e.target.value));
-          }}
+          ref={nozzleInletDiameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": nozzleInletDiameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -202,12 +219,11 @@ const Reservoir = () => {
           </span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={waterPreasure}
-          onChange={(e) => {
-            setWaterPreasure(parseFloat(e.target.value));
-          }}
+          ref={waterPreasureRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": waterPreasureError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -215,12 +231,11 @@ const Reservoir = () => {
           <span className="label-text">Number Nozzle Open</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={numberOpenNozzle}
-          onChange={(e) => {
-            setNumberOpenNozzle(parseFloat(e.target.value));
-          }}
+          ref={numberOpenNozzleRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": numberOpenNozzleError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -257,10 +272,10 @@ const Reservoir = () => {
           <span className="label-text-alt">liter</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={volume.toFixed(1)}
+          value={numberFormatter.format(volume)}
         />
       </label>
       <div className="divider">Nozzle</div>
@@ -270,10 +285,10 @@ const Reservoir = () => {
           <span className="label-text-alt">liter per minute</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={waterFlow.toFixed(1)}
+          value={numberFormatter.format(waterFlow)}
         />
       </label>
       <label className="form-control w-full">
@@ -282,10 +297,10 @@ const Reservoir = () => {
           <span className="label-text-alt">liter per {duration} minute</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={waterFlow45MinAllNozzle.toFixed(1)}
+          value={numberFormatter.format(waterFlow45MinAllNozzle)}
         />
       </label>
     </form>

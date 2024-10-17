@@ -3,45 +3,57 @@
 import { useEffect, useMemo, useState } from "react";
 import { InstalasiPenyalurPetir } from "../../_utils/calculation";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const RadiusKonvensional = () => {
-  const [tinggi, setTinggi] = useState(0);
+const RadiusKonvensionalPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type RadiusKonvensionalProps = z.input<
+  typeof RadiusKonvensionalPropsSchema
+>;
+
+const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
+  const zProps = RadiusKonvensionalPropsSchema.parse(props);
+
+  const [heightRef, height, heightError] = useNumber(zProps.locale);
 
   const [edited, setEdited] = useState<boolean>(false);
 
   useEffect(() => {
     setEdited(true);
-  }, [tinggi]);
+  }, [height]);
 
   const handleNoteClick = () => {
     setEdited(false);
   };
 
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
   const radiusKonvensional = useMemo(() => {
     try {
-      const result = InstalasiPenyalurPetir.radiusKonvensional(tinggi);
-
-      return result.toFixed(2);
+      return InstalasiPenyalurPetir.radiusKonvensional(height);
     } catch (error) {
       return NaN;
     }
-  }, [tinggi]);
+  }, [height]);
 
   return (
     <form className="prose">
       <h2>Parameter</h2>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">Tinggi</span>
+          <span className="label-text">Height</span>
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={tinggi}
-          onChange={(e) => {
-            setTinggi(parseFloat(e.target.value));
-          }}
+          ref={heightRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": heightError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -63,7 +75,7 @@ const RadiusKonvensional = () => {
           type="number"
           readOnly
           className="input input-bordered w-full text-right"
-          value={radiusKonvensional}
+          value={numberFormatter.format(radiusKonvensional)}
         />
       </label>
     </form>

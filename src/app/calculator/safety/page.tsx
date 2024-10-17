@@ -20,13 +20,13 @@ const calculator: Record<string, ReactNode> = {
   "Forklift - SWL Fork": <Forklift.SWLFork />,
   "General - Volume": <General.Volume />,
   "Girder - Deflection": <Girder.Deflection />,
-  "Hydrant - Reservoir": <Hydrant.Reservoir />,
+  "Hydrant - Reservoir": <Hydrant.Reservoir locale="id-ID" />,
   "Instalasi Penyalur Petir - Radius Konvensional": (
-    <InstalasiPenyalurPetir.RadiusConventional />
+    <InstalasiPenyalurPetir.RadiusConventional locale="id-ID" />
   ),
   "Lingkungan - Anchor Resultante": <Lingkungan.AnchorResultante />,
-  "Rope - SWL Wire": <Rope.SwlRunningRope />,
-  "Tangki Timbun - Thickness": <TangkiTimbun.Thickness />,
+  "Rope - SWL Wire": <Rope.SwlRunningRope locale="id-ID" />,
+  "Tangki Timbun - Thickness": <TangkiTimbun.Thickness locale="id-ID" />,
 };
 
 const SafetyCalculator = () => {

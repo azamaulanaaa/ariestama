@@ -4,10 +4,25 @@ import { useEffect, useMemo, useState } from "react";
 import { General, Rope } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
+import { z } from "zod";
 
-const SwlWireRope = () => {
-  const [diameter, setDiameter] = useState(0);
-  const [reavingNumber, setReavingNumber] = useState(0);
+const SwlWireRopePropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type SwlWireRopeProps = {
+  locale?: string;
+};
+
+const SwlWireRope = (props: SwlWireRopeProps) => {
+  const zProps = SwlWireRopePropsSchema.parse(props);
+
+  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
+  const [reavingNumberRef, reavingNumber, reavingNumberError] = useNumber(
+    props.locale,
+  );
   const [grade, setGrade] = useState(1770);
 
   const [edited, setEdited] = useState<boolean>(false);
@@ -20,18 +35,15 @@ const SwlWireRope = () => {
     setEdited(false);
   };
 
-  const diameterInch = useMemo(
-    () => convert(diameter).from("mm").to("in"),
-    [diameter],
-  );
+  const numberFormatter = new NumberFormatter(zProps.locale);
 
   const swlSling = useMemo(() => {
     try {
-      return Rope.swlWireSling(diameterInch, grade);
+      return Rope.swlWireSling(convert(diameter).from("mm").to("in"), grade);
     } catch (error) {
       return NaN;
     }
-  }, [diameterInch, grade]);
+  }, [diameter, grade]);
 
   const breakingStrenghSling = useMemo(() => {
     try {
@@ -43,11 +55,15 @@ const SwlWireRope = () => {
 
   const swlRunning = useMemo(() => {
     try {
-      return Rope.swlWireRunning(diameterInch, reavingNumber, grade);
+      return Rope.swlWireRunning(
+        convert(diameter).from("mm").to("in"),
+        reavingNumber,
+        grade,
+      );
     } catch (error) {
       return NaN;
     }
-  }, [diameterInch, reavingNumber, grade]);
+  }, [diameter, reavingNumber, grade]);
 
   return (
     <form className="prose">
@@ -58,12 +74,11 @@ const SwlWireRope = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={diameter}
-          onChange={(e) => {
-            setDiameter(parseFloat(e.target.value));
-          }}
+          ref={diameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": diameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -71,12 +86,11 @@ const SwlWireRope = () => {
           <span className="label-text">Reaving</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={reavingNumber}
-          onChange={(e) => {
-            setReavingNumber(parseFloat(e.target.value));
-          }}
+          ref={reavingNumberRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": reavingNumberError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -110,10 +124,10 @@ const SwlWireRope = () => {
           <span className="label-text-alt">ton</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={swlSling.toFixed(1)}
+          value={numberFormatter.format(swlSling)}
         />
       </label>
       <label className="form-control w-full">
@@ -122,10 +136,10 @@ const SwlWireRope = () => {
           <span className="label-text-alt">ton</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={breakingStrenghSling.toFixed(1)}
+          value={numberFormatter.format(breakingStrenghSling)}
         />
       </label>
       <div className="divider">Running Wire Rope</div>
@@ -135,10 +149,10 @@ const SwlWireRope = () => {
           <span className="label-text-alt">ton</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={swlRunning.toFixed(1)}
+          value={numberFormatter.format(swlRunning)}
         />
       </label>
     </form>
