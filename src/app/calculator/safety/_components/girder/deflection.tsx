@@ -3,10 +3,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { Girder } from "../../_utils/calculation";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const Deflection = () => {
+const DeflectionPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type DeflectionProps = z.input<typeof DeflectionPropsSchema>;
+
+const Deflection = (props: DeflectionProps) => {
+  const zProps = DeflectionPropsSchema.parse(props);
+
   const [typee, setTypee] = useState("single");
-  const [lengthOfSpan, setLengthOfSpan] = useState(0);
+  const [lengthOfSpanRef, lengthOfSpan, lengthOfSpanError] = useNumber(
+    zProps.locale,
+  );
 
   const [edited, setEdited] = useState(false);
 
@@ -18,11 +31,11 @@ const Deflection = () => {
     setEdited(false);
   };
 
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
   const deflection = useMemo(() => {
     try {
-      const result = Girder.deflection(typee, lengthOfSpan);
-
-      return result;
+      return Girder.deflection(typee, lengthOfSpan);
     } catch (error) {
       return NaN;
     }
@@ -52,12 +65,11 @@ const Deflection = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={lengthOfSpan}
-          onChange={(e) => {
-            setLengthOfSpan(parseFloat(e.target.value));
-          }}
+          ref={lengthOfSpanRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": lengthOfSpanError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -76,10 +88,10 @@ const Deflection = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={deflection.toFixed(0)}
+          value={numberFormatter.format(deflection)}
         />
       </label>
     </form>

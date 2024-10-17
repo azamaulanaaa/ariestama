@@ -3,21 +3,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { Chain } from "../../_utils/calculation";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const SWLSling = () => {
-  const [diameter, setDiameter] = useState(0);
+const SWLSlingPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type SWLSlingProps = z.input<typeof SWLSlingPropsSchema>;
+
+const SWLSling = (props: SWLSlingProps) => {
+  const zProps = SWLSlingPropsSchema.parse(props);
+
+  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [grade, setGrade] = useState(80);
   const [edited, setEdited] = useState(false);
-
-  const swl = useMemo(() => {
-    try {
-      const result = Chain.swlSling(diameter, grade);
-
-      return result.toFixed(2);
-    } catch (error) {
-      return NaN;
-    }
-  }, [diameter, grade]);
 
   useEffect(() => {
     setEdited(true);
@@ -26,6 +27,16 @@ const SWLSling = () => {
   const handleNoteClick = () => {
     setEdited(false);
   };
+
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
+  const swl = useMemo(() => {
+    try {
+      return Chain.swlSling(diameter, grade);
+    } catch (error) {
+      return NaN;
+    }
+  }, [diameter, grade]);
 
   return (
     <form className="prose">
@@ -36,12 +47,11 @@ const SWLSling = () => {
           <span className="label-text-alt">mili meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={diameter}
-          onChange={(e) => {
-            setDiameter(parseFloat(e.target.value));
-          }}
+          ref={diameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": diameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -75,10 +85,10 @@ const SWLSling = () => {
           <span className="label-text-alt">ton</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={swl}
+          value={numberFormatter.format(swl)}
         />
       </label>
     </form>

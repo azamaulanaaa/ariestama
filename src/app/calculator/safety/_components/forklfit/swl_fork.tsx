@@ -3,13 +3,26 @@
 import { useEffect, useMemo, useState } from "react";
 import { Forklift, General } from "../../_utils/calculation";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const SWLFork = () => {
-  const [capacity, setCapacity] = useState(0);
-  const [cog2fork, setCog2fork] = useState(0);
+const SWLForkPropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type SWLForkProps = z.input<typeof SWLForkPropsSchema>;
+
+const SWLFork = (props: SWLForkProps) => {
+  const zProps = SWLForkPropsSchema.parse(props);
+
+  const [capacityRef, capacity, capacityError] = useNumber(zProps.locale);
+  const [cog2forkRef, cog2fork, cog2forkError] = useNumber(zProps.locale);
   const [loadCenterFork, setLoadCenterFork] = useState(55);
-  const [weight, setWeight] = useState(0);
-  const [loadCenterWeight, setLoadCenterWeight] = useState(0);
+  const [weightRef, weight, weightError] = useNumber(zProps.locale);
+  const [loadCenterWeightRef, loadCenterWeight, loadCenterWeightError] =
+    useNumber(zProps.locale);
+
   const [edited, setEdited] = useState(false);
 
   useEffect(() => {
@@ -20,16 +33,16 @@ const SWLFork = () => {
     setEdited(false);
   };
 
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
   const swl = useMemo(() => {
     try {
-      const result = Forklift.swlFork(
+      return Forklift.swlFork(
         capacity,
         cog2fork,
         loadCenterFork,
         loadCenterWeight,
       );
-
-      return result;
     } catch (error) {
       return NaN;
     }
@@ -37,14 +50,12 @@ const SWLFork = () => {
 
   const maxLoadCenterWeight = useMemo(() => {
     try {
-      const result = Forklift.maxLoadCenterWeight(
+      return Forklift.maxLoadCenterWeight(
         capacity,
         cog2fork,
         weight,
         loadCenterFork,
       );
-
-      return result;
     } catch (error) {
       return NaN;
     }
@@ -52,9 +63,7 @@ const SWLFork = () => {
 
   const weightPercentToSwl = useMemo(() => {
     try {
-      const result = General.weightToSwlRatio(swl, weight);
-
-      return result * 100;
+      return General.weightToSwlRatio(swl, weight) * 100;
     } catch (error) {
       return NaN;
     }
@@ -69,12 +78,11 @@ const SWLFork = () => {
           <span className="label-text-alt">kilo gram</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={capacity}
-          onChange={(e) => {
-            setCapacity(parseFloat(e.target.value));
-          }}
+          ref={capacityRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": capacityError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -83,12 +91,11 @@ const SWLFork = () => {
           <span className="label-text-alt">centi meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={cog2fork}
-          onChange={(e) => {
-            setCog2fork(parseFloat(e.target.value));
-          }}
+          ref={cog2forkRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": cog2forkError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -113,12 +120,11 @@ const SWLFork = () => {
           <span className="label-text-alt">kilo gram</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={weight}
-          onChange={(e) => {
-            setWeight(parseFloat(e.target.value));
-          }}
+          ref={weightRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": weightError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label className="form-control w-full">
@@ -127,12 +133,11 @@ const SWLFork = () => {
           <span className="label-text-alt">centi meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={loadCenterWeight}
-          onChange={(e) => {
-            setLoadCenterWeight(parseFloat(e.target.value));
-          }}
+          ref={loadCenterWeightRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": loadCenterWeightError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -151,10 +156,10 @@ const SWLFork = () => {
           <span className="label-text-alt">kilo gram</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={swl.toFixed(0)}
+          value={numberFormatter.format(swl)}
         />
       </label>
       <label className="form-control w-full">
@@ -163,10 +168,10 @@ const SWLFork = () => {
           <span className="label-text-alt">centi meter</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={maxLoadCenterWeight.toFixed(0)}
+          value={numberFormatter.format(maxLoadCenterWeight)}
         />
       </label>
       <label className="form-control w-full">
@@ -175,10 +180,10 @@ const SWLFork = () => {
           <span className="label-text-alt">% SWL</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={weightPercentToSwl.toFixed(0)}
+          value={numberFormatter.format(weightPercentToSwl)}
         />
       </label>
       <h2>Reference</h2>

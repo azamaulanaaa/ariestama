@@ -4,36 +4,49 @@ import { useEffect, useMemo, useState } from "react";
 import { General } from "../../_utils/calculation";
 import convert from "convert-units";
 import classNames from "classnames";
+import { z } from "zod";
+import useNumber from "@/app/calculator/_hooks/useNumber";
+import { NumberFormatter } from "@internationalized/number";
 
-const Volume = () => {
+const VolumePropsSchema = z.object({
+  locale: z.string().optional().default("en-US"),
+});
+
+export type VolumeProps = z.input<typeof VolumePropsSchema>;
+
+const Volume = (props: VolumeProps) => {
+  const zProps = VolumePropsSchema.parse(props);
+
   const [shape, setShape] = useState("cylinder");
-  const [diameter, setDiameter] = useState(0);
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [length, setLength] = useState(0);
-  const [volume, setVolume] = useState(NaN);
+  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
+  const [heightRef, height, heightError] = useNumber(zProps.locale);
+  const [widthRef, width, widthError] = useNumber(zProps.locale);
+  const [lengthRef, length, lengthError] = useNumber(zProps.locale);
 
   const [edited, setEdited] = useState(false);
 
   useEffect(() => {
     setEdited(true);
-  }, [shape, diameter, height, width, length, volume]);
+  }, [shape, diameter, height, width, length]);
 
   const handleNoteClick = () => {
     setEdited(false);
   };
 
-  useMemo(() => {
+  const numberFormatter = new NumberFormatter(zProps.locale);
+
+  const volume = useMemo(() => {
     try {
       if (shape == "cylinder")
-        setVolume(
-          convert(General.volumeCylinder(diameter, height)).from("m3").to("l"),
-        );
+        return convert(General.volumeCylinder(diameter, height))
+          .from("m3")
+          .to("l");
       else if (shape == "cuboid")
-        setVolume(General.volumeCuboid(height, width, length));
-      else setVolume(NaN);
-    } catch (error) {
-      setVolume(NaN);
+        return General.volumeCuboid(height, width, length);
+
+      return NaN;
+    } catch {
+      return NaN;
     }
   }, [shape, diameter, height, width, length]);
 
@@ -66,12 +79,11 @@ const Volume = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={diameter}
-          onChange={(e) => {
-            setDiameter(parseFloat(e.target.value));
-          }}
+          ref={diameterRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": diameterError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -84,12 +96,11 @@ const Volume = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={height}
-          onChange={(e) => {
-            setHeight(parseFloat(e.target.value));
-          }}
+          ref={heightRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": heightError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -102,12 +113,11 @@ const Volume = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={width}
-          onChange={(e) => {
-            setWidth(parseFloat(e.target.value));
-          }}
+          ref={widthRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": widthError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <label
@@ -120,12 +130,11 @@ const Volume = () => {
           <span className="label-text-alt">meter</span>
         </div>
         <input
-          type="number"
-          className="input input-bordered w-full text-right"
-          value={length}
-          onChange={(e) => {
-            setLength(parseFloat(e.target.value));
-          }}
+          ref={lengthRef}
+          className={classNames("input input-bordered w-full text-right", {
+            "input-error": lengthError != null,
+          })}
+          placeholder="0"
         />
       </label>
       <div className="divider">Note</div>
@@ -144,10 +153,10 @@ const Volume = () => {
           <span className="label-text-alt">meter cubic</span>
         </div>
         <input
-          type="number"
+          type="tel"
           readOnly
           className="input input-bordered w-full text-right"
-          value={volume.toFixed(1)}
+          value={numberFormatter.format(volume)}
         />
       </label>
     </form>
