@@ -15,11 +15,11 @@ import Boiler from "./_components/boiler";
 
 const calculator: Record<string, ReactNode> = {
   "Boiler - Water Tube - Thickness": <Boiler.WaterTubeThickness />,
-  "Chain - SWL Block": <Chain.SWLBlock />,
-  "Chain - SWL Sling": <Chain.SWLSling />,
-  "Forklift - SWL Fork": <Forklift.SWLFork />,
-  "General - Volume": <General.Volume />,
-  "Girder - Deflection": <Girder.Deflection />,
+  "Chain - SWL Block": <Chain.SWLBlock locale="id-ID" />,
+  "Chain - SWL Sling": <Chain.SWLSling locale="id-ID" />,
+  "Forklift - SWL Fork": <Forklift.SWLFork locale="id-ID" />,
+  "General - Volume": <General.Volume locale="id-ID" />,
+  "Girder - Deflection": <Girder.Deflection locale="id-ID" />,
   "Hydrant - Reservoir": <Hydrant.Reservoir locale="id-ID" />,
   "Instalasi Penyalur Petir - Radius Konvensional": (
     <InstalasiPenyalurPetir.RadiusConventional locale="id-ID" />
