@@ -57,7 +57,7 @@ const Thickness = (props: ThicknessProps) => {
         diameter,
         designLiquidLevel,
         designSpecificGravityLiquid,
-        convert(allowableStress).from("bar").to("MPa"),
+        allowableStress,
         corrosionAllowable,
       );
     } catch (error) {
@@ -138,7 +138,7 @@ const Thickness = (props: ThicknessProps) => {
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">Allowable Stress</span>
-          <span className="label-text-alt">bar</span>
+          <span className="label-text-alt">mega pascal</span>
         </div>
         <input
           ref={allowableStressRef}
