@@ -14,7 +14,12 @@ import { useToBlob } from "@hugocxl/react-to-image";
 import Boiler from "./_components/boiler";
 
 const calculator: Record<string, ReactNode> = {
-  "Boiler - Water Tube - Thickness": <Boiler.WaterTubeThickness />,
+  "Boiler - Water Tube - Drum Thickness": (
+    <Boiler.WaterTubeDrumThickness locale="id-ID" />
+  ),
+  "Boiler - Water Tube - Hole Thickness": (
+    <Boiler.WaterTubeHoleThickness locale="id-ID" />
+  ),
   "Chain - SWL Block": <Chain.SWLBlock locale="id-ID" />,
   "Chain - SWL Sling": <Chain.SWLSling locale="id-ID" />,
   "Forklift - SWL Fork": <Forklift.SWLFork locale="id-ID" />,

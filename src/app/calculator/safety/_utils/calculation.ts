@@ -387,6 +387,44 @@ export const Boiler = {
       zProps.a
     );
   },
+
+  /**
+   * Calculate minimum thickness of water tube base on JIS Standart
+   *
+   * @param pressure - maximum allowable working pressure in kilogram-force per centi meter square
+   * @param outterDiameter - outter diameter of the steel tube in mili meter
+   * @param sigma - allowable tensile stress of the material in kilogram-force per mili meter square
+   * @param additionalThickness - additional thickness in mili meter and shall be 1 mm
+   *
+   * @returns minimum thickness required of water tube in mili meter
+   */
+  minThicknessTubeWaterTubeJIS(
+    pressure: number,
+    outterDiameter: number,
+    sigma: number,
+    additionalThickness: number = 1,
+  ) {
+    const zProps = z
+      .object({
+        pressure: z.number(),
+        outterDiameter: z.number(),
+        sigma: z.number(),
+        additionalThickness: z.number(),
+      })
+      .parse({
+        pressure,
+        outterDiameter,
+        sigma,
+        additionalThickness,
+      });
+
+    return (
+      (zProps.pressure * zProps.outterDiameter) /
+        (200 * zProps.sigma + zProps.pressure) +
+      0.005 * zProps.outterDiameter +
+      zProps.additionalThickness
+    );
+  },
 };
 
 export const General = {

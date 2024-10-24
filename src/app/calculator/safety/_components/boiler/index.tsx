@@ -1,9 +1,11 @@
 "use client";
 
-import WaterTubeThickness from "./water_tube_thickness";
+import WaterTubeHoleThickness from "./water_tube_hole_thickness";
+import WaterTubeDrumThickness from "./water_tube_drum_thickness";
 
 const Boiler = {
-  WaterTubeThickness,
+  WaterTubeHoleThickness,
+  WaterTubeDrumThickness,
 };
 
 export default Boiler;
