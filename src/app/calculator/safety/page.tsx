@@ -12,8 +12,10 @@ import Girder from "./_components/girder";
 import General from "./_components/general";
 import { useToBlob } from "@hugocxl/react-to-image";
 import Boiler from "./_components/boiler";
+import APAR from "./_components/apar";
 
 const calculator: Record<string, ReactNode> = {
+  "APAR - Minimum Unit": <APAR.MinUnit locale="id-ID" />,
   "Boiler - Water Tube - Drum Thickness": (
     <Boiler.WaterTubeDrumThickness locale="id-ID" />
   ),
