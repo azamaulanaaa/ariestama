@@ -427,6 +427,24 @@ export const Boiler = {
   },
 };
 
+export const APAR = {
+  /**
+   * Caculate required number of APAR given area
+   *
+   * @param {number} area - area where APAR should exist in meter square
+   * @returns {number} number of APAR
+   */
+  minUnit(area: number): number {
+    const zParams = z
+      .object({
+        area: z.number(),
+      })
+      .parse({ area });
+
+    return Math.ceil(zParams.area / (15 * 15));
+  },
+};
+
 export const General = {
   /**
    * Calculate ratio beban realtive to swl
@@ -456,6 +474,25 @@ export const General = {
     const zSafetyFactor = z.number().parse(safetyFactor);
 
     return zSwl * zSafetyFactor;
+  },
+
+  /**
+   * Calculate the area of a rectangle
+   *
+   * @param {number} width - the width of the rectangle in meter
+   * @param {number} height - the height of the rectangle in meter
+   *
+   * @returns {number} the area of the rectangle in meter square
+   */
+  areaRectangular(height: number, width: number): number {
+    const params = z
+      .object({
+        height: z.number(),
+        width: z.number(),
+      })
+      .parse({ height, width });
+
+    return params.height * params.width;
   },
 
   /**
