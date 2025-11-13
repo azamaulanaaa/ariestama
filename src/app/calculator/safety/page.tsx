@@ -16,6 +16,9 @@ import APAR from "./_components/apar";
 
 const calculator: Record<string, ReactNode> = {
   "APAR - Minimum Unit": <APAR.MinUnit locale="id-ID" />,
+  "Boiler - Fire Tube - Shell Thickness": (
+    <Boiler.FireTubeShellThicknes locale="id-ID" />
+  ),
   "Boiler - Water Tube - Drum Thickness": (
     <Boiler.WaterTubeDrumThickness locale="id-ID" />
   ),
