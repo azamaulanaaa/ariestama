@@ -283,6 +283,89 @@ export const Girder = {
 
 export const Boiler = {
   /**
+   * Calculates the temperature-dependent stress reduction factor (f(Θ)) based on
+   * the Grondslagen/older empirical formula.
+   *
+   * @param temperature - The gas operating temperature (Θ) in celcius
+   * @returns The unitless temperature reduction factor f(Θ).
+   */
+  temperatureFactorGrondslagen(
+    temperature: number,
+  ) {
+    const zProps = z.object({
+      Theta: z.number(),
+    })
+      .parse({ Theta: temperature });
+
+    return (1 - (zProps.Theta / 525) ** 2);
+  },
+
+  /**
+   * Calculates the corrected yield strength (SV^Θ) by applying the temperature factor.
+   * This result represents the allowable stress at the operating temperature.
+   *
+   * @param temperatureFactor - The unitless reduction factor f(Θ) obtained from temperatureFactorGrondslagen.
+   * @param yieldStrength - The base yield strength (SV) at a reference/ambient temperature in kilo gram force per mili meter square.
+   * @returns The corrected yield strength (SV^Θ) with the same unit as yieldStrength.
+   */
+  correctedYieldStrengthGrondslagen(
+    temperatureFactor: number,
+    yieldStrength: number,
+  ) {
+    const zProps = z.object({
+      temperatureFactor: z.number(),
+      yieldStrength: z.number(),
+    }).parse({ temperatureFactor, yieldStrength });
+
+    return zProps.yieldStrength * zProps.temperatureFactor;
+  },
+
+  /**
+   * Calculates the minimum required shell thickness (t) for a Fire-Tube Boiler shell
+   * based on the Grondslagen formula.
+   *
+   * @param pressure - The design pressure (P or p) in kilo gram force per mili meter square.
+   * @param innerDiameter - The internal diameter of the shell (d) in mili meter.
+   * @param weldJointEfficiency - The factor for weld strength or safety (x).
+   * @param shellReductionFactor - The factor for construction strength reduction (z).
+   * @param constantC - A formula-specific constant (c), often related to stress concentration.
+   * @param correctedYieldStrength - The allowable stress (SV^Θ) obtained from correctedYieldStrengthGrondslagen.
+   * @param corrosionAllowance - The added thickness for corrosion (Δ).
+   * @returns The minimum required shell thickness (t) with the same unit as innerDiameter and corrosionAllowance in mili meter.
+   */
+  minThicknessShellFireTubeGrondslagen(
+    pressure: number,
+    innerDiameter: number,
+    weldJointEfficiency: number,
+    shellReductionFactor: number,
+    constantC: number,
+    correctedYieldStrength: number,
+    corrosionAllowance: number,
+  ) {
+    const zProps = z.object({
+      p: z.number(),
+      d: z.number(),
+      x: z.number(),
+      z: z.number(),
+      c: z.number(),
+      svTheta: z.number(),
+      delta: z.number(),
+    }).parse({
+      p: pressure,
+      d: innerDiameter,
+      x: weldJointEfficiency,
+      z: shellReductionFactor,
+      c: constantC,
+      svTheta: correctedYieldStrength,
+      delta: corrosionAllowance,
+    });
+
+    return (zProps.p * zProps.d * zProps.x) /
+        (2 * (zProps.z - zProps.c) * zProps.svTheta - zProps.p * zProps.x) +
+      zProps.delta;
+  },
+
+  /**
    * Calculate efficiency of ligaments between tube holes in Water Tube
    *
    * @param p - ptich of the tube holes in mili meter
