@@ -1,7 +1,7 @@
 import { ReactNode, Ref } from "react";
 import { z } from "zod";
 
-import { APAR } from "@/component/calculator/safety/apar/mod.tsx";
+import { APAR } from "@/component/calculator/apar/mod.tsx";
 
 type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
