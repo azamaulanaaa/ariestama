@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import deno from "@deno/vite-plugin";
+import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
-  plugins: [deno()],
+  plugins: [deno(), react()],
 });
