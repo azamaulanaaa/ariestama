@@ -1,3 +1,3 @@
 export function Base() {
-  return <h1 className="font-bold">Hello, world!</h1>;
+  return <h1 className="badge badge-soft badge-primary">Hello, world!</h1>;
 }
