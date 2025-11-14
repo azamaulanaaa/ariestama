@@ -1,7 +1,5 @@
-"use client";
-
-import { useState, useMemo, useEffect, useRef, Ref } from "react";
-import { NumberParser, NumberFormatter } from "@internationalized/number";
+import { Ref, useEffect, useMemo, useRef, useState } from "react";
+import { NumberFormatter, NumberParser } from "@internationalized/number";
 
 const useNumber = (
   locale: string = "en-US",

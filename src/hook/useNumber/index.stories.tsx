@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import { Story } from "@ladle/react";
 import { z } from "zod";
-import useNumber from ".";
-import classNames from "classnames";
+
+import { cn } from "@/util/classname.tsx";
+import useNumber from "./index.tsx";
 
 const InputNumberPropsSchema = z.object({
   locale: z.string().default("en-US"),
 });
+type InputNumberProps = z.input<typeof InputNumberPropsSchema>;
 
-export type InputNumberProps = z.input<typeof InputNumberPropsSchema>;
-
-const Component = (props: InputNumberProps) => {
-  const zProps = InputNumberPropsSchema.passthrough().parse(props);
+const InputNumber = (props: InputNumberProps) => {
+  const zProps = InputNumberPropsSchema.parse(props);
   const [ref, _, error] = useNumber(zProps.locale);
 
   return (
     <input
       ref={ref}
       type="text"
-      className={classNames("input input-bordered text-right", {
+      className={cn("input input-bordered text-right", {
         "input-error": error !== null,
       })}
       placeholder="0"
@@ -25,15 +25,5 @@ const Component = (props: InputNumberProps) => {
   );
 };
 
-const meta: Meta<typeof Component> = {
-  component: Component,
-};
-
-export default meta;
-type Story = StoryObj<typeof Component>;
-
-export const Default: Story = {
-  args: {
-    locale: "en-US",
-  },
-};
+export const en_us: Story = () => <InputNumber locale="en-US" />;
+export const id_id: Story = () => <InputNumber locale="id-ID" />;
