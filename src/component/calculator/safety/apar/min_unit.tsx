@@ -54,7 +54,7 @@ export const MinUnit = (props: MinUnitProps) => {
   }, [area]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
       <fieldset className="fieldset">
         <legend className="fieldset-legend">Type</legend>
