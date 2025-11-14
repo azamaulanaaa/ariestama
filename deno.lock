@@ -4,6 +4,7 @@
     "jsr:@std/internal@^1.0.10": "1.0.12",
     "jsr:@std/path@^1.1.2": "1.1.2",
     "npm:@deno/vite-plugin@^1.0.5": "1.0.5_vite@7.2.2__picomatch@4.0.3",
+    "npm:@hugocxl/react-to-image@^0.0.9": "0.0.9_html-to-image@1.11.13_react@19.2.0",
     "npm:@internationalized/number@^3.6.5": "3.6.5",
     "npm:@ladle/react@*": "5.1.1_react@19.2.0_react-dom@19.2.0__react@19.2.0_@types+react@19.2.4_vite@6.4.1__picomatch@4.0.3",
     "npm:@ladle/react@^5.1.1": "5.1.1_react@19.2.0_react-dom@19.2.0__react@19.2.0_@types+react@19.2.4_vite@6.4.1__picomatch@4.0.3",
@@ -310,6 +311,13 @@
       "integrity": "sha512-alJC0uCZpTFrSL0CCDjcgleBXPnCrEAhTBILpeAp7M/OFgoqtAetfBzX0xM00MUsVVPpVjlPuMbREqnZCXaTnA==",
       "os": ["win32"],
       "cpu": ["x64"]
+    },
+    "@hugocxl/react-to-image@0.0.9_html-to-image@1.11.13_react@19.2.0": {
+      "integrity": "sha512-UzPtjPb5k0V8oPKjmDvYnWtTNCuFh+2ysXF4+dXL0tnEaFDfu2M3iSt32pzKbJsZYoFu5X12JKKd9MKa2OsR6g==",
+      "dependencies": [
+        "html-to-image",
+        "react"
+      ]
     },
     "@inquirer/ansi@1.0.2": {
       "integrity": "sha512-S8qNSZiYzFd0wAcyG5AXCvUHC5Sr7xpZ9wZ2py9XR88jUz8wooStVx5M6dRzczbBWjic9NP7+rY0Xi7qqK/aMQ=="
@@ -1637,6 +1645,9 @@
       "dependencies": [
         "@babel/runtime"
       ]
+    },
+    "html-to-image@1.11.13": {
+      "integrity": "sha512-cuOPoI7WApyhBElTTb9oqsawRvZ0rHhaHwghRLlTuffoD1B2aDemlCruLeZrUIIdvG7gs9xeELEPm6PhuASqrg=="
     },
     "html-void-elements@3.0.0": {
       "integrity": "sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg=="
@@ -3193,6 +3204,7 @@
     "dependencies": [
       "jsr:@std/path@^1.1.2",
       "npm:@deno/vite-plugin@^1.0.5",
+      "npm:@hugocxl/react-to-image@^0.0.9",
       "npm:@internationalized/number@^3.6.5",
       "npm:@ladle/react@^5.1.1",
       "npm:@tailwindcss/vite@^4.1.17",

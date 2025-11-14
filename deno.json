@@ -14,6 +14,7 @@
   "imports": {
     "@/": "./src/",
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
+    "@hugocxl/react-to-image": "npm:@hugocxl/react-to-image@^0.0.9",
     "@internationalized/number": "npm:@internationalized/number@^3.6.5",
     "@ladle/react": "npm:@ladle/react@^5.1.1",
     "@std/path": "jsr:@std/path@^1.1.2",
