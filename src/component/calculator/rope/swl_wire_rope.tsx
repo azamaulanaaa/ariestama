@@ -1,12 +1,14 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { General, Rope } from "../../_utils/calculation";
-import convert from "convert-units";
-import classNames from "classnames";
-import useNumber from "@/app/calculator/_hooks/useNumber";
-import { NumberFormatter } from "@internationalized/number";
 import { z } from "zod";
+import { NumberFormatter } from "@internationalized/number";
+import configureMeasurements from "convert-units";
+import allMeasures from "convert-units/definitions/all";
+
+import { General, Rope } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
+
+const convert = configureMeasurements(allMeasures);
 
 const SwlWireRopePropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -16,7 +18,7 @@ export type SwlWireRopeProps = {
   locale?: string;
 };
 
-const SwlWireRope = (props: SwlWireRopeProps) => {
+export const SwlWireRope = (props: SwlWireRopeProps) => {
   const zProps = SwlWireRopePropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
@@ -40,7 +42,7 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
   const swlSling = useMemo(() => {
     try {
       return Rope.swlWireSling(convert(diameter).from("mm").to("in"), grade);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [diameter, grade]);
@@ -48,7 +50,7 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
   const breakingStrenghSling = useMemo(() => {
     try {
       return General.breakingStrength(swlSling, Rope.SafetyFactor.wire_sling);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [swlSling]);
@@ -60,7 +62,7 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
         reavingNumber,
         grade,
       );
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [diameter, reavingNumber, grade]);
@@ -75,7 +77,7 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
@@ -87,7 +89,7 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
         </div>
         <input
           ref={reavingNumberRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": reavingNumberError != null,
           })}
           placeholder="0"
@@ -110,11 +112,12 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <div className="divider">Wire Rope Sling</div>
@@ -158,5 +161,3 @@ const SwlWireRope = (props: SwlWireRopeProps) => {
     </form>
   );
 };
-
-export default SwlWireRope;
