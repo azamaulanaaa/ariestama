@@ -321,6 +321,23 @@ export const Boiler = {
   },
 
   /**
+   * Calculate minimum diameter required for a safety valve
+   * based on Grondslagen formula
+   *
+   * @param radiusChamber - The radius of chamber in meter square.
+   * @param pressure - The design pressure (P or p) in kilo gram force per centi meter square
+   * @returns minimum diameter of a safety valve in mili meter
+   */
+  minDiameterSafetyValveGrondslagen() {
+    const zProps = z.object({
+      r: z.number(),
+      p: z.number(),
+    }).parse({});
+
+    return (2 / 3) * 140 * Math.sqrt((zProps.r + 0.4) / (zProps.p + 4));
+  },
+
+  /**
    * Calculates the minimum required tube thickness (t) for a Fire-Tube Boiler shell
    * based on the Grondslagen formula.
    *
