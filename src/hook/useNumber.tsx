@@ -1,7 +1,7 @@
 import { Ref, useEffect, useMemo, useRef, useState } from "react";
 import { NumberFormatter, NumberParser } from "@internationalized/number";
 
-const useNumber = (
+export const useNumber = (
   locale: string = "en-US",
 ): [Ref<HTMLInputElement>, number, Error | null] => {
   const [value, setValue] = useState<string>("");
@@ -51,5 +51,3 @@ const useNumber = (
 
   return [ref, numberValue, error];
 };
-
-export default useNumber;

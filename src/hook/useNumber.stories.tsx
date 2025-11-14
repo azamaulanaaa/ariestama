@@ -2,7 +2,7 @@ import { Story } from "@ladle/react";
 import { z } from "zod";
 
 import { cn } from "@/util/classname.tsx";
-import useNumber from "./index.tsx";
+import { useNumber } from "./useNumber.tsx";
 
 const InputNumberPropsSchema = z.object({
   locale: z.string().default("en-US"),
