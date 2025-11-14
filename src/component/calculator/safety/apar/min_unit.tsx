@@ -129,7 +129,8 @@ const MinUnit = (props: MinUnitProps) => {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label
