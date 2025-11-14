@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
-import { cn as classNames } from "@/util/classname.tsx";
+import { cn } from "@/util/classname.tsx";
 import { APAR, General } from "@/util/calculation.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
@@ -15,7 +16,7 @@ export type MinUnitProps = z.input<typeof MinUnitPropsSchema>;
 const MinUnit = (props: MinUnitProps) => {
   const zProps = MinUnitPropsSchema.parse(props);
 
-  const [typee, setTypee] = useState("direct_input");
+  const [kind, setKind] = useState("direct_input");
   const [heightRef, height, heightError] = useNumber(zProps.locale);
   const [widthRef, width, widthError] = useNumber(zProps.locale);
   const [directInputRef, directInput, directInputError] = useNumber(
@@ -36,13 +37,13 @@ const MinUnit = (props: MinUnitProps) => {
 
   const area = useMemo(() => {
     try {
-      if (typee == "direct_input") return directInput;
-      if (typee == "calculate") return General.areaRectangular(height, width);
+      if (kind == "direct_input") return directInput;
+      if (kind == "calculate") return General.areaRectangular(height, width);
       return NaN;
     } catch {
       return NaN;
     }
-  }, [typee, height, width, directInput]);
+  }, [kind, height, width, directInput]);
 
   const numOfAPAR = useMemo(() => {
     try {
@@ -55,111 +56,121 @@ const MinUnit = (props: MinUnitProps) => {
   return (
     <form className="prose">
       <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Type</span>
-        </div>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Type</legend>
         <select
           className="select select-bordered w-full text-right"
-          value={typee}
+          value={kind}
           onChange={(e) => {
-            setTypee(e.target.value);
+            setKind(e.target.value);
           }}
         >
           <option value="direct_input">Direct Input</option>
           <option value="calculate">Calculate</option>
         </select>
-      </label>
-      <label
-        className={classNames("form-control w-full", {
-          hidden: typee != "direct_input",
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
+          hidden: kind != "direct_input",
         })}
       >
-        <div className="label">
-          <span className="label-text">Area</span>
-          <span className="label-text-alt">meter square</span>
-        </div>
-        <input
-          ref={directInputRef}
-          className={classNames("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Area</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": directInputError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={classNames("form-control w-full", {
-          hidden: typee != "calculate",
+        >
+          <input
+            ref={directInputRef}
+            className="grow text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}^2" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
+          hidden: kind != "calculate",
         })}
       >
-        <div className="label">
-          <span className="label-text">Height</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={heightRef}
-          className={classNames("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Height</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": heightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={classNames("form-control w-full", {
-          hidden: typee != "calculate",
+        >
+          <input
+            ref={heightRef}
+            className="grow text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
+          hidden: kind != "calculate",
         })}
       >
-        <div className="label">
-          <span className="label-text">Width</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={widthRef}
-          className={classNames("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Width</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": widthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={classNames("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={widthRef}
+            className="grow text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label
-        className={classNames("form-control w-full", {
-          hidden: typee != "calculate",
+      <fieldset
+        className={cn("fieldset", {
+          hidden: kind != "calculate",
         })}
       >
-        <div className="label">
-          <span className="label-text">Area</span>
-          <span className="label-text-alt">meter square</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(area)}
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Number of APAR</span>
-          <span className="label-text-alt">unit</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(numOfAPAR)}
-        />
-      </label>
+        <legend className="fieldset-legend">Area</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(area)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}^2" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Number of APAR</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(numOfAPAR)}
+          />
+          <span className="label">unit</span>
+        </label>
+      </fieldset>
     </form>
   );
 };
