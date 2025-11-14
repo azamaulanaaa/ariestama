@@ -1,4 +1,4 @@
-import MinUnit from "./min_unit.tsx";
+import { MinUnit } from "./min_unit.tsx";
 
 const APAR = {
   MinUnit,

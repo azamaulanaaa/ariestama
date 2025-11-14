@@ -13,7 +13,7 @@ const MinUnitPropsSchema = z.object({
 
 export type MinUnitProps = z.input<typeof MinUnitPropsSchema>;
 
-const MinUnit = (props: MinUnitProps) => {
+export const MinUnit = (props: MinUnitProps) => {
   const zProps = MinUnitPropsSchema.parse(props);
 
   const [kind, setKind] = useState("direct_input");
@@ -174,5 +174,3 @@ const MinUnit = (props: MinUnitProps) => {
     </form>
   );
 };
-
-export default MinUnit;
