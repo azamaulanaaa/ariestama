@@ -19,6 +19,9 @@ const calculator: Record<string, ReactNode> = {
   "Boiler - Fire Tube - Shell Thickness": (
     <Boiler.FireTubeShellThicknes locale="id-ID" />
   ),
+  "Boiler - Fire Tube - Tube Thickness": (
+    <Boiler.FireTubeTubeThicknes locale="id-ID" />
+  ),
   "Boiler - Water Tube - Drum Thickness": (
     <Boiler.WaterTubeDrumThickness locale="id-ID" />
   ),
