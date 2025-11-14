@@ -341,7 +341,7 @@ export const Boiler = {
    * Calculates the minimum required tube thickness (t) for a Fire-Tube Boiler shell
    * based on the Grondslagen formula.
    *
-   * @param pressure - The design pressure (P or p) in kilo gram force per mili meter square.
+   * @param pressure - The design pressure (P or p) in kilo gram force per centi meter square.
    * @param innerDiameter - The internal diameter of the tube (d) in mili meter.
    * @param weldJointEfficiency - The factor for weld strength or safety (x).
    * @param correctedYieldStrength - The allowable stress (SV^Θ) obtained from correctedYieldStrengthGrondslagen.
@@ -377,7 +377,7 @@ export const Boiler = {
    * Calculates the minimum required shell thickness (t) for a Fire-Tube Boiler shell
    * based on the Grondslagen formula.
    *
-   * @param pressure - The design pressure (P or p) in kilo gram force per mili meter square.
+   * @param pressure - The design pressure (P or p) in kilo gram force per centi meter square.
    * @param innerDiameter - The internal diameter of the shell (d) in mili meter.
    * @param weldJointEfficiency - The factor for weld strength or safety (x).
    * @param shellReductionFactor - The factor for construction strength reduction (z).
