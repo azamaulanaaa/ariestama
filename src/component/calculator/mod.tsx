@@ -1,4 +1,4 @@
-import { ReactNode, RefAttributes } from "react";
+import { ReactNode, Ref } from "react";
 import { z } from "zod";
 
 import { APAR } from "@/component/calculator/safety/apar/mod.tsx";
@@ -15,7 +15,7 @@ const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
 };
 
 const CalculatorPropsSchema = z.object({
-  ref: z.custom<RefAttributes<HTMLDivElement>>().optional(),
+  ref: z.custom<Ref<HTMLDivElement>>().optional(),
   kind: z.enum(CalculatorKind),
   locale: z.string().optional().default("en-US"),
 });
