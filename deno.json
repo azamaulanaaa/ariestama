@@ -11,11 +11,14 @@
     "jsxImportSource": "react"
   },
   "imports": {
+    "@/": "./src/",
     "@deno/vite-plugin": "npm:@deno/vite-plugin@^1.0.5",
+    "@std/path": "jsr:@std/path@^1.1.2",
     "@types/react": "npm:@types/react@^19.2.4",
     "@vitejs/plugin-react-swc": "npm:@vitejs/plugin-react-swc@^4.2.2",
     "react": "npm:react@^19.2.0",
     "react-dom": "npm:react-dom@^19.2.0",
+    "react-router": "npm:react-router@^7.9.6",
     "vite": "npm:vite@^7.2.2"
   }
 }
