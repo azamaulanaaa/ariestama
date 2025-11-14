@@ -1,7 +1,5 @@
 import { MinUnit } from "./min_unit.tsx";
 
-const APAR = {
+export const APAR = {
   MinUnit,
 };
-
-export default APAR;
