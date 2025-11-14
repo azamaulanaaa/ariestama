@@ -1,4 +1,4 @@
-import { ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from "react";
 import { z } from "zod";
 
 import { APAR } from "@/component/calculator/apar/mod.tsx";
@@ -18,19 +18,18 @@ const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
 };
 
 const CalculatorPropsSchema = z.object({
-  ref: z.custom<Ref<HTMLDivElement>>().optional(),
   kind: z.enum(CalculatorKind),
   locale: z.string().optional().default("en-US"),
 });
 export type CalculatorProps = z.input<typeof CalculatorPropsSchema>;
 
-export const Calculator = (props: CalculatorProps) => {
+export const Calculator = forwardRef((props: CalculatorProps, ref) => {
   const zProps = CalculatorPropsSchema.parse(props);
 
   const InnerCalculator = InnerCalculatorMap[zProps.kind];
 
   return (
-    <div ref={zProps.ref} className="card bg-base-100 shadow-xl">
+    <div ref={ref} className="card bg-base-100 shadow-xl">
       <div className="card-body relative">
         <div className="absolute inset-0 z-0 opacity-10 rounded-2xl bg-[url('/img/logo.png')] bg-top">
         </div>
@@ -41,4 +40,4 @@ export const Calculator = (props: CalculatorProps) => {
       </div>
     </div>
   );
-};
+});
