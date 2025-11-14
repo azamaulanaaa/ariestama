@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { TangkiTimbun } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.tsx";
@@ -70,9 +71,10 @@ export const Thickness = (props: ThicknessProps) => {
   ]);
 
   return (
-    <form className="prose">
-      <h2>Standart</h2>
-      <label className="form-control w-full">
+    <form>
+      <h2>Parameter</h2>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Standart</legend>
         <select
           className="select select-bordered w-full text-right"
           value={standart}
@@ -84,47 +86,52 @@ export const Thickness = (props: ThicknessProps) => {
             American Petroleum Institute (API) - 650
           </option>
         </select>
-      </label>
-      <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Diameter</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={diameterRef}
-          className={cn("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Diameter</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": diameterError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Diameter Type</span>
-        </div>
+        >
+          <input
+            ref={diameterRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Diameter Type</legend>
         <select className="select select-bordered w-full text-right">
           <option>Inner</option>
           <option>Outter</option>
         </select>
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Design Liquid Level</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={designLiquidLevelRef}
-          className={cn("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Design Liquid Level</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": designLiquidLevelError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Design Specific Gravity Liquid</span>
-        </div>
+        >
+          <input
+            ref={designLiquidLevelRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">
+          Design Specific Gravity Liquid
+        </legend>
         <input
           ref={designSpecificGravityLiquidRef}
           className={cn("input input-bordered w-full text-right", {
@@ -132,56 +139,64 @@ export const Thickness = (props: ThicknessProps) => {
           })}
           placeholder="0"
         />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Allowable Stress</span>
-          <span className="label-text-alt">mega pascal</span>
-        </div>
-        <input
-          ref={allowableStressRef}
-          className={cn("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Allowable Stress</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": allowableStressError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Corrosion Allowance</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          ref={corrosionAllowableRef}
-          className={cn("input input-bordered w-full text-right", {
+        >
+          <input
+            ref={allowableStressRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{MPa}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Corrosion Allowance</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": corrosionAllowableError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={corrosionAllowableRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Minimum Required Thickness</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(minimum_required_thickness)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Minimum Required Thickness</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(minimum_required_thickness)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
