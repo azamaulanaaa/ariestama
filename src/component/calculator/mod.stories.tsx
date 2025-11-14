@@ -11,3 +11,9 @@ export const Container: Story<{ kind: CalculatorKind }> = ({ kind }) => (
 Container.args = {
   kind: CalculatorKind.Apar_MinUnit,
 };
+Container.argTypes = {
+  kind: {
+    options: Object.values(CalculatorKind).sort(),
+    control: { type: "select" },
+  },
+};
