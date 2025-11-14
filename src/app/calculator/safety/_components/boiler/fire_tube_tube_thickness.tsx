@@ -100,9 +100,6 @@ const FireTubeThicknessTube = (props: FireTubeThicknessPropsTube) => {
     corrosionAllowance,
   ]);
 
-  console.log(temperatureFactor);
-  console.log(correctedYieldStrength);
-
   return (
     <form className="prose">
       <h2>Standart</h2>

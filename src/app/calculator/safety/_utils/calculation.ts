@@ -515,8 +515,6 @@ export const Boiler = {
       }
     }
 
-    console.log({ k, zProps });
-
     return (
       (zProps.p * zProps.di) /
         (200 * zProps.sigma * zProps.pi - 2 * zProps.p * (1 - k)) +
