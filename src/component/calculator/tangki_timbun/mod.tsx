@@ -1,7 +1,5 @@
-import Thickness from "./thickness.tsx";
+import { Thickness } from "./thickness.tsx";
 
-const TangkiTimbun = {
+export const TangkiTimbun = {
   Thickness,
 };
-
-export default TangkiTimbun;

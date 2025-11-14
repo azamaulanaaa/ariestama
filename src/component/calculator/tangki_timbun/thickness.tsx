@@ -12,7 +12,7 @@ const ThicknessPropsSchema = z.object({
 
 export type ThicknessProps = z.input<typeof ThicknessPropsSchema>;
 
-const Thickness = (props: ThicknessProps) => {
+export const Thickness = (props: ThicknessProps) => {
   const zProps = ThicknessPropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
@@ -185,5 +185,3 @@ const Thickness = (props: ThicknessProps) => {
     </form>
   );
 };
-
-export default Thickness;
