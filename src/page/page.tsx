@@ -1,3 +1,3 @@
 export function Base() {
-  return "Hello, world!";
+  return <h1 className="font-bold">Hello, world!</h1>;
 }
