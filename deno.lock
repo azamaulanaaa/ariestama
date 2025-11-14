@@ -9,10 +9,12 @@
     "npm:@tailwindcss/vite@^4.1.17": "4.1.17_vite@7.2.2__picomatch@4.0.3",
     "npm:@types/react@^19.2.4": "19.2.4",
     "npm:@vitejs/plugin-react-swc@^4.2.2": "4.2.2_vite@7.2.2__picomatch@4.0.3",
+    "npm:clsx@^2.1.1": "2.1.1",
     "npm:daisyui@^5.5.3": "5.5.3",
     "npm:react-dom@^19.2.0": "19.2.0_react@19.2.0",
     "npm:react-router@^7.9.6": "7.9.6_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:react@^19.2.0": "19.2.0",
+    "npm:tailwind-merge@^3.4.0": "3.4.0",
     "npm:tailwindcss@^4.1.17": "4.1.17",
     "npm:vite@*": "7.2.2_picomatch@4.0.3",
     "npm:vite@^7.2.2": "7.2.2_picomatch@4.0.3"
@@ -2874,6 +2876,9 @@
         "inline-style-parser"
       ]
     },
+    "tailwind-merge@3.4.0": {
+      "integrity": "sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g=="
+    },
     "tailwindcss@4.1.17": {
       "integrity": "sha512-j9Ee2YjuQqYT9bbRTfTZht9W/ytp5H+jJpZKiYdP/bpnXARAuELt9ofP0lPnmHjbga7SNQIxdTAXCmtKVYjN+Q=="
     },
@@ -3152,10 +3157,12 @@
       "npm:@tailwindcss/vite@^4.1.17",
       "npm:@types/react@^19.2.4",
       "npm:@vitejs/plugin-react-swc@^4.2.2",
+      "npm:clsx@^2.1.1",
       "npm:daisyui@^5.5.3",
       "npm:react-dom@^19.2.0",
       "npm:react-router@^7.9.6",
       "npm:react@^19.2.0",
+      "npm:tailwind-merge@^3.4.0",
       "npm:tailwindcss@^4.1.17",
       "npm:vite@^7.2.2"
     ]
