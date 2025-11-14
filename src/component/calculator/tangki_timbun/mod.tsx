@@ -1,6 +1,4 @@
-"use client";
-
-import Thickness from "./thickness";
+import Thickness from "./thickness.tsx";
 
 const TangkiTimbun = {
   Thickness,

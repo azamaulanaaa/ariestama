@@ -1,12 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { TangkiTimbun } from "../../_utils/calculation";
-import convert from "convert-units";
-import classNames from "classnames";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+
+import { TangkiTimbun } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const ThicknessPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -60,7 +58,7 @@ const Thickness = (props: ThicknessProps) => {
         allowableStress,
         corrosionAllowable,
       );
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [
@@ -95,7 +93,7 @@ const Thickness = (props: ThicknessProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
@@ -117,7 +115,7 @@ const Thickness = (props: ThicknessProps) => {
         </div>
         <input
           ref={designLiquidLevelRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": designLiquidLevelError != null,
           })}
           placeholder="0"
@@ -129,7 +127,7 @@ const Thickness = (props: ThicknessProps) => {
         </div>
         <input
           ref={designSpecificGravityLiquidRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": designSpecificGravityLiquidError != null,
           })}
           placeholder="0"
@@ -142,7 +140,7 @@ const Thickness = (props: ThicknessProps) => {
         </div>
         <input
           ref={allowableStressRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": allowableStressError != null,
           })}
           placeholder="0"
@@ -155,7 +153,7 @@ const Thickness = (props: ThicknessProps) => {
         </div>
         <input
           ref={corrosionAllowableRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": corrosionAllowableError != null,
           })}
           placeholder="0"
@@ -164,11 +162,12 @@ const Thickness = (props: ThicknessProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
