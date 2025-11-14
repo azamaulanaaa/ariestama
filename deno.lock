@@ -12,7 +12,9 @@
     "npm:@vitejs/plugin-react-swc@^4.2.2": "4.2.2_vite@7.2.2__picomatch@4.0.3",
     "npm:clsx@^2.1.1": "2.1.1",
     "npm:daisyui@^5.5.3": "5.5.3",
+    "npm:katex@~0.16.25": "0.16.25",
     "npm:react-dom@^19.2.0": "19.2.0_react@19.2.0",
+    "npm:react-katex@^3.1.0": "3.1.0_prop-types@15.8.1_react@19.2.0",
     "npm:react-router@^7.9.6": "7.9.6_react@19.2.0_react-dom@19.2.0__react@19.2.0",
     "npm:react@^19.2.0": "19.2.0",
     "npm:tailwind-merge@^3.4.0": "3.4.0",
@@ -397,7 +399,7 @@
         "boxen",
         "chokidar",
         "classnames",
-        "commander",
+        "commander@12.1.0",
         "cross-spawn",
         "debug",
         "get-port",
@@ -1101,6 +1103,9 @@
     "commander@12.1.0": {
       "integrity": "sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA=="
     },
+    "commander@8.3.0": {
+      "integrity": "sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww=="
+    },
     "content-disposition@0.5.4": {
       "integrity": "sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==",
       "dependencies": [
@@ -1751,6 +1756,13 @@
     },
     "json5@2.2.3": {
       "integrity": "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==",
+      "bin": true
+    },
+    "katex@0.16.25": {
+      "integrity": "sha512-woHRUZ/iF23GBP1dkDQMh1QBad9dmr8/PAwNA54VrSOVYgI12MAcE14TqnDdQOdzyEonGzMepYnqBMYdsoAr8Q==",
+      "dependencies": [
+        "commander@8.3.0"
+      ],
       "bin": true
     },
     "keygrip@1.1.0": {
@@ -2605,6 +2617,14 @@
     "react-is@16.13.1": {
       "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
     },
+    "react-katex@3.1.0_prop-types@15.8.1_react@19.2.0": {
+      "integrity": "sha512-At9uLOkC75gwn2N+ZXc5HD8TlATsB+3Hkp9OGs6uA8tM3dwZ3Wljn74Bk3JyHFPgSnesY/EMrIAB1WJwqZqejA==",
+      "dependencies": [
+        "katex",
+        "prop-types",
+        "react"
+      ]
+    },
     "react-refresh@0.17.0": {
       "integrity": "sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ=="
     },
@@ -3180,7 +3200,9 @@
       "npm:@vitejs/plugin-react-swc@^4.2.2",
       "npm:clsx@^2.1.1",
       "npm:daisyui@^5.5.3",
+      "npm:katex@~0.16.25",
       "npm:react-dom@^19.2.0",
+      "npm:react-katex@^3.1.0",
       "npm:react-router@^7.9.6",
       "npm:react@^19.2.0",
       "npm:tailwind-merge@^3.4.0",

@@ -1,2 +1,4 @@
 @import "tailwindcss" source("../src/");
 @plugin "daisyui";
+
+@import "katex/dist/katex.min.css";
