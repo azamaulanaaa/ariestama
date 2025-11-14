@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { APAR, General } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { cn as classNames } from "@/util/classname.tsx";
+import { APAR, General } from "@/util/calculation.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const MinUnitPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -40,7 +39,7 @@ const MinUnit = (props: MinUnitProps) => {
       if (typee == "direct_input") return directInput;
       if (typee == "calculate") return General.areaRectangular(height, width);
       return NaN;
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [typee, height, width, directInput]);
@@ -48,7 +47,7 @@ const MinUnit = (props: MinUnitProps) => {
   const numOfAPAR = useMemo(() => {
     try {
       return APAR.minUnit(area);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [area]);

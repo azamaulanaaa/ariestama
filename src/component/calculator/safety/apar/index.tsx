@@ -1,6 +1,4 @@
-"use client";
-
-import MinUnit from "./min_unit";
+import MinUnit from "./min_unit.tsx";
 
 const APAR = {
   MinUnit,
