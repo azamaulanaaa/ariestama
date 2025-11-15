@@ -34,4 +34,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=${{ vars.PROJECT_NAME }}
+          command: pages deploy --commit-dirty=true --project-name=${{ vars.PROJECT_NAME }}
