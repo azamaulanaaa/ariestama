@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 import configureMeasurements from "convert-units";
 import allMeasures from "convert-units/definitions/all";
 
@@ -54,13 +55,10 @@ export const Volume = (props: VolumeProps) => {
   }, [shape, diameter, height, width, length]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
-      <div className="divider">Reservoir</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Shape</span>
-        </div>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Shape</legend>
         <select
           className="select select-bordered w-full text-right"
           value={shape}
@@ -71,98 +69,110 @@ export const Volume = (props: VolumeProps) => {
           <option value="cylinder">Cylinder</option>
           <option value="cuboid">Cuboid</option>
         </select>
-      </label>
-      <label
-        className={cn("form-control w-full", {
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cylinder",
         })}
       >
-        <div className="label">
-          <span className="label-text">Diameter</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={diameterRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Diameter</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": diameterError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
-          hidden: shape != "cylinder" && shape != "cuboid",
-        })}
-      >
-        <div className="label">
-          <span className="label-text">Height</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={heightRef}
-          className={cn("input input-bordered w-full text-right", {
+        >
+          <input
+            ref={diameterRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Height</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": heightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={heightRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cuboid",
         })}
       >
-        <div className="label">
-          <span className="label-text">Width</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={widthRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Width</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": widthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={widthRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cuboid",
         })}
       >
-        <div className="label">
-          <span className="label-text">Length</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={lengthRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Length</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": lengthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={lengthRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Volume</span>
-          <span className="label-text-alt">meter cubic</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(volume)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Volume</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(volume)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}^3" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
