@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { InstalasiPenyalurPetir } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.tsx";
@@ -40,44 +41,48 @@ export const RadiusConventional = (props: RadiusConvensionalProps) => {
   }, [height]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Height</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={heightRef}
-          className={cn("input input-bordered w-full text-right", {
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Height</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": heightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={heightRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Radius</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          type="number"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(radiusKonvensional)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Radius</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="number"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(radiusKonvensional)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
