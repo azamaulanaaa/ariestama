@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Chain } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Chain } from "@/util/calculation.ts";
+import { cn as cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const SWLSlingPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -13,7 +12,7 @@ const SWLSlingPropsSchema = z.object({
 
 export type SWLSlingProps = z.input<typeof SWLSlingPropsSchema>;
 
-const SWLSling = (props: SWLSlingProps) => {
+export const SWLSling = (props: SWLSlingProps) => {
   const zProps = SWLSlingPropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
@@ -33,7 +32,7 @@ const SWLSling = (props: SWLSlingProps) => {
   const swl = useMemo(() => {
     try {
       return Chain.swlSling(diameter, grade);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [diameter, grade]);
@@ -48,7 +47,7 @@ const SWLSling = (props: SWLSlingProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
@@ -72,11 +71,12 @@ const SWLSling = (props: SWLSlingProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -94,5 +94,3 @@ const SWLSling = (props: SWLSlingProps) => {
     </form>
   );
 };
-
-export default SWLSling;

@@ -1,20 +1,19 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Chain } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
 
-const SWLBLockPropsScheam = z.object({
+import { Chain } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
+
+const SWLBlockPropsScheam = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
-export type SWLBLockProps = z.input<typeof SWLBLockPropsScheam>;
+export type SWLBlockProps = z.input<typeof SWLBlockPropsScheam>;
 
-const SWLBLock = (props: SWLBLockProps) => {
-  const zProps = SWLBLockPropsScheam.parse(props);
+export const SWLBlock = (props: SWLBlockProps) => {
+  const zProps = SWLBlockPropsScheam.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [reavingNumberRef, reavingNumber, reavingNumberError] = useNumber(
@@ -37,7 +36,7 @@ const SWLBLock = (props: SWLBLockProps) => {
   const swl = useMemo(() => {
     try {
       return Chain.swlBlock(diameter, reavingNumber, grade);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [diameter, reavingNumber, grade]);
@@ -52,7 +51,7 @@ const SWLBLock = (props: SWLBLockProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
@@ -64,7 +63,7 @@ const SWLBLock = (props: SWLBLockProps) => {
         </div>
         <input
           ref={reavingNumberRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": reavingNumberError != null,
           })}
           placeholder="0"
@@ -88,11 +87,12 @@ const SWLBLock = (props: SWLBLockProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -110,5 +110,3 @@ const SWLBLock = (props: SWLBLockProps) => {
     </form>
   );
 };
-
-export default SWLBLock;
