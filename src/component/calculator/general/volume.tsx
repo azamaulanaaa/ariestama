@@ -1,12 +1,14 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { General } from "../../_utils/calculation";
-import convert from "convert-units";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+import configureMeasurements from "convert-units";
+import allMeasures from "convert-units/definitions/all";
+
+import { General } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
+
+const convert = configureMeasurements(allMeasures);
 
 const VolumePropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -14,7 +16,7 @@ const VolumePropsSchema = z.object({
 
 export type VolumeProps = z.input<typeof VolumePropsSchema>;
 
-const Volume = (props: VolumeProps) => {
+export const Volume = (props: VolumeProps) => {
   const zProps = VolumePropsSchema.parse(props);
 
   const [shape, setShape] = useState("cylinder");
@@ -37,12 +39,13 @@ const Volume = (props: VolumeProps) => {
 
   const volume = useMemo(() => {
     try {
-      if (shape == "cylinder")
+      if (shape == "cylinder") {
         return convert(General.volumeCylinder(diameter, height))
           .from("m3")
           .to("l");
-      else if (shape == "cuboid")
+      } else if (shape == "cuboid") {
         return General.volumeCuboid(height, width, length);
+      }
 
       return NaN;
     } catch {
@@ -70,7 +73,7 @@ const Volume = (props: VolumeProps) => {
         </select>
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cylinder",
         })}
       >
@@ -80,14 +83,14 @@ const Volume = (props: VolumeProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cylinder" && shape != "cuboid",
         })}
       >
@@ -97,14 +100,14 @@ const Volume = (props: VolumeProps) => {
         </div>
         <input
           ref={heightRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": heightError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cuboid",
         })}
       >
@@ -114,14 +117,14 @@ const Volume = (props: VolumeProps) => {
         </div>
         <input
           ref={widthRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": widthError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cuboid",
         })}
       >
@@ -131,7 +134,7 @@ const Volume = (props: VolumeProps) => {
         </div>
         <input
           ref={lengthRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": lengthError != null,
           })}
           placeholder="0"
@@ -140,11 +143,12 @@ const Volume = (props: VolumeProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -162,5 +166,3 @@ const Volume = (props: VolumeProps) => {
     </form>
   );
 };
-
-export default Volume;
