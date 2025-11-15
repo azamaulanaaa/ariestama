@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { Lingkungan } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.tsx";
@@ -39,57 +40,65 @@ export const AnchorResultante = (props: AnchorResultanteProps) => {
   }, [alpha, mass]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Alpha</span>
-          <span className="label-text-alt">degree</span>
-        </div>
-        <input
-          ref={alphaRef}
-          className={cn("input input-bordered w-full text-right", {
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Alpha</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": alphaError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Mass</span>
-          <span className="label-text-alt">kilo gram</span>
-        </div>
-        <input
-          ref={massRef}
-          className={cn("input input-bordered w-full text-right", {
+        >
+          <input
+            ref={alphaRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{degree}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Mass</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": massError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={massRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Resultante</span>
-          <span className="label-text-alt">kilo gram</span>
-        </div>
-        <input
-          type="number"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(resultante)}
-        />
-      </label>
+      <fieldset className="fieldset-legend">
+        <legend className="fieldset-legend">Resultante</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="number"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(resultante)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
