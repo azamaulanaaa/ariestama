@@ -2,6 +2,7 @@ import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
 import { APAR } from "@/component/calculator/apar/mod.tsx";
+import { Forklift } from "@/component/calculator/forklfit/mod.tsx";
 import { General } from "@/component/calculator/general/mod.tsx";
 import { Girder } from "@/component/calculator/girder/mod.tsx";
 import { Hydrant } from "@/component/calculator/hydrant/mod.tsx";
@@ -15,6 +16,7 @@ type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
   Apar_MinUnit = "APAR - Minimum Unit",
+  Forklift_SwlFork = "Forklift - SWL Fork",
   General_Volume = "General - Volume",
   Girder_Deflection = "Girder - Deflection",
   Hydrant_Reservoir = "Hydrant - Reservoir",
@@ -27,6 +29,7 @@ export enum CalculatorKind {
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
   [CalculatorKind.Apar_MinUnit]: APAR.MinUnit,
+  [CalculatorKind.Forklift_SwlFork]: Forklift.SWLFork,
   [CalculatorKind.General_Volume]: General.Volume,
   [CalculatorKind.Girder_Deflection]: Girder.Deflection,
   [CalculatorKind.Hydrant_Reservoir]: Hydrant.Reservoir,
