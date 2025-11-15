@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
 import { APAR } from "@/component/calculator/apar/mod.tsx";
