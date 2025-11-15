@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { Girder } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.ts";
@@ -41,12 +42,10 @@ export const Deflection = (props: DeflectionProps) => {
   }, [typee, lengthOfSpan]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Type</span>
-        </div>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Type</legend>
         <select
           className="select select-bordered w-full text-right"
           value={typee}
@@ -57,43 +56,47 @@ export const Deflection = (props: DeflectionProps) => {
           <option value="single">Single</option>
           <option value="double">Double</option>
         </select>
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Length of Span</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          ref={lengthOfSpanRef}
-          className={cn("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Length of Span</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": lengthOfSpanError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={lengthOfSpanRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Max Deflection</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(deflection)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Max Deflection</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(deflection)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
