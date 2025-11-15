@@ -1,5 +1,9 @@
-import { Story } from "@ladle/react";
+import { Story, StoryDefault } from "@ladle/react";
 import { useShareAsImage } from "./useShareAsImage.tsx";
+
+export default {
+  title: "Hook / useShareAsImage",
+} as StoryDefault;
 
 const ShareDemo = () => {
   const [shareRef, share] = useShareAsImage();
