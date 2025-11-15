@@ -2,6 +2,7 @@ import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
 import { APAR } from "@/component/calculator/apar/mod.tsx";
+import { General } from "@/component/calculator/general/mod.tsx";
 import { InstalasiPenyalurPetir } from "@/component/calculator/instalasi_penyalur_petir/mod.tsx";
 import { Lingkungan } from "@/component/calculator/lingkungan/mod.tsx";
 import { Rope } from "@/component/calculator/rope/mod.tsx";
@@ -12,6 +13,7 @@ type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
   Apar_MinUnit = "APAR - Minimum Unit",
+  General_Volume = "General - Volume",
   InstalsiPenyalurPetir_RadiusConventional =
     "Instalasi Penyalur Petir - Radius Conventional",
   Lingkungan_AnchorResultante = "Lingkungan - Anchor Resultante",
@@ -21,6 +23,7 @@ export enum CalculatorKind {
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
   [CalculatorKind.Apar_MinUnit]: APAR.MinUnit,
+  [CalculatorKind.General_Volume]: General.Volume,
   [CalculatorKind.InstalsiPenyalurPetir_RadiusConventional]:
     InstalasiPenyalurPetir.RadiusConventional,
   [CalculatorKind.Lingkungan_AnchorResultante]: Lingkungan.AnchorResultante,
