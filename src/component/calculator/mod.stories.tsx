@@ -2,7 +2,7 @@ import { Story, StoryDefault } from "@ladle/react";
 import { Calculator, CalculatorKind } from "./mod.tsx";
 
 export default {
-  title: "Calculator",
+  title: "Component / Calculator",
 } as StoryDefault;
 
 export const Container: Story<{ kind: CalculatorKind }> = ({ kind }) => (
