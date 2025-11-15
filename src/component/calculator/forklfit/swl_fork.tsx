@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Forklift, General } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Forklift, General } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const SWLForkPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -13,7 +12,7 @@ const SWLForkPropsSchema = z.object({
 
 export type SWLForkProps = z.input<typeof SWLForkPropsSchema>;
 
-const SWLFork = (props: SWLForkProps) => {
+export const SWLFork = (props: SWLForkProps) => {
   const zProps = SWLForkPropsSchema.parse(props);
 
   const [capacityRef, capacity, capacityError] = useNumber(zProps.locale);
@@ -43,7 +42,7 @@ const SWLFork = (props: SWLForkProps) => {
         loadCenterFork,
         loadCenterWeight,
       );
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [capacity, cog2fork, loadCenterFork, loadCenterWeight]);
@@ -56,7 +55,7 @@ const SWLFork = (props: SWLForkProps) => {
         weight,
         loadCenterFork,
       );
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [capacity, cog2fork, weight, loadCenterFork]);
@@ -64,7 +63,7 @@ const SWLFork = (props: SWLForkProps) => {
   const weightPercentToSwl = useMemo(() => {
     try {
       return General.weightToSwlRatio(swl, weight) * 100;
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [swl, weight]);
@@ -79,7 +78,7 @@ const SWLFork = (props: SWLForkProps) => {
         </div>
         <input
           ref={capacityRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": capacityError != null,
           })}
           placeholder="0"
@@ -92,7 +91,7 @@ const SWLFork = (props: SWLForkProps) => {
         </div>
         <input
           ref={cog2forkRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": cog2forkError != null,
           })}
           placeholder="0"
@@ -121,7 +120,7 @@ const SWLFork = (props: SWLForkProps) => {
         </div>
         <input
           ref={weightRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": weightError != null,
           })}
           placeholder="0"
@@ -134,7 +133,7 @@ const SWLFork = (props: SWLForkProps) => {
         </div>
         <input
           ref={loadCenterWeightRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": loadCenterWeightError != null,
           })}
           placeholder="0"
@@ -143,11 +142,12 @@ const SWLFork = (props: SWLForkProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -191,5 +191,3 @@ const SWLFork = (props: SWLForkProps) => {
     </form>
   );
 };
-
-export default SWLFork;
