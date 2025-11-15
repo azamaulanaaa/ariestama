@@ -3,16 +3,17 @@ import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
 import configureMeasurements from "convert-units";
 import allMeasures from "convert-units/definitions/all";
+import { InlineMath } from "react-katex";
 
 import { General, Hydrant } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.tsx";
 import { useNumber } from "@/hook/useNumber.tsx";
 
+const convert = configureMeasurements(allMeasures);
+
 const ReservoirPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
-
-const convert = configureMeasurements(allMeasures);
 
 export type ReservoirProps = z.input<typeof ReservoirPropsSchema>;
 
@@ -95,13 +96,11 @@ export const Reservoir = (props: ReservoirProps) => {
   );
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
       <div className="divider">Reservoir</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Shape</span>
-        </div>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Shape</legend>
         <select
           className="select select-bordered w-full text-right"
           value={shape}
@@ -113,125 +112,149 @@ export const Reservoir = (props: ReservoirProps) => {
           <option value="cuboid">Cuboid</option>
           <option value="direct_input">[Direct Input]</option>
         </select>
-      </label>
-      <label
-        className={cn("form-control w-full", {
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "direct_input",
         })}
       >
-        <div className="label">
-          <span className="label-text">Volume</span>
-          <span className="label-text-alt">liter</span>
-        </div>
-        <input
-          ref={directVolumeRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Volume</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": directVolumeError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={directVolumeRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{l}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cylinder",
         })}
       >
-        <div className="label">
-          <span className="label-text">Diameter</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={diameterRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Diameter</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": diameterError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={diameterRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cylinder" && shape != "cuboid",
         })}
       >
-        <div className="label">
-          <span className="label-text">Height</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={heightRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Height</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": heightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={heightRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cuboid",
         })}
       >
-        <div className="label">
-          <span className="label-text">Width</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={widthRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Width</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": widthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label
-        className={cn("form-control w-full", {
+        >
+          <input
+            ref={widthRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset
+        className={cn("fieldset", {
           hidden: shape != "cuboid",
         })}
       >
-        <div className="label">
-          <span className="label-text">Length</span>
-          <span className="label-text-alt">meter</span>
-        </div>
-        <input
-          ref={lengthRef}
-          className={cn("input input-bordered w-full text-right", {
+        <legend className="fieldset-legend">Length</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": lengthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
+        >
+          <input
+            ref={lengthRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{m}" />
+          </span>
+        </label>
+      </fieldset>
       <div className="divider">Nozzle</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Inlet Diameter</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          ref={nozzleInletDiameterRef}
-          className={cn("input input-bordered w-full text-right", {
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Inlet Diameter</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": nozzleInletDiameterError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Water Preasure</span>
-          <span className="label-text-alt">
-            kilo gram per centi meter square
+        >
+          <input
+            ref={nozzleInletDiameterRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
           </span>
-        </div>
-        <input
-          ref={waterPreasureRef}
-          className={cn("input input-bordered w-full text-right", {
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Water Preasure</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": waterPreasureError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Number Nozzle Open</span>
-        </div>
+        >
+          <input
+            ref={waterPreasureRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}/\mathrm{cm}^2" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Number Nozzle Open</legend>
         <input
           ref={numberOpenNozzleRef}
           className={cn("input input-bordered w-full text-right", {
@@ -239,12 +262,9 @@ export const Reservoir = (props: ReservoirProps) => {
           })}
           placeholder="0"
         />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Nozzle Open Duration</span>
-          <span className="label-text-alt">minute</span>
-        </div>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Nozzle Open Duration</legend>
         <select
           className="select select-bordered w-full text-right"
           value={duration}
@@ -252,60 +272,66 @@ export const Reservoir = (props: ReservoirProps) => {
             setDuration(parseFloat(e.target.value));
           }}
         >
-          <option value="30">30</option>
-          <option value="45">45</option>
-          <option value="90">90</option>
+          <option value="30">30 min</option>
+          <option value="45">45 min</option>
+          <option value="90">90 min</option>
         </select>
-      </label>
+      </fieldset>
       <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
-        >
-        </textarea>
-      </label>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
       <div className="divider">Reservoir</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Volume</span>
-          <span className="label-text-alt">liter</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(volume)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Volume</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(volume)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{l}" />
+          </span>
+        </label>
+      </fieldset>
       <div className="divider">Nozzle</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Water Flow per Nozzle</span>
-          <span className="label-text-alt">liter per minute</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(waterFlow)}
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Water Volume Needed for All Nozzle</span>
-          <span className="label-text-alt">liter per {duration} minute</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(waterFlow45MinAllNozzle)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Water Flow per Nozzle</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(waterFlow)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{l}/\mathrm{min}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">
+          Water Volume Needed for All Nozzle
+        </legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(waterFlow45MinAllNozzle)}
+          />
+          <span className="label">
+            <InlineMath math={"\\mathrm{l}/" + duration + "\\mathrm{min}"} />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
