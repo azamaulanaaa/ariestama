@@ -1,8 +1,12 @@
-import { Story } from "@ladle/react";
+import { Story, StoryDefault } from "@ladle/react";
 import { z } from "zod";
 
 import { cn } from "@/util/classname.tsx";
 import { useNumber } from "./useNumber.tsx";
+
+export default {
+  title: "Hook / useNumber",
+} as StoryDefault;
 
 const InputNumberPropsSchema = z.object({
   locale: z.string().default("en-US"),
@@ -25,5 +29,17 @@ const InputNumber = (props: InputNumberProps) => {
   );
 };
 
-export const en_us: Story = () => <InputNumber locale="en-US" />;
-export const id_id: Story = () => <InputNumber locale="id-ID" />;
+export const Basic: Story<{ locale: string }> = (props) => (
+  <InputNumber locale={props.locale} />
+);
+Basic.args = {
+  locale: "id-ID",
+};
+Basic.argTypes = {
+  locale: {
+    options: ["en-US", "id-ID"],
+    control: {
+      type: "select",
+    },
+  },
+};
