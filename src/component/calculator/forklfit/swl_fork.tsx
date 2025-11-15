@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { Forklift, General } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.ts";
@@ -69,39 +70,46 @@ export const SWLFork = (props: SWLForkProps) => {
   }, [swl, weight]);
 
   return (
-    <form className="prose">
+    <form>
       <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Kapasitas (A)</span>
-          <span className="label-text-alt">kilo gram</span>
-        </div>
-        <input
-          ref={capacityRef}
-          className={cn("input input-bordered w-full text-right", {
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Kapasitas (A)</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": capacityError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Jarak COG ke Muka Fork (B)</span>
-          <span className="label-text-alt">centi meter</span>
-        </div>
-        <input
-          ref={cog2forkRef}
-          className={cn("input input-bordered w-full text-right", {
+        >
+          <input
+            ref={capacityRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">
+          Jarak COG ke Muka Fork (B)
+        </legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": cog2forkError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Load Center Fork</span>
-          <span className="label-text-alt">centi meter</span>
-        </div>
+        >
+          <input
+            ref={cog2forkRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{cm}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Load Center Fork</legend>
         <select
           className="select select-bordered w-full text-right"
           value={loadCenterFork}
@@ -109,83 +117,95 @@ export const SWLFork = (props: SWLForkProps) => {
             setLoadCenterFork(parseFloat(e.target.value));
           }}
         >
-          <option value="55">55</option>
-          <option value="60">60</option>
+          <option value="55">55 cm</option>
+          <option value="60">60 cm</option>
         </select>
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Berat Beban Uji (D)</span>
-          <span className="label-text-alt">kilo gram</span>
-        </div>
-        <input
-          ref={weightRef}
-          className={cn("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Berat Beban Uji (D)</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": weightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Load Center Beban (E)</span>
-          <span className="label-text-alt">centi meter</span>
-        </div>
-        <input
-          ref={loadCenterWeightRef}
-          className={cn("input input-bordered w-full text-right", {
+        >
+          <input
+            ref={weightRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Load Center Beban (E)</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": loadCenterWeightError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={cn("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
         >
-        </textarea>
-      </label>
+          <input
+            ref={loadCenterWeightRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{cm}" />
+          </span>
+        </label>
+      </fieldset>
+      <div className="divider">Note</div>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">SWL Fork</span>
-          <span className="label-text-alt">kilo gram</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(swl)}
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Load Center ketika 100% SWL</span>
-          <span className="label-text-alt">centi meter</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(maxLoadCenterWeight)}
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Nilai Pengujian</span>
-          <span className="label-text-alt">% SWL</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(weightPercentToSwl)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">SWL Fork</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(swl)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kg}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Load Center ketika 100% SWL</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(maxLoadCenterWeight)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{cm}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Nilai Pengujian</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(weightPercentToSwl)}
+          />
+          <span className="label">
+            % SWL
+          </span>
+        </label>
+      </fieldset>
       <h2>Reference</h2>
       <img className="w-full" src="/img/swl_fork-0.png" alt="reference" />
     </form>
