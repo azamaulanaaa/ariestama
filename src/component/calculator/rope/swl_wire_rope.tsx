@@ -6,7 +6,7 @@ import allMeasures from "convert-units/definitions/all";
 import { InlineMath } from "react-katex";
 
 import { General, Rope } from "@/util/calculation.ts";
-import { cn } from "@/util/classname.tsx";
+import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
 const convert = configureMeasurements(allMeasures);
