@@ -1,20 +1,22 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { General, Hydrant } from "../../_utils/calculation";
-import convert from "convert-units";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+import configureMeasurements from "convert-units";
+import allMeasures from "convert-units/definitions/all";
+
+import { General, Hydrant } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const ReservoirPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
+const convert = configureMeasurements(allMeasures);
+
 export type ReservoirProps = z.input<typeof ReservoirPropsSchema>;
 
-const Reservoir = (props: ReservoirProps) => {
+export const Reservoir = (props: ReservoirProps) => {
   const zProps = ReservoirPropsSchema.parse(props);
 
   const [shape, setShape] = useState("cylinder");
@@ -63,18 +65,18 @@ const Reservoir = (props: ReservoirProps) => {
 
   const volume = useMemo(() => {
     try {
-      if (shape == "cylinder")
+      if (shape == "cylinder") {
         return convert(General.volumeCylinder(diameter, height))
           .from("m3")
           .to("l");
-      else if (shape == "cuboid")
+      } else if (shape == "cuboid") {
         return convert(General.volumeCuboid(height, width, length))
           .from("m3")
           .to("l");
-      else if (shape == "direct_input") return directVolume;
+      } else if (shape == "direct_input") return directVolume;
 
       return NaN;
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [shape, directVolume, diameter, height, width, length]);
@@ -82,7 +84,7 @@ const Reservoir = (props: ReservoirProps) => {
   const waterFlow = useMemo(() => {
     try {
       return Hydrant.waterFlow(nozzleInletDiameter, waterPreasure);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [nozzleInletDiameter, waterPreasure]);
@@ -113,7 +115,7 @@ const Reservoir = (props: ReservoirProps) => {
         </select>
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "direct_input",
         })}
       >
@@ -123,14 +125,14 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={directVolumeRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": directVolumeError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cylinder",
         })}
       >
@@ -140,14 +142,14 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cylinder" && shape != "cuboid",
         })}
       >
@@ -157,14 +159,14 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={heightRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": heightError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cuboid",
         })}
       >
@@ -174,14 +176,14 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={widthRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": widthError != null,
           })}
           placeholder="0"
         />
       </label>
       <label
-        className={classNames("form-control w-full", {
+        className={cn("form-control w-full", {
           hidden: shape != "cuboid",
         })}
       >
@@ -191,7 +193,7 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={lengthRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": lengthError != null,
           })}
           placeholder="0"
@@ -205,7 +207,7 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={nozzleInletDiameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": nozzleInletDiameterError != null,
           })}
           placeholder="0"
@@ -220,7 +222,7 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={waterPreasureRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": waterPreasureError != null,
           })}
           placeholder="0"
@@ -232,7 +234,7 @@ const Reservoir = (props: ReservoirProps) => {
         </div>
         <input
           ref={numberOpenNozzleRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": numberOpenNozzleError != null,
           })}
           placeholder="0"
@@ -258,11 +260,12 @@ const Reservoir = (props: ReservoirProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <div className="divider">Reservoir</div>
@@ -306,5 +309,3 @@ const Reservoir = (props: ReservoirProps) => {
     </form>
   );
 };
-
-export default Reservoir;
