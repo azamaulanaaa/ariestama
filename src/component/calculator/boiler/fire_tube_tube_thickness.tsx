@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
+import { InlineMath } from "react-katex";
 
 import { Boiler } from "@/util/calculation.ts";
-import { cn as classNames } from "@/util/classname.ts";
+import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
 const FireTubeTubeThicknessPropsSchema = z.object({
@@ -100,9 +101,10 @@ export const FireTubeTubeThickness = (props: FireTubeTubeThicknessProps) => {
   ]);
 
   return (
-    <form className="prose">
-      <h2>Standart</h2>
-      <label className="form-control w-full">
+    <form>
+      <h2>Parameter</h2>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Standart</legend>
         <select
           className="select select-bordered w-full text-right"
           value={standart}
@@ -112,125 +114,128 @@ export const FireTubeTubeThickness = (props: FireTubeTubeThicknessProps) => {
         >
           <option value="grondslagen">Grondslagen</option>
         </select>
-      </label>
-      <h2>Parameter</h2>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Pressure</span>
-          <span className="label-text-alt">
-            kilo gram force per centi meter square
-          </span>
-        </div>
-        <input
-          ref={pressureRef}
-          className={classNames("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Pressure</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": pressureError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Weld Joint Efficiency</span>
-        </div>
+        >
+          <input
+            ref={pressureRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Weld Joint Efficiency</legend>
         <input
           ref={weldJointEfficiencyRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": weldJointEfficiencyError != null,
           })}
           placeholder="0"
         />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Temperature</span>
-          <span className="label-text-alt">celcius</span>
-        </div>
-        <input
-          ref={temperatureRef}
-          className={classNames("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Temperature</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": temperatureError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Yield Strength</span>
-          <span className="label-text-alt">
-            kilo gram force per mili meter square
+        >
+          <input
+            ref={temperatureRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\degree\mathrm{C}" />
           </span>
-        </div>
-        <input
-          ref={yieldStrengthRef}
-          className={classNames("input input-bordered w-full text-right", {
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Yield Strength</legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": yieldStrengthError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Corrosion Allowance</span>
-        </div>
+        >
+          <input
+            ref={yieldStrengthRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Corrosion Allowance</legend>
         <input
           ref={corrosionAllowanceRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": corrosionAllowanceError != null,
           })}
           placeholder="0"
         />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">
-            Diameter
-          </span>
-          <span className="label-text-alt">
-            mili meter
-          </span>
-        </div>
-        <input
-          ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">
+          Diameter
+        </legend>
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": diameterError != null,
           })}
-          placeholder="0"
-        />
-      </label>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Diameter Type</span>
-        </div>
+        >
+          <input
+            ref={diameterRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Diameter Type</legend>
         <select className="select select-bordered w-full text-right">
           <option>Inner</option>
           <option>Outter</option>
         </select>
-      </label>
+      </fieldset>
       <div className="divider">Note</div>
-      <label className="form-control w-full">
-        <textarea
-          className={classNames("textarea textarea-bordered h-24", {
-            "textarea-error": edited,
-          })}
-          onClick={handleNoteClick}
-        >
-        </textarea>
-      </label>
+      <textarea
+        className={cn("textarea textarea-bordered h-24 w-full", {
+          "textarea-error": edited,
+        })}
+        onClick={handleNoteClick}
+      >
+      </textarea>
       <h2>Result</h2>
       <div className="divider">Drum</div>
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">Minimum Thickness</span>
-          <span className="label-text-alt">mili meter</span>
-        </div>
-        <input
-          type="tel"
-          readOnly
-          className="input input-bordered w-full text-right"
-          value={numberFormatter.format(minThicknessShellDrum)}
-        />
-      </label>
+      <fieldset className="fieldset">
+        <legend className="fieldset-legend">Minimum Thickness</legend>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(minThicknessShellDrum)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
+      </fieldset>
     </form>
   );
 };
