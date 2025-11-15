@@ -48,3 +48,4 @@ storybook-static/
 *storybook.log
 dist
 .vite
+.wrangler

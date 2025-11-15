@@ -2,6 +2,8 @@
   "tasks": {
     "dev": "deno run -A npm:vite",
     "build": "deno run -A npm:vite build",
+    "preview": "deno run -A npm:vite preview",
+    "deploy:wrangler": "deno run -A npm:wrangler pages deploy",
     "ladle": "deno run -A npm:@ladle/react serve"
   },
   "nodeModulesDir": "auto",
@@ -33,6 +35,7 @@
     "tailwind-merge": "npm:tailwind-merge@^3.4.0",
     "tailwindcss": "npm:tailwindcss@^4.1.17",
     "vite": "npm:vite@^6.0.0",
+    "wrangler": "npm:wrangler@^4.47.0",
     "zod": "npm:zod@^4.1.12"
   }
 }
