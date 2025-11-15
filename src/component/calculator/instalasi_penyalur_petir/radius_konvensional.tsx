@@ -1,22 +1,21 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { InstalasiPenyalurPetir } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
 
-const RadiusKonvensionalPropsSchema = z.object({
+import { InstalasiPenyalurPetir } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
+
+const RadiusConvensionalPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
-export type RadiusKonvensionalProps = z.input<
-  typeof RadiusKonvensionalPropsSchema
+export type RadiusConvensionalProps = z.input<
+  typeof RadiusConvensionalPropsSchema
 >;
 
-const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
-  const zProps = RadiusKonvensionalPropsSchema.parse(props);
+export const RadiusConventional = (props: RadiusConvensionalProps) => {
+  const zProps = RadiusConvensionalPropsSchema.parse(props);
 
   const [heightRef, height, heightError] = useNumber(zProps.locale);
 
@@ -35,7 +34,7 @@ const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
   const radiusKonvensional = useMemo(() => {
     try {
       return InstalasiPenyalurPetir.radiusKonvensional(height);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [height]);
@@ -50,7 +49,7 @@ const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
         </div>
         <input
           ref={heightRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": heightError != null,
           })}
           placeholder="0"
@@ -59,11 +58,12 @@ const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -81,5 +81,3 @@ const RadiusKonvensional = (props: RadiusKonvensionalProps) => {
     </form>
   );
 };
-
-export default RadiusKonvensional;
