@@ -1,22 +1,21 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Boiler } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
 
-const FireTubeThicknessTubePropsSchema = z.object({
+import { Boiler } from "@/util/calculation.ts";
+import { cn as classNames } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
+
+const FireTubeTubeThicknessPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
-export type FireTubeThicknessPropsTube = z.input<
-  typeof FireTubeThicknessTubePropsSchema
+export type FireTubeTubeThicknessProps = z.input<
+  typeof FireTubeTubeThicknessPropsSchema
 >;
 
-const FireTubeThicknessTube = (props: FireTubeThicknessPropsTube) => {
-  const zProps = FireTubeThicknessTubePropsSchema.parse(props);
+export const FireTubeTubeThickness = (props: FireTubeTubeThicknessProps) => {
+  const zProps = FireTubeTubeThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("grondslagen");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);
@@ -235,5 +234,3 @@ const FireTubeThicknessTube = (props: FireTubeThicknessPropsTube) => {
     </form>
   );
 };
-
-export default FireTubeThicknessTube;

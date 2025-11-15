@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Boiler } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Boiler } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const WaterTubeThicknessHolePropsScheam = z.object({
   locale: z.string().optional().default("en-US"),
@@ -15,7 +14,7 @@ export type WaterTubeHoleThicknessProps = z.input<
   typeof WaterTubeThicknessHolePropsScheam
 >;
 
-const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
+export const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
   const zProps = WaterTubeThicknessHolePropsScheam.parse(props);
 
   const [standart, setStandart] = useState("jis");
@@ -71,7 +70,7 @@ const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
         </div>
         <input
           ref={pressureRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": pressureError != null,
           })}
           placeholder="0"
@@ -88,7 +87,7 @@ const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
         </div>
         <input
           ref={sigmaRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": sigmaError != null,
           })}
           placeholder="0"
@@ -101,7 +100,7 @@ const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
         </div>
         <input
           ref={outterDiameterHoleRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": outterDiameterHoleError != null,
           })}
           placeholder="0"
@@ -110,11 +109,12 @@ const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -132,5 +132,3 @@ const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
     </form>
   );
 };
-
-export default WaterTubeHoleThickness;

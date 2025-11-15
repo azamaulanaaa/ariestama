@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Boiler } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Boiler } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const FireTubeThicknessShellPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -15,7 +14,7 @@ export type FireTubeDrumThicknessProps = z.input<
   typeof FireTubeThicknessShellPropsSchema
 >;
 
-const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
+export const FireTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
   const zProps = FireTubeThicknessShellPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("grondslagen");
@@ -140,7 +139,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={pressureRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": pressureError != null,
           })}
           placeholder="0"
@@ -152,7 +151,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={weldJointEfficiencyRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": weldJointEfficiencyError != null,
           })}
           placeholder="0"
@@ -164,7 +163,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={shellReductionFactorRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": shellReductionFactorError != null,
           })}
           placeholder="0"
@@ -176,7 +175,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={constantCRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": constantCError != null,
           })}
           placeholder="0"
@@ -189,7 +188,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={temperatureRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": temperatureError != null,
           })}
           placeholder="0"
@@ -204,7 +203,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={yieldStrengthRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": yieldStrengthError != null,
           })}
           placeholder="0"
@@ -216,7 +215,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={corrosionAllowanceRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": corrosionAllowanceError != null,
           })}
           placeholder="0"
@@ -233,7 +232,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
         </div>
         <input
           ref={diameterRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": diameterError != null,
           })}
           placeholder="0"
@@ -251,7 +250,7 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
@@ -275,5 +274,3 @@ const WaterTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
     </form>
   );
 };
-
-export default WaterTubeShellThickness;
