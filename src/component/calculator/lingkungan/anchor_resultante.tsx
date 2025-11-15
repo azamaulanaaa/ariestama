@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Lingkungan } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Lingkungan } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.tsx";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const AnchorResultantePropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -13,7 +12,7 @@ const AnchorResultantePropsSchema = z.object({
 
 export type AnchorResultanteProps = z.input<typeof AnchorResultantePropsSchema>;
 
-const AnchorResultante = (props: AnchorResultanteProps) => {
+export const AnchorResultante = (props: AnchorResultanteProps) => {
   const zProps = AnchorResultantePropsSchema.parse(props);
 
   const [alphaRef, alpha, alphaError] = useNumber(zProps.locale);
@@ -34,7 +33,7 @@ const AnchorResultante = (props: AnchorResultanteProps) => {
   const resultante = useMemo(() => {
     try {
       return Lingkungan.anchorResultante(alpha, mass);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [alpha, mass]);
@@ -49,7 +48,7 @@ const AnchorResultante = (props: AnchorResultanteProps) => {
         </div>
         <input
           ref={alphaRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": alphaError != null,
           })}
           placeholder="0"
@@ -62,7 +61,7 @@ const AnchorResultante = (props: AnchorResultanteProps) => {
         </div>
         <input
           ref={massRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": massError != null,
           })}
           placeholder="0"
@@ -71,11 +70,12 @@ const AnchorResultante = (props: AnchorResultanteProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -93,5 +93,3 @@ const AnchorResultante = (props: AnchorResultanteProps) => {
     </form>
   );
 };
-
-export default AnchorResultante;
