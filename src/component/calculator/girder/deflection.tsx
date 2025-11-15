@@ -1,11 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Girder } from "../../_utils/calculation";
-import classNames from "classnames";
 import { z } from "zod";
-import useNumber from "@/app/calculator/_hooks/useNumber";
 import { NumberFormatter } from "@internationalized/number";
+
+import { Girder } from "@/util/calculation.ts";
+import { cn } from "@/util/classname.ts";
+import { useNumber } from "@/hook/useNumber.tsx";
 
 const DeflectionPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
@@ -13,7 +12,7 @@ const DeflectionPropsSchema = z.object({
 
 export type DeflectionProps = z.input<typeof DeflectionPropsSchema>;
 
-const Deflection = (props: DeflectionProps) => {
+export const Deflection = (props: DeflectionProps) => {
   const zProps = DeflectionPropsSchema.parse(props);
 
   const [typee, setTypee] = useState("single");
@@ -36,7 +35,7 @@ const Deflection = (props: DeflectionProps) => {
   const deflection = useMemo(() => {
     try {
       return Girder.deflection(typee, lengthOfSpan);
-    } catch (error) {
+    } catch {
       return NaN;
     }
   }, [typee, lengthOfSpan]);
@@ -66,7 +65,7 @@ const Deflection = (props: DeflectionProps) => {
         </div>
         <input
           ref={lengthOfSpanRef}
-          className={classNames("input input-bordered w-full text-right", {
+          className={cn("input input-bordered w-full text-right", {
             "input-error": lengthOfSpanError != null,
           })}
           placeholder="0"
@@ -75,11 +74,12 @@ const Deflection = (props: DeflectionProps) => {
       <div className="divider">Note</div>
       <label className="form-control w-full">
         <textarea
-          className={classNames("textarea textarea-bordered h-24", {
+          className={cn("textarea textarea-bordered h-24", {
             "textarea-error": edited,
           })}
           onClick={handleNoteClick}
-        ></textarea>
+        >
+        </textarea>
       </label>
       <h2>Result</h2>
       <label className="form-control w-full">
@@ -97,5 +97,3 @@ const Deflection = (props: DeflectionProps) => {
     </form>
   );
 };
-
-export default Deflection;
