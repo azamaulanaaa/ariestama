@@ -1,6 +1,7 @@
 import * as Chain from "./chain.ts";
+import * as Forklift from "./forklift.ts";
 import * as InstalasiPenyalurPetir from "./instalasi_penyalur_petir.ts";
 import * as Lingkungan from "./lingkungan.ts";
 import * as TangkiTimbun from "./tanki_timbun.ts";
 
-export { Chain, InstalasiPenyalurPetir, Lingkungan, TangkiTimbun };
+export { Chain, Forklift, InstalasiPenyalurPetir, Lingkungan, TangkiTimbun };
