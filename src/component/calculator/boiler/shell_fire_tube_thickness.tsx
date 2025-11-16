@@ -214,13 +214,20 @@ export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
       </fieldset>
       <fieldset className="fieldset">
         <legend className="fieldset-legend">Corrosion Allowance</legend>
-        <input
-          ref={corrosionAllowanceRef}
-          className={cn("input input-bordered w-full text-right", {
+        <label
+          className={cn("input input-bordered w-full", {
             "input-error": corrosionAllowanceError != null,
           })}
-          placeholder="0"
-        />
+        >
+          <input
+            ref={corrosionAllowanceRef}
+            className="text-right"
+            placeholder="0"
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
+          </span>
+        </label>
       </fieldset>
       <fieldset className="fieldset">
         <legend className="fieldset-legend">
