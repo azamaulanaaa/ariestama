@@ -3,7 +3,7 @@ import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
 import { InlineMath } from "react-katex";
 
-import { Lingkungan } from "@/util/calculation/mod.ts";
+import { Lingkungan } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 

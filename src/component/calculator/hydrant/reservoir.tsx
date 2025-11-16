@@ -5,7 +5,7 @@ import configureMeasurements from "convert-units";
 import allMeasures from "convert-units/definitions/all";
 import { InlineMath } from "react-katex";
 
-import { General, Hydrant } from "@/util/calculation/mod.ts";
+import { General, Hydrant } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 

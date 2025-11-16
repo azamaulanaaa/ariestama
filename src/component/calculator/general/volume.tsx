@@ -5,7 +5,7 @@ import { InlineMath } from "react-katex";
 import configureMeasurements from "convert-units";
 import allMeasures from "convert-units/definitions/all";
 
-import { General } from "@/util/calculation/mod.ts";
+import { General } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
