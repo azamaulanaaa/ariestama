@@ -18,10 +18,10 @@ type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
   Apar_MinUnit = "APAR - Minimum Unit",
-  Boiler_FireTubeShellThinkness = "Boiler - Fire Tube - Shell Thickness",
   Boiler_FireTubeTubeThinkness = "Boiler - Fire Tube - Tube Thickness",
   Boiler_DrumWaterTubeThickness = "Boiler - Drum Water Tube Thickness",
   Boiler_TubeHoleThickness = "Boiler - Tube Hole Thickness",
+  Boiler_ShellFireTubeThickness = "Boiler - Shell Fire Tube Thickness",
   Chain_SwlBlock = "Chain - SWL Block",
   Chain_SwlSling = "Chain - SWL Sling",
   Forklift_SwlFork = "Forklift - SWL Fork",
@@ -37,7 +37,7 @@ export enum CalculatorKind {
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
   [CalculatorKind.Apar_MinUnit]: APAR.MinUnit,
-  [CalculatorKind.Boiler_FireTubeShellThinkness]: Boiler.FireTubeShellThickness,
+  [CalculatorKind.Boiler_ShellFireTubeThickness]: Boiler.ShellFireTubeThickness,
   [CalculatorKind.Boiler_FireTubeTubeThinkness]: Boiler.FireTubeTubeThickness,
   [CalculatorKind.Boiler_DrumWaterTubeThickness]: Boiler.DrumWaterTubeThickness,
   [CalculatorKind.Boiler_TubeHoleThickness]: Boiler.TubeHoleThickness,

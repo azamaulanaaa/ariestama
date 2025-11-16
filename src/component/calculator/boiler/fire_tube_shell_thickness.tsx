@@ -7,16 +7,16 @@ import { Boiler } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
-const FireTubeThicknessShellPropsSchema = z.object({
+const ShellFireTubeThicknessPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
-export type FireTubeDrumThicknessProps = z.input<
-  typeof FireTubeThicknessShellPropsSchema
+export type ShellFireTubeThicknessProps = z.input<
+  typeof ShellFireTubeThicknessPropsSchema
 >;
 
-export const FireTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
-  const zProps = FireTubeThicknessShellPropsSchema.parse(props);
+export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
+  const zProps = ShellFireTubeThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("grondslagen");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);

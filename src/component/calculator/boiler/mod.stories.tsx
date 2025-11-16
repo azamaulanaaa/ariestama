@@ -8,8 +8,8 @@ export default {
 export const FireTubeTubeThickness: Story = () => (
   <Boiler.FireTubeTubeThickness locale="id-ID" />
 );
-export const FireTubeShellThickness: Story = () => (
-  <Boiler.FireTubeShellThickness locale="id-ID" />
+export const ShellFireTubeThickness: Story = () => (
+  <Boiler.ShellFireTubeThickness locale="id-ID" />
 );
 export const DrumWaterTubeThickness: Story = () => (
   <Boiler.DrumWaterTubeThickness locale="id-ID" />
