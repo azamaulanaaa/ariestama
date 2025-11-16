@@ -89,7 +89,7 @@ export const AnchorResultante = (props: AnchorResultanteProps) => {
         <legend className="fieldset-legend">Resultante</legend>
         <label className="input input-bordered w-full">
           <input
-            type="number"
+            type="tel"
             readOnly
             className="text-right"
             value={numberFormatter.format(resultante)}
