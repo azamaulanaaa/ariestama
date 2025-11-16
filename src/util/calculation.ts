@@ -289,7 +289,7 @@ export const Boiler = {
    * @param temperature - The gas operating temperature (Θ) in celcius
    * @returns The unitless temperature reduction factor f(Θ).
    */
-  temperatureFactorGrondslagen(
+  temperatureFactor_Grondslagen(
     temperature: number,
   ) {
     const zProps = z.object({
@@ -308,7 +308,7 @@ export const Boiler = {
    * @param yieldStrength - The base yield strength (SV) at a reference/ambient temperature in kilo gram force per mili meter square.
    * @returns The corrected yield strength (SV^Θ) with the same unit as yieldStrength.
    */
-  correctedYieldStrengthGrondslagen(
+  correctedYieldStrength_Grondslagen(
     temperatureFactor: number,
     yieldStrength: number,
   ) {
@@ -328,7 +328,7 @@ export const Boiler = {
    * @param pressure - The design pressure (P or p) in kilo gram force per centi meter square
    * @returns minimum diameter of a safety valve in mili meter
    */
-  minDiameterSafetyValveGrondslagen() {
+  minDiameterSafetyValve_Grondslagen() {
     const zProps = z.object({
       r: z.number(),
       p: z.number(),
@@ -348,7 +348,7 @@ export const Boiler = {
    * @param corrosionAllowance - The added thickness for corrosion (Δ).
    * @returns The minimum required shell thickness (t) with the same unit as innerDiameter and corrosionAllowance in mili meter.
    */
-  minThicknessTubeFireTubeGrondslagen(
+  minThicknessTubeFireTube_Grondslagen(
     pressure: number,
     innerDiameter: number,
     weldJointEfficiency: number,
@@ -386,7 +386,7 @@ export const Boiler = {
    * @param corrosionAllowance - The added thickness for corrosion (Δ).
    * @returns The minimum required shell thickness (t) with the same unit as innerDiameter and corrosionAllowance in mili meter.
    */
-  minThicknessShellFireTubeGrondslagen(
+  minThicknessShellFireTube_Grondslagen(
     pressure: number,
     innerDiameter: number,
     weldJointEfficiency: number,
@@ -420,13 +420,14 @@ export const Boiler = {
 
   /**
    * Calculate efficiency of ligaments between tube holes in Water Tube
+   * Base on Japaense Industrial Standart
    *
    * @param p - ptich of the tube holes in mili meter
    * @param d - diameter of the tube holes in mili meter
    *
    * @returns efficiency without unit
    */
-  efficiencyLigamentsWaterTubeJIS(p: number, d: number): number {
+  efficiencyLigamentsWaterTube_JIS(p: number, d: number): number {
     const zProps = z
       .object({
         p: z.number(),

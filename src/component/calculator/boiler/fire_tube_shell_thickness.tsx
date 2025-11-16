@@ -73,7 +73,7 @@ export const FireTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
 
   const temperatureFactor = useMemo(() => {
     try {
-      return Boiler.temperatureFactorGrondslagen(
+      return Boiler.temperatureFactor_Grondslagen(
         temperature,
       );
     } catch {
@@ -83,7 +83,7 @@ export const FireTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
 
   const correctedYieldStrength = useMemo(() => {
     try {
-      return Boiler.correctedYieldStrengthGrondslagen(
+      return Boiler.correctedYieldStrength_Grondslagen(
         temperatureFactor,
         yieldStrength,
       );
@@ -94,7 +94,7 @@ export const FireTubeShellThickness = (props: FireTubeDrumThicknessProps) => {
 
   const minThicknessShellDrum = useMemo(() => {
     try {
-      return Boiler.minThicknessShellFireTubeGrondslagen(
+      return Boiler.minThicknessShellFireTube_Grondslagen(
         pressure,
         diameter,
         weldJointEfficiency,

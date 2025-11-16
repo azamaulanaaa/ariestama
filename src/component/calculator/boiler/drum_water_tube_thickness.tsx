@@ -53,7 +53,7 @@ export const DrumWaterTubeThickness = (props: DrumWaterTubeThicknessProps) => {
 
   const efficiencyHole = useMemo(() => {
     try {
-      return Boiler.efficiencyLigamentsWaterTubeJIS(
+      return Boiler.efficiencyLigamentsWaterTube_JIS(
         pitchHole,
         innerDiameterHole,
       );
