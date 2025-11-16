@@ -249,7 +249,7 @@ export const Reservoir = (props: ReservoirProps) => {
             placeholder="0"
           />
           <span className="label">
-            <InlineMath math="\mathrm{kg}/\mathrm{cm}^2" />
+            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
           </span>
         </label>
       </fieldset>
