@@ -30,11 +30,10 @@ export const TangkiTimbun = {
       .parse(allowableStress);
     const zCorrosionAllowance = z.number().parse(corrosionAllowance);
 
-    const minimumRequiredThickness =
-      (4.9 *
-        zDiameter *
-        (zDesignLiquidLevel - 0.3) *
-        zDesignSpecificGravityLiquid) /
+    const minimumRequiredThickness = (4.9 *
+          zDiameter *
+          (zDesignLiquidLevel - 0.3) *
+          zDesignSpecificGravityLiquid) /
         zAllowableStress +
       zCorrosionAllowance;
 
