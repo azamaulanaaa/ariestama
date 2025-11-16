@@ -38,7 +38,7 @@ export const WaterTubeHoleThickness = (props: WaterTubeHoleThicknessProps) => {
 
   const minThicknessTube = useMemo(() => {
     try {
-      return Boiler.minThicknessTubeWaterTubeJIS(
+      return Boiler.minThicknesTubeHole_JIS(
         pressure,
         outterDiameterHole,
         sigma,

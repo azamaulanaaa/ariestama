@@ -523,7 +523,8 @@ export const Boiler = {
   },
 
   /**
-   * Calculate minimum thickness of water tube base on JIS Standart
+   * Calculate minimum thickness of water tube hole
+   * base on JIS Standart
    *
    * @param pressure - maximum allowable working pressure in kilogram-force per centi meter square
    * @param outterDiameter - outter diameter of the steel tube in mili meter
@@ -532,7 +533,7 @@ export const Boiler = {
    *
    * @returns minimum thickness required of water tube in mili meter
    */
-  minThicknessTubeWaterTubeJIS(
+  minThicknesTubeHole_JIS(
     pressure: number,
     outterDiameter: number,
     sigma: number,
