@@ -274,7 +274,7 @@ export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
             className="text-right"
             value={numberFormatter.format(minShellFireTubeThickness)}
           />
-          <span className="lable">
+          <span className="label">
             <InlineMath math="\mathrm{mm}" />
           </span>
         </label>
