@@ -85,7 +85,7 @@ export const AnchorResultante = (props: AnchorResultanteProps) => {
       >
       </textarea>
       <h2>Result</h2>
-      <fieldset className="fieldset-legend">
+      <fieldset className="fieldset">
         <legend className="fieldset-legend">Resultante</legend>
         <label className="input input-bordered w-full">
           <input
