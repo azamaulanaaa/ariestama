@@ -73,7 +73,7 @@ export const RadiusConventional = (props: RadiusConvensionalProps) => {
         <legend className="fieldset-legend">Radius</legend>
         <label className="input input-bordered w-full">
           <input
-            type="number"
+            type="tel"
             readOnly
             className="text-right"
             value={numberFormatter.format(radiusKonvensional)}
