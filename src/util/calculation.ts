@@ -386,7 +386,7 @@ export const Boiler = {
    * @param corrosionAllowance - The added thickness for corrosion (Δ).
    * @returns The minimum required shell thickness (t) with the same unit as innerDiameter and corrosionAllowance in mili meter.
    */
-  minThicknessShellFireTube_Grondslagen(
+  minShellFireTubeThickness_Grondslagen(
     pressure: number,
     innerDiameter: number,
     weldJointEfficiency: number,
