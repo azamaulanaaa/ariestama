@@ -82,7 +82,7 @@ export const FireTubeTubeThickness = (props: FireTubeTubeThicknessProps) => {
 
   const minThicknessShellDrum = useMemo(() => {
     try {
-      return Boiler.minThicknessTubeFireTube_Grondslagen(
+      return Boiler.minPipeThickness_Grondslagen(
         pressure,
         diameter,
         weldJointEfficiency,
