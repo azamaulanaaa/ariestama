@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { General } from "../calculation.ts";
+import { General } from "./mod.ts";
 
 /**
  * Calculates the temperature-dependent stress reduction factor (f(Θ)) based on

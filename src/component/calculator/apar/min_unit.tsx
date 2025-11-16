@@ -4,8 +4,7 @@ import { NumberFormatter } from "@internationalized/number";
 import { InlineMath } from "react-katex";
 
 import { cn } from "@/util/classname.ts";
-import { General } from "@/util/calculation.ts";
-import { APAR } from "@/util/calculation/mod.ts";
+import { APAR, General } from "@/util/calculation/mod.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
 const MinUnitPropsSchema = z.object({
