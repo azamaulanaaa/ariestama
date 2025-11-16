@@ -5,8 +5,8 @@ export default {
   title: "Component / Calculator / Boiler",
 } as StoryDefault;
 
-export const FireTubeTubeThickness: Story = () => (
-  <Boiler.FireTubeTubeThickness locale="id-ID" />
+export const PipeThickness: Story = () => (
+  <Boiler.PipeThickness locale="id-ID" />
 );
 export const ShellFireTubeThickness: Story = () => (
   <Boiler.ShellFireTubeThickness locale="id-ID" />
