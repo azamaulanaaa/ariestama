@@ -438,7 +438,8 @@ export const Boiler = {
   },
 
   /**
-   * Calculate Minimum Plate Thickness of Shells or Domes Subject to Internal Preasure in Water Tube
+   * Calculate Minimum Plate Thickness of Drum in Water Tube
+   * Base on Japaense Industrial Standart
    *
    * @param type - plate type is one of ["ferritic_steel", "austenitic_steel"]
    * @param pressure - maximum allowable working preasure in kilogram-force per centi meter square
@@ -450,7 +451,7 @@ export const Boiler = {
    *
    * @returns minimum thickness of the in mili meter
    */
-  minThicknessShellWaterTubeJIS(
+  minDrumWaterTubeThickness_JIS(
     type: string,
     pressure: number,
     innerDiameter: number,

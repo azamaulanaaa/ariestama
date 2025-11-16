@@ -64,7 +64,7 @@ export const WaterTubeDrumThickness = (props: WaterTubeDrumThicknessProps) => {
 
   const minThicknessUpperDrumm = useMemo(() => {
     try {
-      return Boiler.minThicknessShellWaterTubeJIS(
+      return Boiler.minDrumWaterTubeThickness_JIS(
         type,
         pressure,
         diameter,
