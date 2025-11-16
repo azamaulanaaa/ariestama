@@ -17,3 +17,6 @@ export const DrumWaterTubeThickness: Story = () => (
 export const TubeHoleThickness: Story = () => (
   <Boiler.TubeHoleThickness locale="id-ID" />
 );
+export const SafetyValveDiameter: Story = () => (
+  <Boiler.SafetyValveDiameter locale="id-ID" />
+);
