@@ -31,6 +31,23 @@ export function breakingStrength(swl: number, safetyFactor: number): number {
 }
 
 /**
+ * Calculate area of a circle
+ *
+ * @param {number} radius - radius of circle in meter
+ *
+ * @returns {number} area of a circle in meter square
+ */
+export function areaCircle(radius: number): number {
+  const zParams = z.object({
+    r: z.number(),
+  }).parse({
+    r: radius,
+  });
+
+  return Math.PI * (zParams.r ** 2);
+}
+
+/**
  * Calculate the area of a rectangle
  *
  * @param {number} width - the width of the rectangle in meter
