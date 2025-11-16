@@ -62,7 +62,7 @@ export const DrumWaterTubeThickness = (props: DrumWaterTubeThicknessProps) => {
     }
   }, [pitchHole, innerDiameterHole]);
 
-  const minThicknessUpperDrumm = useMemo(() => {
+  const minDrumWaterTubeThickness = useMemo(() => {
     try {
       return Boiler.minDrumWaterTubeThickness_JIS(
         type,
@@ -250,7 +250,7 @@ export const DrumWaterTubeThickness = (props: DrumWaterTubeThicknessProps) => {
             type="tel"
             readOnly
             className="text-right"
-            value={numberFormatter.format(minThicknessUpperDrumm)}
+            value={numberFormatter.format(minDrumWaterTubeThickness)}
           />
           <span className="label">
             <InlineMath math="\mathrm{mm}" />

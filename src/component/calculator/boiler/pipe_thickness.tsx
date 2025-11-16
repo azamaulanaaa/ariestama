@@ -80,7 +80,7 @@ export const PipeThickness = (props: PipeThicknessProps) => {
     }
   }, [temperatureFactor, yieldStrength]);
 
-  const minThicknessShellDrum = useMemo(() => {
+  const minPipeThickness = useMemo(() => {
     try {
       return Boiler.minPipeThickness_Grondslagen(
         pressure,
@@ -229,7 +229,7 @@ export const PipeThickness = (props: PipeThicknessProps) => {
             type="tel"
             readOnly
             className="text-right"
-            value={numberFormatter.format(minThicknessShellDrum)}
+            value={numberFormatter.format(minPipeThickness)}
           />
           <span className="label">
             <InlineMath math="\mathrm{mm}" />

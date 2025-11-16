@@ -92,7 +92,7 @@ export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
     }
   }, [temperatureFactor, yieldStrength]);
 
-  const minThicknessShellDrum = useMemo(() => {
+  const minShellFireTubeThickness = useMemo(() => {
     try {
       return Boiler.minShellFireTubeThickness_Grondslagen(
         pressure,
@@ -265,7 +265,7 @@ export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
             type="tel"
             readOnly
             className="text-right"
-            value={numberFormatter.format(minThicknessShellDrum)}
+            value={numberFormatter.format(minShellFireTubeThickness)}
           />
           <span className="lable">
             <InlineMath math="\mathrm{mm}" />

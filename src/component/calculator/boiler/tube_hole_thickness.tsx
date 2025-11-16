@@ -36,7 +36,7 @@ export const TubeHoleThickness = (props: TubeHoleThicknessProps) => {
 
   const numberFormatter = new NumberFormatter(zProps.locale);
 
-  const minThicknessTube = useMemo(() => {
+  const minTubeHoleThickness = useMemo(() => {
     try {
       return Boiler.minThicknesTubeHole_JIS(
         pressure,
@@ -131,7 +131,7 @@ export const TubeHoleThickness = (props: TubeHoleThicknessProps) => {
             type="tel"
             readOnly
             className="text-right"
-            value={numberFormatter.format(minThicknessTube)}
+            value={numberFormatter.format(minTubeHoleThickness)}
           />
           <span className="label">
             <InlineMath math="\mathrm{mm}" />
