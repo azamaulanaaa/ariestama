@@ -1,3 +1,4 @@
+import * as APAR from "./apar.ts";
 import * as Boiler from "./boiler.ts";
 import * as Chain from "./chain.ts";
 import * as Forklift from "./forklift.ts";
@@ -9,6 +10,7 @@ import * as Rope from "./rope.ts";
 import * as TangkiTimbun from "./tanki_timbun.ts";
 
 export {
+  APAR,
   Boiler,
   Chain,
   Forklift,

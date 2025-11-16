@@ -1,23 +1,5 @@
 import { z } from "zod";
 
-export const APAR = {
-  /**
-   * Caculate required number of APAR given area
-   *
-   * @param {number} area - area where APAR should exist in meter square
-   * @returns {number} number of APAR
-   */
-  minUnit(area: number): number {
-    const zParams = z
-      .object({
-        area: z.number(),
-      })
-      .parse({ area });
-
-    return Math.ceil(zParams.area / (15 * 15));
-  },
-};
-
 export const General = {
   /**
    * Calculate ratio beban realtive to swl
