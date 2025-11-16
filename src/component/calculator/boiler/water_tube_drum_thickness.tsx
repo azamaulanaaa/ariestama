@@ -7,16 +7,16 @@ import { Boiler } from "@/util/calculation.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 
-const WaterTubeThicknessDrumPropsScheam = z.object({
+const DrumWaterTubeThicknessPropsSchema = z.object({
   locale: z.string().optional().default("en-US"),
 });
 
-export type WaterTubeDrumThicknessProps = z.input<
-  typeof WaterTubeThicknessDrumPropsScheam
+export type DrumWaterTubeThicknessProps = z.input<
+  typeof DrumWaterTubeThicknessPropsSchema
 >;
 
-export const WaterTubeDrumThickness = (props: WaterTubeDrumThicknessProps) => {
-  const zProps = WaterTubeThicknessDrumPropsScheam.parse(props);
+export const DrumWaterTubeThickness = (props: DrumWaterTubeThicknessProps) => {
+  const zProps = DrumWaterTubeThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("jis");
   const [type, setType] = useState("ferritic_steel");

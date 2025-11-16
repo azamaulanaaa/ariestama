@@ -11,8 +11,8 @@ export const FireTubeTubeThickness: Story = () => (
 export const FireTubeShellThickness: Story = () => (
   <Boiler.FireTubeShellThickness locale="id-ID" />
 );
-export const WaterTubeDrumThickness: Story = () => (
-  <Boiler.WaterTubeDrumThickness locale="id-ID" />
+export const DrumWaterTubeThickness: Story = () => (
+  <Boiler.DrumWaterTubeThickness locale="id-ID" />
 );
 export const TubeHoleThickness: Story = () => (
   <Boiler.TubeHoleThickness locale="id-ID" />
