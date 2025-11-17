@@ -2,10 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
 import { InlineMath } from "react-katex";
+import configureMeasurements from "convert-units";
+import allMeasures from "convert-units/definitions/all";
 
 import { cn } from "@/util/classname.ts";
 import { BejanaTekan } from "@/util/calculator/mod.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+
+const convert = configureMeasurements(allMeasures);
 
 export enum PipeThicknessStandart {
   asme_b31_1 = "ASME B31.1",
@@ -98,6 +102,14 @@ export const PipeThickness = (props: PipeThicknessProps) => {
     coefficient,
     additionalThickness,
   ]);
+
+  const minPipeThickness_mm = useMemo(
+    () => {
+      if (Number.isNaN(minPipeThickness)) return NaN;
+      return convert(minPipeThickness).from("in").to("mm");
+    },
+    [minPipeThickness],
+  );
 
   return (
     <form>
@@ -245,6 +257,17 @@ export const PipeThickness = (props: PipeThicknessProps) => {
           />
           <span className="label">
             <InlineMath math="\mathrm{inch}" />
+          </span>
+        </label>
+        <label className="input input-bordered w-full">
+          <input
+            type="tel"
+            readOnly
+            className="text-right"
+            value={numberFormatter.format(minPipeThickness_mm)}
+          />
+          <span className="label">
+            <InlineMath math="\mathrm{mm}" />
           </span>
         </label>
       </fieldset>
