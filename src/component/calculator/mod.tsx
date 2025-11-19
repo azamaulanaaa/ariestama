@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { BejanaTekan } from "@/component/calculator/bejana_tekan/mod.tsx";
 import { Boiler } from "@/component/calculator/boiler/mod.tsx";
 import { Chain } from "@/component/calculator/chain/mod.tsx";
 import { Forklift } from "@/component/calculator/forklfit/mod.tsx";
@@ -17,7 +16,6 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  BejanaTekan_PipeThickness = "Bejana Tekan - Pipe Thickness",
   Boiler_DrumWaterTubeThickness = "Boiler - Drum Water Tube Thickness",
   Boiler_TubeHoleThickness = "Boiler - Tube Hole Thickness",
   Boiler_PipeThickness = "Boiler - Pipe Thickness",
@@ -37,7 +35,6 @@ export enum CalculatorKind {
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.BejanaTekan_PipeThickness]: BejanaTekan.PipeThickness,
   [CalculatorKind.Boiler_ShellFireTubeThickness]: Boiler.ShellFireTubeThickness,
   [CalculatorKind.Boiler_PipeThickness]: Boiler.PipeThickness,
   [CalculatorKind.Boiler_DrumWaterTubeThickness]: Boiler.DrumWaterTubeThickness,
