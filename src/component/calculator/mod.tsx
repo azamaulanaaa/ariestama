@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { Boiler } from "@/component/calculator/boiler/mod.tsx";
 import { Chain } from "@/component/calculator/chain/mod.tsx";
 import { Forklift } from "@/component/calculator/forklfit/mod.tsx";
 import { General } from "@/component/calculator/general/mod.tsx";
@@ -16,11 +15,6 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  Boiler_DrumWaterTubeThickness = "Boiler - Drum Water Tube Thickness",
-  Boiler_TubeHoleThickness = "Boiler - Tube Hole Thickness",
-  Boiler_PipeThickness = "Boiler - Pipe Thickness",
-  Boiler_SafetyValveDiameter = "Boiler - Safety Valve Diameter",
-  Boiler_ShellFireTubeThickness = "Boiler - Shell Fire Tube Thickness",
   Chain_SwlBlock = "Chain - SWL Block",
   Chain_SwlSling = "Chain - SWL Sling",
   Forklift_SwlFork = "Forklift - SWL Fork",
@@ -35,11 +29,6 @@ export enum CalculatorKind {
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.Boiler_ShellFireTubeThickness]: Boiler.ShellFireTubeThickness,
-  [CalculatorKind.Boiler_PipeThickness]: Boiler.PipeThickness,
-  [CalculatorKind.Boiler_DrumWaterTubeThickness]: Boiler.DrumWaterTubeThickness,
-  [CalculatorKind.Boiler_TubeHoleThickness]: Boiler.TubeHoleThickness,
-  [CalculatorKind.Boiler_SafetyValveDiameter]: Boiler.SafetyValveDiameter,
   [CalculatorKind.Chain_SwlBlock]: Chain.SWLBlock,
   [CalculatorKind.Chain_SwlSling]: Chain.SWLSling,
   [CalculatorKind.Forklift_SwlFork]: Forklift.SWLFork,
