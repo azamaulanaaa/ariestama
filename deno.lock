@@ -17,6 +17,7 @@
     "npm:clsx@^2.1.1": "2.1.1",
     "npm:convert-units@^3.0.0-beta.8": "3.0.0-beta.8",
     "npm:daisyui@^5.5.3": "5.5.3",
+    "npm:fuse.js@^7.1.0": "7.1.0",
     "npm:katex@~0.16.25": "0.16.25",
     "npm:react-dom@18": "18.3.1_react@18.3.1",
     "npm:react-katex@^3.1.0": "3.1.0_prop-types@15.8.1_react@18.3.1",
@@ -1664,6 +1665,9 @@
     },
     "function-bind@1.1.2": {
       "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA=="
+    },
+    "fuse.js@7.1.0": {
+      "integrity": "sha512-trLf4SzuuUxfusZADLINj+dE8clK1frKdmqiJNb1Es75fmI5oY6X2mxLVUciLLjxqw/xr72Dhy+lER6dGd02FQ=="
     },
     "generator-function@2.0.1": {
       "integrity": "sha512-SFdFmIJi+ybC0vjlHN0ZGVGHc3lgE0DxPAT0djjVg+kjOnSqclqmj0KQ7ykTOLP6YxoqOvuAODGdcHJn+43q3g=="
@@ -3612,6 +3616,7 @@
       "npm:clsx@^2.1.1",
       "npm:convert-units@^3.0.0-beta.8",
       "npm:daisyui@^5.5.3",
+      "npm:fuse.js@^7.1.0",
       "npm:katex@~0.16.25",
       "npm:react-dom@18",
       "npm:react-katex@^3.1.0",

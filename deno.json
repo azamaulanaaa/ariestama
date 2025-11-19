@@ -28,6 +28,7 @@
     "clsx": "npm:clsx@^2.1.1",
     "convert-units": "npm:convert-units@^3.0.0-beta.8",
     "daisyui": "npm:daisyui@^5.5.3",
+    "fuse.js": "npm:fuse.js@^7.1.0",
     "katex": "npm:katex@^0.16.25",
     "react": "npm:react@^18.0.0",
     "react-dom": "npm:react-dom@^18.0.0",
