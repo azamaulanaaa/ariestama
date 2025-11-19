@@ -30,6 +30,7 @@
     "daisyui": "npm:daisyui@^5.5.3",
     "fuse.js": "npm:fuse.js@^7.1.0",
     "katex": "npm:katex@^0.16.25",
+    "lucide-react": "npm:lucide-react@^0.554.0",
     "react": "npm:react@^18.0.0",
     "react-dom": "npm:react-dom@^18.0.0",
     "react-katex": "npm:react-katex@^3.1.0",

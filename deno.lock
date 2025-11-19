@@ -19,6 +19,7 @@
     "npm:daisyui@^5.5.3": "5.5.3",
     "npm:fuse.js@^7.1.0": "7.1.0",
     "npm:katex@~0.16.25": "0.16.25",
+    "npm:lucide-react@0.554": "0.554.0_react@18.3.1",
     "npm:react-dom@18": "18.3.1_react@18.3.1",
     "npm:react-katex@^3.1.0": "3.1.0_prop-types@15.8.1_react@18.3.1",
     "npm:react-router@^7.9.6": "7.9.6_react@18.3.1_react-dom@18.3.1__react@18.3.1",
@@ -2181,6 +2182,12 @@
         "yallist"
       ]
     },
+    "lucide-react@0.554.0_react@18.3.1": {
+      "integrity": "sha512-St+z29uthEJVx0Is7ellNkgTEhaeSoA42I7JjOCBCrc5X6LYMGSv0P/2uS5HDLTExP5tpiqRD2PyUEOS6s9UXA==",
+      "dependencies": [
+        "react"
+      ]
+    },
     "magic-string@0.30.21": {
       "integrity": "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==",
       "dependencies": [
@@ -3618,6 +3625,7 @@
       "npm:daisyui@^5.5.3",
       "npm:fuse.js@^7.1.0",
       "npm:katex@~0.16.25",
+      "npm:lucide-react@0.554",
       "npm:react-dom@18",
       "npm:react-katex@^3.1.0",
       "npm:react-router@^7.9.6",
