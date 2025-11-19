@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { APAR } from "@/component/calculator/apar/mod.tsx";
 import { BejanaTekan } from "@/component/calculator/bejana_tekan/mod.tsx";
 import { Boiler } from "@/component/calculator/boiler/mod.tsx";
 import { Chain } from "@/component/calculator/chain/mod.tsx";
@@ -18,7 +17,6 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  Apar_MinUnit = "APAR - Minimum Unit",
   BejanaTekan_PipeThickness = "Bejana Tekan - Pipe Thickness",
   Boiler_DrumWaterTubeThickness = "Boiler - Drum Water Tube Thickness",
   Boiler_TubeHoleThickness = "Boiler - Tube Hole Thickness",
@@ -39,7 +37,6 @@ export enum CalculatorKind {
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.Apar_MinUnit]: APAR.MinUnit,
   [CalculatorKind.BejanaTekan_PipeThickness]: BejanaTekan.PipeThickness,
   [CalculatorKind.Boiler_ShellFireTubeThickness]: Boiler.ShellFireTubeThickness,
   [CalculatorKind.Boiler_PipeThickness]: Boiler.PipeThickness,
