@@ -1,1 +1,1 @@
-import "./components.css";
+import "@/app.css";
