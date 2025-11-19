@@ -26,6 +26,7 @@ export const DemoDrumWaterTubeThickness: Story<DrumWaterTubeThicknessProps> = (
 ) => <DrumWaterTubeThickness {...props} />;
 DemoDrumWaterTubeThickness.storyName = "Drum Water Tube Thickness";
 DemoDrumWaterTubeThickness.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
 
@@ -34,6 +35,7 @@ export const DemoPipeThickness: Story<PipeThicknessProps> = (props) => (
 );
 DemoPipeThickness.storyName = "PipeThickness";
 DemoPipeThickness.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
 
@@ -42,6 +44,7 @@ export const DemoSafetyValveDiameter: Story<SafetyValveDiameterProps> = (
 ) => <SafetyValveDiameter {...props} />;
 DemoSafetyValveDiameter.storyName = "Safety Valve Diameter";
 DemoSafetyValveDiameter.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
 
@@ -50,6 +53,7 @@ export const DemoShellFireTubeThickness: Story<ShellFireTubeThicknessProps> = (
 ) => <ShellFireTubeThickness {...props} />;
 DemoShellFireTubeThickness.storyName = "Shell Fire Tube Thickness";
 DemoShellFireTubeThickness.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
 
@@ -58,5 +62,6 @@ export const DemoTubeHoleThickness: Story<TubeHoleThicknessProps> = (props) => (
 );
 DemoTubeHoleThickness.storyName = "Tube Hole Thickness";
 DemoTubeHoleThickness.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
