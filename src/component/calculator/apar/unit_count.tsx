@@ -101,7 +101,7 @@ export const UnitCount = (props: UnitCountProps) => {
             </label>
           </div>
           <div className={cn({ hidden: kind != "calculate" })}>
-            <label className="label">Coverage Height</label>
+            <label className="label text-black">Coverage Height</label>
             <label
               className={cn("input w-full", {
                 "input-error": heightError !== null,
@@ -116,7 +116,7 @@ export const UnitCount = (props: UnitCountProps) => {
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
-            <label className="label">Coverage Width</label>
+            <label className="label text-black">Coverage Width</label>
             <label
               className={cn("input w-full", {
                 "input-error": widthError !== null,
@@ -146,7 +146,7 @@ export const UnitCount = (props: UnitCountProps) => {
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
           <div className={cn({ hidden: kind != "calculate" })}>
-            <label className="label">
+            <label className="label text-black">
               Coverage Area
             </label>
             <label className="input w-full">
@@ -161,7 +161,7 @@ export const UnitCount = (props: UnitCountProps) => {
               </span>
             </label>
           </div>
-          <label className="label">Minimum Unit Count</label>
+          <label className="label text-black">Minimum Unit Count</label>
           <input
             type="tel"
             readOnly
