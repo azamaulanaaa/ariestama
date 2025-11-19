@@ -6,14 +6,21 @@ import { InlineMath } from "react-katex";
 import { Boiler } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type PipeThicknessProps = {
+  className?: string;
+  locale: string;
+};
 
 const PipeThicknessPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type PipeThicknessProps = z.input<
-  typeof PipeThicknessPropsSchema
->;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<PipeThicknessProps>;
 
 export const PipeThickness = (props: PipeThicknessProps) => {
   const zProps = PipeThicknessPropsSchema.parse(props);
@@ -101,148 +108,138 @@ export const PipeThickness = (props: PipeThicknessProps) => {
   ]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Standart</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={standart}
-          onChange={(e) => {
-            setStandart(e.target.value);
-          }}
-        >
-          <option value="grondslagen">Grondslagen</option>
-        </select>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Pressure</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": pressureError != null,
-          })}
-        >
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Boiler - Pipe Thickness</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Standart</legend>
+          <select
+            className="select w-full text-right"
+            value={standart}
+            onChange={(e) => {
+              setStandart(e.target.value);
+            }}
+          >
+            <option value="grondslagen">Grondslagen</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Pressure</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": pressureError != null,
+            })}
+          >
+            <input
+              ref={pressureRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+            </span>
+          </label>
+          <label className="label text-black">Weld Joint Efficiency</label>
           <input
-            ref={pressureRef}
-            className="text-right"
+            ref={weldJointEfficiencyRef}
+            className={cn("input w-full text-right", {
+              "input-error": weldJointEfficiencyError != null,
+            })}
             placeholder="0"
           />
-          <span className="label">
-            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Weld Joint Efficiency</legend>
-        <input
-          ref={weldJointEfficiencyRef}
-          className={cn("input input-bordered w-full text-right", {
-            "input-error": weldJointEfficiencyError != null,
-          })}
-          placeholder="0"
-        />
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Temperature</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": temperatureError != null,
-          })}
-        >
-          <input
-            ref={temperatureRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\degree\mathrm{C}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Yield Strength</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": yieldStrengthError != null,
-          })}
-        >
-          <input
-            ref={yieldStrengthRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Corrosion Allowance</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": corrosionAllowanceError != null,
-          })}
-        >
-          <input
-            ref={corrosionAllowanceRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Diameter
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": diameterError != null,
-          })}
-        >
-          <input
-            ref={diameterRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Diameter Type</legend>
-        <select className="select select-bordered w-full text-right">
-          <option>Inner</option>
-          <option>Outter</option>
-        </select>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <div className="divider">Drum</div>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Minimum Thickness</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(minPipeThickness)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+          <label className="label text-black">Temperature</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": temperatureError != null,
+            })}
+          >
+            <input
+              ref={temperatureRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\degree\mathrm{C}" />
+            </span>
+          </label>
+          <label className="label text-black">Yield Strength</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": yieldStrengthError != null,
+            })}
+          >
+            <input
+              ref={yieldStrengthRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+            </span>
+          </label>
+          <label className="label text-black">Corrosion Allowance</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": corrosionAllowanceError != null,
+            })}
+          >
+            <input
+              ref={corrosionAllowanceRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+          <label className="label text-black">Diameter</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": diameterError != null,
+            })}
+          >
+            <input
+              ref={diameterRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+          <label className="label text-black">Diameter Type</label>
+          <select className="select w-full text-right">
+            <option>Inner</option>
+            <option>Outter</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Minimum Thickness</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(minPipeThickness)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
