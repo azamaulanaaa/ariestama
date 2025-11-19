@@ -6,12 +6,21 @@ import { InlineMath } from "react-katex";
 import { cn } from "@/util/classname.ts";
 import { APAR, General } from "@/util/calculator/mod.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "../../card/calculator/mod.tsx";
+
+export type MinUnitProps = {
+  locale: string;
+  className?: string;
+};
 
 const MinUnitPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type MinUnitProps = z.input<typeof MinUnitPropsSchema>;
+  locale: z.string(),
+  className: z.string().optional(),
+}) as z.ZodType<MinUnitProps>;
 
 export const MinUnit = (props: MinUnitProps) => {
   const zProps = MinUnitPropsSchema.parse(props);
@@ -54,123 +63,113 @@ export const MinUnit = (props: MinUnitProps) => {
   }, [area]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Type</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={kind}
-          onChange={(e) => {
-            setKind(e.target.value);
-          }}
-        >
-          <option value="direct_input">Direct Input</option>
-          <option value="calculate">Calculate</option>
-        </select>
-      </fieldset>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kind != "direct_input",
-        })}
-      >
-        <legend className="fieldset-legend">Area</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": directInputError != null,
-          })}
-        >
-          <input
-            ref={directInputRef}
-            className="grow text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kind != "calculate",
-        })}
-      >
-        <legend className="fieldset-legend">Height</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": heightError != null,
-          })}
-        >
-          <input
-            ref={heightRef}
-            className="grow text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kind != "calculate",
-        })}
-      >
-        <legend className="fieldset-legend">Width</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": widthError != null,
-          })}
-        >
-          <input
-            ref={widthRef}
-            className="grow text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kind != "calculate",
-        })}
-      >
-        <legend className="fieldset-legend">Area</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(area)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Number of APAR</legend>
-        <label className="input input-bordered w-full">
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Alat Pemadam Api Ringan - Unit Count</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">
+            Kind of Coverage Area
+          </label>
+          <select
+            className="select w-full"
+            value={kind}
+            onChange={(e) => {
+              setKind(e.target.value);
+            }}
+          >
+            <option value="direct_input">Direct Input</option>
+            <option value="calculate">Calculate</option>
+          </select>
+          <div className={cn({ hidden: kind != "direct_input" })}>
+            <label className="label text-black">
+              Coverage Area
+            </label>
+            <label
+              className={cn("input w-full", {
+                "input-error": directInputError !== null,
+              })}
+            >
+              <input
+                ref={directInputRef}
+                className="text-right"
+                placeholder="0"
+              />{" "}
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}^2" />
+              </span>
+            </label>
+          </div>
+          <div className={cn({ hidden: kind != "calculate" })}>
+            <label className="label">Coverage Height</label>
+            <label
+              className={cn("input w-full", {
+                "input-error": heightError !== null,
+              })}
+            >
+              <input
+                ref={heightRef}
+                className="text-right"
+                placeholder="0"
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}" />
+              </span>
+            </label>
+            <label className="label">Coverage Width</label>
+            <label
+              className={cn("input w-full", {
+                "input-error": widthError !== null,
+              })}
+            >
+              <input
+                ref={widthRef}
+                className="text-right"
+                placeholder="0"
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}" />
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea textarea-bordered h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <div className={cn({ hidden: kind != "calculate" })}>
+            <label className="label">
+              Coverage Area
+            </label>
+            <label className="input w-full">
+              <input
+                type="tel"
+                readOnly
+                className="text-right"
+                value={numberFormatter.format(area)}
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}^2" />
+              </span>
+            </label>
+          </div>
+          <label className="label">Minimum Unit Count</label>
           <input
             type="tel"
             readOnly
-            className="text-right"
+            className="input w-full text-right"
             value={numberFormatter.format(numOfAPAR)}
           />
-          <span className="label">unit</span>
-        </label>
-      </fieldset>
-    </form>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
