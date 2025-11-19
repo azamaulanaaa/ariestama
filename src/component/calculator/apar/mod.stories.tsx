@@ -5,9 +5,11 @@ export default {
   title: "Component / Calculator / Alat Pemadam Api Ringan",
 } as StoryDefault;
 
-export const Demo: Story<UnitCountProps> = (props) => <UnitCount {...props} />;
-Demo.storyName = "Unit Count";
-Demo.args = {
+export const DemoUnitCount: Story<UnitCountProps> = (props) => (
+  <UnitCount {...props} />
+);
+DemoUnitCount.storyName = "Unit Count";
+DemoUnitCount.args = {
   className: "max-w-100",
   locale: "id-ID",
 };
