@@ -6,14 +6,21 @@ import { InlineMath } from "react-katex";
 import { Boiler, General } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type SafetyValveDiameterProps = {
+  className?: string;
+  locale: string;
+};
 
 const SafetyValveDiameterPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type SafetyValveDiameterProps = z.input<
-  typeof SafetyValveDiameterPropsSchema
->;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<SafetyValveDiameterProps>;
 
 export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
   const zProps = SafetyValveDiameterPropsSchema.parse(props);
@@ -21,7 +28,7 @@ export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
   const [standart, setStandart] = useState("grondslagen");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);
 
-  const [kindAreaChamber, setKindAreaChamber] = useState("direct_input");
+  const [areaChamberKind, setAreaChamberKind] = useState("direct_input");
   const [
     directInputAreaChamberRef,
     directInputAreaChamber,
@@ -45,7 +52,7 @@ export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
   const numberFormatter = new NumberFormatter(zProps.locale);
 
   const areaChamber = useMemo(() => {
-    switch (kindAreaChamber) {
+    switch (areaChamberKind) {
       case "direct_input":
         return directInputAreaChamber;
       case "calculate":
@@ -53,7 +60,7 @@ export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
       default:
         return NaN;
     }
-  }, [kindAreaChamber, directInputAreaChamber, radiusChamber]);
+  }, [areaChamberKind, directInputAreaChamber, radiusChamber]);
   const minDiameterSafetyValve = useMemo(() => {
     try {
       return Boiler.minDiameterSafetyValve_Grondslagen(
@@ -64,138 +71,138 @@ export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
       return NaN;
     }
   }, [areaChamber, pressure]);
+
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Standart</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={standart}
-          onChange={(e) => {
-            setStandart(e.target.value);
-          }}
-        >
-          <option value="grondslagen">Grondslagen</option>
-        </select>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Pressure</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": pressureError != null,
-          })}
-        >
-          <input
-            ref={pressureRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Kind of Area of Chamber</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={kindAreaChamber}
-          onChange={(e) => {
-            setKindAreaChamber(e.target.value);
-          }}
-        >
-          <option value="direct_input">Direct Input</option>
-          <option value="calculate">Calculate</option>
-        </select>
-      </fieldset>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kindAreaChamber != "direct_input",
-        })}
-      >
-        <legend className="fieldset-legend">
-          Area of Chamber
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": directInputAreaChamberError != null,
-          })}
-        >
-          <input
-            ref={directInputAreaChamberRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kindAreaChamber != "calculate",
-        })}
-      >
-        <legend className="fieldset-legend">
-          Radius of Chamber
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": radiusChamberError != null,
-          })}
-        >
-          <input
-            ref={radiusChamberRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset
-        className={cn("fieldset", {
-          hidden: kindAreaChamber != "calculate",
-        })}
-      >
-        <legend className="fieldset-legend">Area of Chamber</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(areaChamber)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Minimum Diameter</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(minDiameterSafetyValve)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Boiler - Safety Valve Diameter</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Standart</legend>
+          <select
+            className="select w-full text-right"
+            value={standart}
+            onChange={(e) => {
+              setStandart(e.target.value);
+            }}
+          >
+            <option value="grondslagen">Grondslagen</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Pressure</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": pressureError != null,
+            })}
+          >
+            <input
+              ref={pressureRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+            </span>
+          </label>
+          <label className="label text-black">Chamber Area Kind</label>
+          <select
+            className="select w-full"
+            value={areaChamberKind}
+            onChange={(e) => {
+              setAreaChamberKind(e.target.value);
+            }}
+          >
+            <option value="direct_input">Direct Input</option>
+            <option value="calculate">Calculate</option>
+          </select>
+          <div
+            className={cn({
+              hidden: areaChamberKind != "direct_input",
+            })}
+          >
+            <label className="label text-black">Chamber Area</label>
+            <label
+              className={cn("input w-full", {
+                "input-error": directInputAreaChamberError != null,
+              })}
+            >
+              <input
+                ref={directInputAreaChamberRef}
+                className="text-right"
+                placeholder="0"
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}^2" />
+              </span>
+            </label>
+          </div>
+          <div
+            className={cn({
+              hidden: areaChamberKind != "calculate",
+            })}
+          >
+            <label className="label text-black">Chamber Radius</label>
+            <label
+              className={cn("input w-full", {
+                "input-error": radiusChamberError != null,
+              })}
+            >
+              <input
+                ref={radiusChamberRef}
+                className="text-right"
+                placeholder="0"
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{m}" />
+              </span>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <div
+            className={cn({
+              hidden: areaChamberKind != "calculate",
+            })}
+          >
+            <label className="label text-black">Chamber Area</label>
+            <label className="input w-full">
+              <input
+                type="tel"
+                readOnly
+                className="text-right"
+                value={numberFormatter.format(areaChamber)}
+              />
+              <span className="label text-black">
+                <InlineMath math="\mathrm{mm}" />
+              </span>
+            </label>
+          </div>
+          <label className="label text-black">Minimum Diameter</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(minDiameterSafetyValve)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
