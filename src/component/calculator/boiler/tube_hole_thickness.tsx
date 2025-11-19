@@ -6,14 +6,21 @@ import { InlineMath } from "react-katex";
 import { Boiler } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type TubeHoleThicknessProps = {
+  className?: string;
+  locale: string;
+};
 
 const TubeHoleThicknessPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type TubeHoleThicknessProps = z.input<
-  typeof TubeHoleThicknessPropsSchema
->;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<TubeHoleThicknessProps>;
 
 export const TubeHoleThickness = (props: TubeHoleThicknessProps) => {
   const zProps = TubeHoleThicknessPropsSchema.parse(props);
@@ -48,96 +55,97 @@ export const TubeHoleThickness = (props: TubeHoleThicknessProps) => {
     }
   }, [pressure, outterDiameterHole, sigma]);
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Standart</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={standart}
-          onChange={(e) => {
-            setStandart(e.target.value);
-          }}
-        >
-          <option value="jis">Japanese Industrial Standart (JIS)</option>
-        </select>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Pressure</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": pressureError != null,
-          })}
-        >
-          <input
-            ref={pressureRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Allowable Tensile Stress of The Material
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": sigmaError != null,
-          })}
-        >
-          <input
-            ref={sigmaRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Outter Diameter</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": outterDiameterHoleError != null,
-          })}
-        >
-          <input
-            ref={outterDiameterHoleRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Minimum Thickness</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(minTubeHoleThickness)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Boiler - Tube Hole Thickness</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Standart</legend>
+          <select
+            className="select w-full text-right"
+            value={standart}
+            onChange={(e) => {
+              setStandart(e.target.value);
+            }}
+          >
+            <option value="jis">Japanese Industrial Standart (JIS)</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Pressure</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": pressureError != null,
+            })}
+          >
+            <input
+              ref={pressureRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Allowable Tensile Stress of The Material
+          </label>
+          <label
+            className={cn("input w-full", {
+              "input-error": sigmaError != null,
+            })}
+          >
+            <input
+              ref={sigmaRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
+            </span>
+          </label>
+          <label className="label text-black">Outter Diameter</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": outterDiameterHoleError != null,
+            })}
+          >
+            <input
+              ref={outterDiameterHoleRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Minimum Thickness</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(minTubeHoleThickness)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
