@@ -8,6 +8,11 @@ import allMeasures from "convert-units/definitions/all";
 import { cn } from "@/util/classname.ts";
 import { BejanaTekan } from "@/util/calculator/mod.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "../../card/calculator/mod.tsx";
 
 const convert = configureMeasurements(allMeasures);
 
@@ -20,10 +25,12 @@ export enum PipeThicknessStandart {
  */
 export type PipeThicknessProps = {
   locale: string;
+  className?: string;
 };
 
 const PipeThicknessPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
+  locale: z.string(),
+  className: z.string().optional(),
 }) as z.ZodType<PipeThicknessProps>;
 
 export const PipeThickness = (props: PipeThicknessProps) => {
@@ -112,165 +119,160 @@ export const PipeThickness = (props: PipeThicknessProps) => {
   );
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Standart</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={standart}
-          onChange={(e) => {
-            setStandart(e.target.value as PipeThicknessStandart);
-          }}
-        >
-          {Object.values(PipeThicknessStandart).sort().map((value, index) => (
-            <option key={index} value={value}>{value}</option>
-          ))}
-        </select>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Maximum Allowable Working Preasure
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": mawpError != null,
-          })}
-        >
-          <input
-            ref={mawpRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{psig}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Outer Diameter
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": outerDiameterError != null,
-          })}
-        >
-          <input
-            ref={outerDiameterRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{inch}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Maximum Allowable Stress Relative to Weld Joint Efficiency Factor
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error":
-              maximumAllowableStressRelativeToWeldJoinEfficiencyError != null,
-          })}
-        >
-          <input
-            ref={maximumAllowableStressRelativeToWeldJoinEfficiencyRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{psi}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Weld Strength Reduction factor
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": weldStrengthReductionFactorError != null,
-          })}
-        >
-          <input
-            ref={weldStrengthReductionFactorRef}
-            className="text-right"
-            placeholder="0"
-          />
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Coefficient
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": coefficientError != null,
-          })}
-        >
-          <input
-            ref={coefficientRef}
-            className="text-right"
-            placeholder="0"
-          />
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">
-          Additional Thickness
-        </legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": additionalThicknessError != null,
-          })}
-        >
-          <input
-            ref={additionalThicknessRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{inch}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Minimum Thickness</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(minPipeThickness)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{inch}" />
-          </span>
-        </label>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(minPipeThickness_mm)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Bejana Tekan - Pipe Thickness</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Standart</legend>
+          <select
+            className="select w-full text-right"
+            value={standart}
+            onChange={(e) => {
+              setStandart(e.target.value as PipeThicknessStandart);
+            }}
+          >
+            {Object.values(PipeThicknessStandart).sort().map((value, index) => (
+              <option key={index} value={value}>{value}</option>
+            ))}
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">
+            Maximum Allowable Working Preasure
+          </label>
+          <label
+            className={cn("input w-full", {
+              "input-error": mawpError != null,
+            })}
+          >
+            <input
+              ref={mawpRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{psig}" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Outer Diameter
+          </label>
+          <label
+            className={cn("input w-full", {
+              "input-error": outerDiameterError != null,
+            })}
+          >
+            <input
+              ref={outerDiameterRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{inch}" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Maximum Allowable Stress Relative to Weld Joint Efficiency Factor
+          </label>
+          <label
+            className={cn("input w-full", {
+              "input-error":
+                maximumAllowableStressRelativeToWeldJoinEfficiencyError != null,
+            })}
+          >
+            <input
+              ref={maximumAllowableStressRelativeToWeldJoinEfficiencyRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{psi}" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Weld Strength Reduction Factor
+          </label>
+          <label
+            className={cn("input input-bordered w-full", {
+              "input-error": weldStrengthReductionFactorError != null,
+            })}
+          >
+            <input
+              ref={weldStrengthReductionFactorRef}
+              className="text-right"
+              placeholder="0"
+            />
+          </label>
+          <label className="label text-black">
+            Coefficient
+          </label>
+          <label
+            className={cn("input input-bordered w-full", {
+              "input-error": coefficientError != null,
+            })}
+          >
+            <input
+              ref={coefficientRef}
+              className="text-right"
+              placeholder="0"
+            />
+          </label>
+          <label className="label text-black">
+            Additional Thickness
+          </label>
+          <label
+            className={cn("input input-bordered w-full", {
+              "input-error": additionalThicknessError != null,
+            })}
+          >
+            <input
+              ref={additionalThicknessRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{inch}" />
+            </span>
+          </label>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Minimum Thickness</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(minPipeThickness)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{inch}" />
+            </span>
+          </label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(minPipeThickness_mm)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
