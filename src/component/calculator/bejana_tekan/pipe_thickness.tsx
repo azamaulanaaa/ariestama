@@ -12,7 +12,7 @@ import {
   CalculatorBody,
   CalculatorRoot,
   CalculatorTitle,
-} from "../../card/calculator/mod.tsx";
+} from "@/component/card/calculator/mod.tsx";
 
 const convert = configureMeasurements(allMeasures);
 
