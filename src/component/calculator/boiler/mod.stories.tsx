@@ -1,22 +1,62 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Boiler } from "./mod.tsx";
+import {
+  DrumWaterTubeThickness,
+  DrumWaterTubeThicknessProps,
+} from "./drum_water_tube_thickness.tsx";
+import { PipeThickness, PipeThicknessProps } from "./pipe_thickness.tsx";
+import {
+  SafetyValveDiameter,
+  SafetyValveDiameterProps,
+} from "./safety_valve_diameter.tsx";
+import {
+  ShellFireTubeThickness,
+  ShellFireTubeThicknessProps,
+} from "./shell_fire_tube_thickness.tsx";
+import {
+  TubeHoleThickness,
+  TubeHoleThicknessProps,
+} from "./tube_hole_thickness.tsx";
 
 export default {
   title: "Component / Calculator / Boiler",
 } as StoryDefault;
 
-export const PipeThickness: Story = () => (
-  <Boiler.PipeThickness locale="id-ID" />
+export const DemoDrumWaterTubeThickness: Story<DrumWaterTubeThicknessProps> = (
+  props,
+) => <DrumWaterTubeThickness {...props} />;
+DemoDrumWaterTubeThickness.storyName = "Drum Water Tube Thickness";
+DemoDrumWaterTubeThickness.args = {
+  locale: "id-ID",
+};
+
+export const DemoPipeThickness: Story<PipeThicknessProps> = (props) => (
+  <PipeThickness {...props} />
 );
-export const ShellFireTubeThickness: Story = () => (
-  <Boiler.ShellFireTubeThickness locale="id-ID" />
+DemoPipeThickness.storyName = "PipeThickness";
+DemoPipeThickness.args = {
+  locale: "id-ID",
+};
+
+export const DemoSafetyValveDiameter: Story<SafetyValveDiameterProps> = (
+  props,
+) => <SafetyValveDiameter {...props} />;
+DemoSafetyValveDiameter.storyName = "Safety Valve Diameter";
+DemoSafetyValveDiameter.args = {
+  locale: "id-ID",
+};
+
+export const DemoShellFireTubeThickness: Story<ShellFireTubeThicknessProps> = (
+  props,
+) => <ShellFireTubeThickness {...props} />;
+DemoShellFireTubeThickness.storyName = "Shell Fire Tube Thickness";
+DemoShellFireTubeThickness.args = {
+  locale: "id-ID",
+};
+
+export const DemoTubeHoleThickness: Story<TubeHoleThicknessProps> = (props) => (
+  <TubeHoleThickness {...props} />
 );
-export const DrumWaterTubeThickness: Story = () => (
-  <Boiler.DrumWaterTubeThickness locale="id-ID" />
-);
-export const TubeHoleThickness: Story = () => (
-  <Boiler.TubeHoleThickness locale="id-ID" />
-);
-export const SafetyValveDiameter: Story = () => (
-  <Boiler.SafetyValveDiameter locale="id-ID" />
-);
+DemoTubeHoleThickness.storyName = "Tube Hole Thickness";
+DemoTubeHoleThickness.args = {
+  locale: "id-ID",
+};
