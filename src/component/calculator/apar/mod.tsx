@@ -1,5 +1,5 @@
-import { MinUnit } from "./min_unit.tsx";
+import { UnitCount } from "./min_unit.tsx";
 
 export const APAR = {
-  MinUnit,
+  MinUnit: UnitCount,
 };

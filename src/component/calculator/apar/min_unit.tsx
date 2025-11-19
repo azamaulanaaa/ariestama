@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "../../card/calculator/mod.tsx";
 
-export type MinUnitProps = {
+export type UnitCountProps = {
   locale: string;
   className?: string;
 };
 
-const MinUnitPropsSchema = z.object({
+const UnitCountPropsSchema = z.object({
   locale: z.string(),
   className: z.string().optional(),
-}) as z.ZodType<MinUnitProps>;
+}) as z.ZodType<UnitCountProps>;
 
-export const MinUnit = (props: MinUnitProps) => {
-  const zProps = MinUnitPropsSchema.parse(props);
+export const UnitCount = (props: UnitCountProps) => {
+  const zProps = UnitCountPropsSchema.parse(props);
 
   const [kind, setKind] = useState("direct_input");
   const [heightRef, height, heightError] = useNumber(zProps.locale);
