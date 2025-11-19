@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { X } from "lucide-react";
 
 import { cn } from "@/util/classname.ts";
 
@@ -63,17 +64,36 @@ export function SearchBox(props: SearchBoxProps) {
     };
   };
 
+  const handleOnQueryClearClick: MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    event.preventDefault();
+
+    setQuery("");
+  };
+
   return (
     <div className={cn("dropdown", zProps.classNames)}>
-      <input
-        type="text"
-        name="search_box"
-        className="input w-full"
-        tabIndex={0}
-        placeholder={zProps.placeHolder}
-        value={query}
-        onChange={handleOnQueryChange}
-      />
+      <label className="input w-full">
+        <input
+          type="text"
+          name="search_box"
+          tabIndex={0}
+          placeholder={zProps.placeHolder}
+          value={query}
+          onChange={handleOnQueryChange}
+        />
+        <button
+          type="button"
+          className={cn("btn btn-sm btn-square btn-ghost", {
+            hidden: query.length == 0,
+          })}
+          tabIndex={-1}
+          onClick={handleOnQueryClearClick}
+        >
+          <X size={16} />
+        </button>
+      </label>
       <ul
         className="dropdown-content menu w-full bg-base-100 rounded-b-md shadow-sm"
         tabIndex={-1}
