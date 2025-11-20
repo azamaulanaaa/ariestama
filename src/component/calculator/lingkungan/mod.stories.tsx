@@ -1,10 +1,17 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Lingkungan } from "./mod.tsx";
+import {
+  AnchorResultante,
+  AnchorResultanteProps,
+} from "./anchor_resultante.tsx";
 
 export default {
   title: "Component / Calculator / Lingkungan",
 } as StoryDefault;
 
-export const AnchorResultante: Story = () => (
-  <Lingkungan.AnchorResultante locale="id-ID" />
+export const DemoAnchorResultante: Story<AnchorResultanteProps> = (props) => (
+  <AnchorResultante {...props} />
 );
+DemoAnchorResultante.storyName = "Anchor Resultante";
+DemoAnchorResultante.args = {
+  locale: "id-ID",
+};
