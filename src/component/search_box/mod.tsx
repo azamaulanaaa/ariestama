@@ -10,15 +10,18 @@ import { X } from "lucide-react";
 
 import { cn } from "@/util/classname.ts";
 
-export type Data = {
-  title: string;
-  keywords: Array<string>;
+export type SearchBoxData<
+  T extends string = string,
+  K extends string = string,
+> = {
+  title: T;
+  keywords: Array<K>;
 };
 
 export type SearchBoxProps = {
   classNames?: string;
   placeHolder?: string;
-  items: Array<Data>;
+  items: Array<SearchBoxData>;
   onTitleClick: (title: string) => void;
 };
 
@@ -108,7 +111,7 @@ export function SearchBox(props: SearchBoxProps) {
   );
 }
 type ItemsProps = {
-  items: Array<FuseResult<Data>>;
+  items: Array<FuseResult<SearchBoxData>>;
   handleOnDataClick: (
     title: string,
   ) => MouseEventHandler<HTMLAnchorElement>;
