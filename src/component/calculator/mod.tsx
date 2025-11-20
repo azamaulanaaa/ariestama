@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { Chain } from "@/component/calculator/chain/mod.tsx";
 import { Forklift } from "@/component/calculator/forklfit/mod.tsx";
 import { General } from "@/component/calculator/general/mod.tsx";
 import { Girder } from "@/component/calculator/girder/mod.tsx";
@@ -15,8 +14,6 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  Chain_SwlBlock = "Chain - SWL Block",
-  Chain_SwlSling = "Chain - SWL Sling",
   Forklift_SwlFork = "Forklift - SWL Fork",
   General_Volume = "General - Volume",
   Girder_Deflection = "Girder - Deflection",
@@ -29,8 +26,6 @@ export enum CalculatorKind {
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.Chain_SwlBlock]: Chain.SWLBlock,
-  [CalculatorKind.Chain_SwlSling]: Chain.SWLSling,
   [CalculatorKind.Forklift_SwlFork]: Forklift.SWLFork,
   [CalculatorKind.General_Volume]: General.Volume,
   [CalculatorKind.Girder_Deflection]: Girder.Deflection,
