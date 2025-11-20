@@ -6,12 +6,21 @@ import { InlineMath } from "react-katex";
 import { Girder } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type DeflectionProps = {
+  className?: string;
+  locale: string;
+};
 
 const DeflectionPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type DeflectionProps = z.input<typeof DeflectionPropsSchema>;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<DeflectionProps>;
 
 export const Deflection = (props: DeflectionProps) => {
   const zProps = DeflectionPropsSchema.parse(props);
@@ -42,61 +51,64 @@ export const Deflection = (props: DeflectionProps) => {
   }, [typee, lengthOfSpan]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Type</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={typee}
-          onChange={(e) => {
-            setTypee(e.target.value);
-          }}
-        >
-          <option value="single">Single</option>
-          <option value="double">Double</option>
-        </select>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Length of Span</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": lengthOfSpanError != null,
-          })}
-        >
-          <input
-            ref={lengthOfSpanRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Max Deflection</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(deflection)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Gider - Deflection</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Type</label>
+          <select
+            className="select w-full text-right"
+            value={typee}
+            onChange={(e) => {
+              setTypee(e.target.value);
+            }}
+          >
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+          </select>
+          <label className="label text-black">Length of Span</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": lengthOfSpanError != null,
+            })}
+          >
+            <input
+              ref={lengthOfSpanRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Max Deflection</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(deflection)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
