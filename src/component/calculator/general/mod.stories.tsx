@@ -8,5 +8,6 @@ export default {
 export const DemoVolume: Story<VolumeProps> = (props) => <Volume {...props} />;
 DemoVolume.storyName = "Volume";
 DemoVolume.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
