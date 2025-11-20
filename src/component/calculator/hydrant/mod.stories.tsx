@@ -10,5 +10,6 @@ export const DemoReservoir: Story<ReservoirProps> = (props) => (
 );
 DemoReservoir.storyName = "Reservoir";
 DemoReservoir.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
