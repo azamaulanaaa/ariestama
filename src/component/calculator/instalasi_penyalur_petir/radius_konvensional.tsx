@@ -6,14 +6,21 @@ import { InlineMath } from "react-katex";
 import { InstalasiPenyalurPetir } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type RadiusConvensionalProps = {
+  className?: string;
+  locale: string;
+};
 
 const RadiusConvensionalPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type RadiusConvensionalProps = z.input<
-  typeof RadiusConvensionalPropsSchema
->;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<RadiusConvensionalProps>;
 
 export const RadiusConventional = (props: RadiusConvensionalProps) => {
   const zProps = RadiusConvensionalPropsSchema.parse(props);
@@ -41,48 +48,55 @@ export const RadiusConventional = (props: RadiusConvensionalProps) => {
   }, [height]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Height</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": heightError != null,
-          })}
-        >
-          <input
-            ref={heightRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Radius</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(radiusKonvensional)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{m}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>
+        Instalasi Penyalur Petir - Radius Conventional
+      </CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Height</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": heightError != null,
+            })}
+          >
+            <input
+              ref={heightRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{m}" />
+            </span>
+          </label>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Radius</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(radiusKonvensional)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{m}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
