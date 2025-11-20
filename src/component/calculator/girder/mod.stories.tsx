@@ -10,5 +10,6 @@ export const DemoDeflection: Story<DeflectionProps> = (props) => (
 );
 DemoDeflection.storyName = "Deflection";
 DemoDeflection.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
