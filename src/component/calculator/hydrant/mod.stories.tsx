@@ -1,5 +1,5 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Reservoir, ReservoirProps } from "./reservoir.tsx";
+import { Reservoir, ReservoirProps } from "./reservoir_capacity.tsx";
 
 export default {
   title: "Component / Calculator / Hydrant",
