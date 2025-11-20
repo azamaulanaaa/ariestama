@@ -10,5 +10,6 @@ export const DemoSWLWireRope: Story<SwlWireRopeProps> = (props) => (
 );
 DemoSWLWireRope.storyName = "SWL Wire Rope";
 DemoSWLWireRope.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
