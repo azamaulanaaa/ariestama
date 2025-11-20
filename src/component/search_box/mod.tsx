@@ -47,13 +47,20 @@ export function SearchBox(props: SearchBoxProps) {
 
   const fuse = useMemo(
     () => {
-      return new Fuse(zProps.items, { keys: ["title", "keywords"] });
+      return new Fuse(zProps.items, {
+        keys: ["title", "keywords"],
+        shouldSort: false,
+      });
     },
     [zProps.items],
   );
 
   const items = useMemo(() => {
-    return fuse.search(query);
+    if (query.length == 0) {
+      return zProps.items;
+    }
+
+    return fuse.search(query).map((result) => result.item);
   }, [query]);
 
   const handleOnDataClick: (
@@ -62,7 +69,6 @@ export function SearchBox(props: SearchBoxProps) {
     return (event) => {
       event.preventDefault();
 
-      setQuery(title);
       zProps.onTitleClick(title);
     };
   };
@@ -76,7 +82,7 @@ export function SearchBox(props: SearchBoxProps) {
   };
 
   return (
-    <div className={cn("dropdown", zProps.classNames)}>
+    <div className={cn("flex flex-col gap-2", zProps.classNames)}>
       <label className="input w-full">
         <input
           type="text"
@@ -98,7 +104,7 @@ export function SearchBox(props: SearchBoxProps) {
         </button>
       </label>
       <ul
-        className="dropdown-content menu w-full bg-base-100 rounded-b-md shadow-sm"
+        className="menu w-full"
         tabIndex={-1}
       >
         <Items
@@ -111,7 +117,7 @@ export function SearchBox(props: SearchBoxProps) {
   );
 }
 type ItemsProps = {
-  items: Array<FuseResult<SearchBoxData>>;
+  items: Array<SearchBoxData>;
   handleOnDataClick: (
     title: string,
   ) => MouseEventHandler<HTMLAnchorElement>;
@@ -121,10 +127,6 @@ type ItemsProps = {
 function Items(
   props: ItemsProps,
 ) {
-  if (props.queryLength == 0) {
-    return <li className="text-gray-400 text-sm">Start typing..</li>;
-  }
-
   if (props.items.length == 0) {
     return <li className="text-gray-400 text-sm">Not results found</li>;
   }
@@ -132,8 +134,8 @@ function Items(
   return (props.items.map((value, index) => {
     return (
       <li key={index}>
-        <a href="#" onClick={props.handleOnDataClick(value.item.title)}>
-          {value.item.title}
+        <a href="#" onClick={props.handleOnDataClick(value.title)}>
+          {value.title}
         </a>
       </li>
     );
