@@ -1,13 +1,13 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { SWLBlock, SWLBlockProps } from "./swl_block.tsx";
-import { SWLSling, SWLSlingProps } from "./swl_sling.tsx";
+import { ChainSWLBlock, ChainSWLBlockProps } from "./swl_block.tsx";
+import { ChainSWLSling, ChainSWLSlingProps } from "./swl_sling.tsx";
 
 export default {
   title: "Component / Calculator / Chain",
 } as StoryDefault;
 
-export const DemoSwlBlock: Story<SWLBlockProps> = (props) => (
-  <SWLBlock {...props} />
+export const DemoSwlBlock: Story<ChainSWLBlockProps> = (props) => (
+  <ChainSWLBlock {...props} />
 );
 DemoSwlBlock.storyName = "SWL Block";
 DemoSwlBlock.args = {
@@ -15,8 +15,8 @@ DemoSwlBlock.args = {
   locale: "id-ID",
 };
 
-export const DemoSwlSling: Story<SWLSlingProps> = (props) => (
-  <SWLSling {...props} />
+export const DemoSwlSling: Story<ChainSWLSlingProps> = (props) => (
+  <ChainSWLSling {...props} />
 );
 DemoSwlSling.storyName = "SWL Sling";
 DemoSwlSling.args = {

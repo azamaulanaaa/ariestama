@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type ThicknessProps = {
+export type TangkiTimbunThicknessProps = {
   className?: string;
   locale: string;
 };
 
-const ThicknessPropsSchema = z.object({
+const TangkiTimbunThicknessPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<ThicknessProps>;
+}) as z.ZodType<TangkiTimbunThicknessProps>;
 
-export const Thickness = (props: ThicknessProps) => {
-  const zProps = ThicknessPropsSchema.parse(props);
+export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
+  const zProps = TangkiTimbunThicknessPropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [designLiquidLevelRef, designLiquidLevel, designLiquidLevelError] =

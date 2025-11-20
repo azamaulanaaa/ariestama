@@ -1,12 +1,12 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Deflection, DeflectionProps } from "./deflection.tsx";
+import { GirderDeflection, GirderDeflectionProps } from "./deflection.tsx";
 
 export default {
   title: "Component / Calculator / Girder",
 } as StoryDefault;
 
-export const DemoDeflection: Story<DeflectionProps> = (props) => (
-  <Deflection {...props} />
+export const DemoDeflection: Story<GirderDeflectionProps> = (props) => (
+  <GirderDeflection {...props} />
 );
 DemoDeflection.storyName = "Deflection";
 DemoDeflection.args = {

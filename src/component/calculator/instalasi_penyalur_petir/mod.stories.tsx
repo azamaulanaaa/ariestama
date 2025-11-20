@@ -1,16 +1,16 @@
 import { Story, StoryDefault } from "@ladle/react";
 import {
-  RadiusConvensionalProps,
-  RadiusConventional,
+  IPPRadiusConvensionalProps,
+  IPPRadiusConventional,
 } from "./radius_konvensional.tsx";
 
 export default {
   title: "Component / Calculator / Instalasi Penyalur Petir",
 } as StoryDefault;
 
-export const DemoRadiusConventional: Story<RadiusConvensionalProps> = (
+export const DemoRadiusConventional: Story<IPPRadiusConvensionalProps> = (
   props,
-) => <RadiusConventional {...props} />;
+) => <IPPRadiusConventional {...props} />;
 DemoRadiusConventional.storyName = "Radius Conventional";
 DemoRadiusConventional.args = {
   className: "max-w-100",

@@ -16,18 +16,18 @@ import {
 
 const convert = configureMeasurements(allMeasures);
 
-export type SwlWireRopeProps = {
+export type RopeSWLWireRopeProps = {
   className?: string;
   locale: string;
 };
 
-const SwlWireRopePropsSchema = z.object({
+const RopeSwlWireRopePropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<SwlWireRopeProps>;
+}) as z.ZodType<RopeSWLWireRopeProps>;
 
-export const SwlWireRope = (props: SwlWireRopeProps) => {
-  const zProps = SwlWireRopePropsSchema.parse(props);
+export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
+  const zProps = RopeSwlWireRopePropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [reavingNumberRef, reavingNumber, reavingNumberError] = useNumber(

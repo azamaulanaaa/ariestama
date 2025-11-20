@@ -16,27 +16,31 @@ import {
 
 const convert = configureMeasurements(allMeasures);
 
-export enum PipeThicknessStandart {
+export enum BejanaTekanPipeThicknessStandart {
   asme_b31_1 = "ASME B31.1",
 }
 
 /**
  * @property {string} locale - number formating, default is en-US
  */
-export type PipeThicknessProps = {
+export type BejanaTekanPipeThicknessProps = {
   locale: string;
   className?: string;
 };
 
-const PipeThicknessPropsSchema = z.object({
+const BejanaTekanPipeThicknessPropsSchema = z.object({
   locale: z.string(),
   className: z.string().optional(),
-}) as z.ZodType<PipeThicknessProps>;
+}) as z.ZodType<BejanaTekanPipeThicknessProps>;
 
-export const PipeThickness = (props: PipeThicknessProps) => {
-  const zProps = PipeThicknessPropsSchema.parse(props);
+export const BejanaTekanPipeThickness = (
+  props: BejanaTekanPipeThicknessProps,
+) => {
+  const zProps = BejanaTekanPipeThicknessPropsSchema.parse(props);
 
-  const [standart, setStandart] = useState(PipeThicknessStandart.asme_b31_1);
+  const [standart, setStandart] = useState(
+    BejanaTekanPipeThicknessStandart.asme_b31_1,
+  );
   const [mawpRef, mawp, mawpError] = useNumber(zProps.locale);
   const [outerDiameterRef, outerDiameter, outerDiameterError] = useNumber(
     zProps.locale,
@@ -85,7 +89,7 @@ export const PipeThickness = (props: PipeThicknessProps) => {
   const minPipeThickness = useMemo(() => {
     try {
       switch (standart) {
-        case PipeThicknessStandart.asme_b31_1:
+        case BejanaTekanPipeThicknessStandart.asme_b31_1:
           return BejanaTekan.minPipeThickness_ASME_B3_1({
             P: mawp,
             D: outerDiameter,
@@ -128,12 +132,13 @@ export const PipeThickness = (props: PipeThicknessProps) => {
             className="select w-full text-right"
             value={standart}
             onChange={(e) => {
-              setStandart(e.target.value as PipeThicknessStandart);
+              setStandart(e.target.value as BejanaTekanPipeThicknessStandart);
             }}
           >
-            {Object.values(PipeThicknessStandart).sort().map((value, index) => (
-              <option key={index} value={value}>{value}</option>
-            ))}
+            {Object.values(BejanaTekanPipeThicknessStandart).sort().map((
+              value,
+              index,
+            ) => <option key={index} value={value}>{value}</option>)}
           </select>
         </fieldset>
         <fieldset className="fieldset">

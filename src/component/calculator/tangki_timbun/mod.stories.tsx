@@ -1,12 +1,15 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Thickness, ThicknessProps } from "./thickness.tsx";
+import {
+  TangkiTimbunThickness,
+  TangkiTimbunThicknessProps,
+} from "./thickness.tsx";
 
 export default {
   title: "Component / Calculator / Tangki Timbun",
 } as StoryDefault;
 
-export const DemoThickness: Story<ThicknessProps> = (props) => (
-  <Thickness {...props} />
+export const DemoThickness: Story<TangkiTimbunThicknessProps> = (props) => (
+  <TangkiTimbunThickness {...props} />
 );
 DemoThickness.storyName = "Thickness";
 DemoThickness.args = {

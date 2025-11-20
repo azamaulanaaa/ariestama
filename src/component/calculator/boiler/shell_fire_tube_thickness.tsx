@@ -12,18 +12,20 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type ShellFireTubeThicknessProps = {
+export type BoilerShellFireTubeThicknessProps = {
   className?: string;
   locale: string;
 };
 
-const ShellFireTubeThicknessPropsSchema = z.object({
+const BoilerShellFireTubeThicknessPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<ShellFireTubeThicknessProps>;
+}) as z.ZodType<BoilerShellFireTubeThicknessProps>;
 
-export const ShellFireTubeThickness = (props: ShellFireTubeThicknessProps) => {
-  const zProps = ShellFireTubeThicknessPropsSchema.parse(props);
+export const BoilerShellFireTubeThickness = (
+  props: BoilerShellFireTubeThicknessProps,
+) => {
+  const zProps = BoilerShellFireTubeThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("grondslagen");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);

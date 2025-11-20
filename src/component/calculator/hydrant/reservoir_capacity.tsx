@@ -12,18 +12,20 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type ReservoirCapacityProps = {
+export type HydrantReservoirCapacityProps = {
   className?: string;
   locale: string;
 };
 
-const ReservoirCapacityPropsSchema = z.object({
+const HydrantReservoirCapacityPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<ReservoirCapacityProps>;
+}) as z.ZodType<HydrantReservoirCapacityProps>;
 
-export const ReservoirCapacity = (props: ReservoirCapacityProps) => {
-  const zProps = ReservoirCapacityPropsSchema.parse(props);
+export const HydrantReservoirCapacity = (
+  props: HydrantReservoirCapacityProps,
+) => {
+  const zProps = HydrantReservoirCapacityPropsSchema.parse(props);
 
   const [duration, setDuration] = useState(45);
   const [

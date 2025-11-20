@@ -12,18 +12,20 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type AnchorResultanteProps = {
+export type LingkunganAnchorResultanteProps = {
   className?: string;
   locale: string;
 };
 
-const AnchorResultantePropsSchema = z.object({
+const LingkunganAnchorResultantePropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<AnchorResultanteProps>;
+}) as z.ZodType<LingkunganAnchorResultanteProps>;
 
-export const AnchorResultante = (props: AnchorResultanteProps) => {
-  const zProps = AnchorResultantePropsSchema.parse(props);
+export const LingkunganAnchorResultante = (
+  props: LingkunganAnchorResultanteProps,
+) => {
+  const zProps = LingkunganAnchorResultantePropsSchema.parse(props);
 
   const [alphaRef, alpha, alphaError] = useNumber(zProps.locale);
   const [massRef, mass, massError] = useNumber(zProps.locale);

@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type SWLBlockProps = {
+export type ChainSWLBlockProps = {
   className?: string;
   locale: string;
 };
 
-const SWLBlockPropsScheam = z.object({
+const ChainSWLBlockPropsScheam = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<SWLBlockProps>;
+}) as z.ZodType<ChainSWLBlockProps>;
 
-export const SWLBlock = (props: SWLBlockProps) => {
-  const zProps = SWLBlockPropsScheam.parse(props);
+export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
+  const zProps = ChainSWLBlockPropsScheam.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [reavingNumberRef, reavingNumber, reavingNumberError] = useNumber(

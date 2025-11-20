@@ -12,18 +12,20 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type SafetyValveDiameterProps = {
+export type BoilerSafetyValveDiameterProps = {
   className?: string;
   locale: string;
 };
 
-const SafetyValveDiameterPropsSchema = z.object({
+const BoilerSafetyValveDiameterPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<SafetyValveDiameterProps>;
+}) as z.ZodType<BoilerSafetyValveDiameterProps>;
 
-export const SafetyValveDiameter = (props: SafetyValveDiameterProps) => {
-  const zProps = SafetyValveDiameterPropsSchema.parse(props);
+export const BoilerSafetyValveDiameter = (
+  props: BoilerSafetyValveDiameterProps,
+) => {
+  const zProps = BoilerSafetyValveDiameterPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("grondslagen");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);

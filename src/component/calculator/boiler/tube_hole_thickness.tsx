@@ -12,18 +12,20 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type TubeHoleThicknessProps = {
+export type BoilerTubeHoleThicknessProps = {
   className?: string;
   locale: string;
 };
 
-const TubeHoleThicknessPropsSchema = z.object({
+const BoilerTubeHoleThicknessPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<TubeHoleThicknessProps>;
+}) as z.ZodType<BoilerTubeHoleThicknessProps>;
 
-export const TubeHoleThickness = (props: TubeHoleThicknessProps) => {
-  const zProps = TubeHoleThicknessPropsSchema.parse(props);
+export const BoilerTubeHoleThickness = (
+  props: BoilerTubeHoleThicknessProps,
+) => {
+  const zProps = BoilerTubeHoleThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("jis");
   const [pressureRef, pressure, pressureError] = useNumber(zProps.locale);

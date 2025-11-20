@@ -1,12 +1,12 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { SwlWireRope, SwlWireRopeProps } from "./swl_wire_rope.tsx";
+import { RopeSWLWireRope, RopeSWLWireRopeProps } from "./swl_wire_rope.tsx";
 
 export default {
   title: "Component / Calculator / Rope",
 } as StoryDefault;
 
-export const DemoSWLWireRope: Story<SwlWireRopeProps> = (props) => (
-  <SwlWireRope {...props} />
+export const DemoSWLWireRope: Story<RopeSWLWireRopeProps> = (props) => (
+  <RopeSWLWireRope {...props} />
 );
 DemoSWLWireRope.storyName = "SWL Wire Rope";
 DemoSWLWireRope.args = {

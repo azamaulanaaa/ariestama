@@ -12,17 +12,19 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type DrumWaterTubeThicknessProps = {
+export type BoilerDrumWaterTubeThicknessProps = {
   className?: string;
   locale: string;
 };
-const DrumWaterTubeThicknessPropsSchema = z.object({
+const BoilerDrumWaterTubeThicknessPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<DrumWaterTubeThicknessProps>;
+}) as z.ZodType<BoilerDrumWaterTubeThicknessProps>;
 
-export const DrumWaterTubeThickness = (props: DrumWaterTubeThicknessProps) => {
-  const zProps = DrumWaterTubeThicknessPropsSchema.parse(props);
+export const BoilerDrumWaterTubeThickness = (
+  props: BoilerDrumWaterTubeThicknessProps,
+) => {
+  const zProps = BoilerDrumWaterTubeThicknessPropsSchema.parse(props);
 
   const [standart, setStandart] = useState("jis");
   const [type, setType] = useState("ferritic_steel");

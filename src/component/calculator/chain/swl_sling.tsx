@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type SWLSlingProps = {
+export type ChainSWLSlingProps = {
   className?: string;
   locale: string;
 };
 
-const SWLSlingPropsSchema = z.object({
+const ChainSWLSlingPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<SWLSlingProps>;
+}) as z.ZodType<ChainSWLSlingProps>;
 
-export const SWLSling = (props: SWLSlingProps) => {
-  const zProps = SWLSlingPropsSchema.parse(props);
+export const ChainSWLSling = (props: ChainSWLSlingProps) => {
+  const zProps = ChainSWLSlingPropsSchema.parse(props);
 
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
   const [grade, setGrade] = useState(80);

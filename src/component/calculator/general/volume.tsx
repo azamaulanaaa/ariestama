@@ -16,18 +16,18 @@ import {
 
 const convert = configureMeasurements(allMeasures);
 
-export type VolumeProps = {
+export type GeneralVolumeProps = {
   className?: string;
   locale: string;
 };
 
-const VolumePropsSchema = z.object({
+const GeneralVolumePropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<VolumeProps>;
+}) as z.ZodType<GeneralVolumeProps>;
 
-export const Volume = (props: VolumeProps) => {
-  const zProps = VolumePropsSchema.parse(props);
+export const GeneralVolume = (props: GeneralVolumeProps) => {
+  const zProps = GeneralVolumePropsSchema.parse(props);
 
   const [shape, setShape] = useState("cylinder");
   const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);

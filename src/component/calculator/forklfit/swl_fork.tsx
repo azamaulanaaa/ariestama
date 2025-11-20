@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { file, z } from "zod";
+import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
 import { InlineMath } from "react-katex";
 
@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type SWLForkProps = {
+export type ForkliftSWLForkProps = {
   className?: string;
   locale: string;
 };
 
-const SWLForkPropsSchema = z.object({
+const ForkliftSWLForkPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<SWLForkProps>;
+}) as z.ZodType<ForkliftSWLForkProps>;
 
-export const SWLFork = (props: SWLForkProps) => {
-  const zProps = SWLForkPropsSchema.parse(props);
+export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
+  const zProps = ForkliftSWLForkPropsSchema.parse(props);
 
   const [capacityRef, capacity, capacityError] = useNumber(zProps.locale);
   const [cog2forkRef, cog2fork, cog2forkError] = useNumber(zProps.locale);

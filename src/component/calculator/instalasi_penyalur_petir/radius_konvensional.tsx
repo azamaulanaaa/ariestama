@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type RadiusConvensionalProps = {
+export type IPPRadiusConvensionalProps = {
   className?: string;
   locale: string;
 };
 
-const RadiusConvensionalPropsSchema = z.object({
+const IPPRadiusConvensionalPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<RadiusConvensionalProps>;
+}) as z.ZodType<IPPRadiusConvensionalProps>;
 
-export const RadiusConventional = (props: RadiusConvensionalProps) => {
-  const zProps = RadiusConvensionalPropsSchema.parse(props);
+export const IPPRadiusConventional = (props: IPPRadiusConvensionalProps) => {
+  const zProps = IPPRadiusConvensionalPropsSchema.parse(props);
 
   const [heightRef, height, heightError] = useNumber(zProps.locale);
 

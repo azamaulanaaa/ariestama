@@ -12,18 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type DeflectionProps = {
+export type GirderDeflectionProps = {
   className?: string;
   locale: string;
 };
 
-const DeflectionPropsSchema = z.object({
+const GirderDeflectionPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<DeflectionProps>;
+}) as z.ZodType<GirderDeflectionProps>;
 
-export const Deflection = (props: DeflectionProps) => {
-  const zProps = DeflectionPropsSchema.parse(props);
+export const GirderDeflection = (props: GirderDeflectionProps) => {
+  const zProps = GirderDeflectionPropsSchema.parse(props);
 
   const [typee, setTypee] = useState("single");
   const [lengthOfSpanRef, lengthOfSpan, lengthOfSpanError] = useNumber(

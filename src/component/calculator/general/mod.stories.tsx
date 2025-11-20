@@ -1,11 +1,13 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Volume, VolumeProps } from "./volume.tsx";
+import { GeneralVolume, GeneralVolumeProps } from "./volume.tsx";
 
 export default {
   title: "Component / Calculator / General",
 } as StoryDefault;
 
-export const DemoVolume: Story<VolumeProps> = (props) => <Volume {...props} />;
+export const DemoVolume: Story<GeneralVolumeProps> = (props) => (
+  <GeneralVolume {...props} />
+);
 DemoVolume.storyName = "Volume";
 DemoVolume.args = {
   className: "max-w-100",
