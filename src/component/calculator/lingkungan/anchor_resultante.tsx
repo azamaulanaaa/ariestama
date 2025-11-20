@@ -6,12 +6,21 @@ import { InlineMath } from "react-katex";
 import { Lingkungan } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type AnchorResultanteProps = {
+  className?: string;
+  locale: string;
+};
 
 const AnchorResultantePropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type AnchorResultanteProps = z.input<typeof AnchorResultantePropsSchema>;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<AnchorResultanteProps>;
 
 export const AnchorResultante = (props: AnchorResultanteProps) => {
   const zProps = AnchorResultantePropsSchema.parse(props);
@@ -40,65 +49,68 @@ export const AnchorResultante = (props: AnchorResultanteProps) => {
   }, [alpha, mass]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Alpha</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": alphaError != null,
-          })}
-        >
-          <input
-            ref={alphaRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{degree}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Mass</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": massError != null,
-          })}
-        >
-          <input
-            ref={massRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kg}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Resultante</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(resultante)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{kg}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Lingkungan - Anchor Resultante</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Alpha</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": alphaError != null,
+            })}
+          >
+            <input
+              ref={alphaRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{degree}" />
+            </span>
+          </label>
+          <label className="label text-black">Mass</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": massError != null,
+            })}
+          >
+            <input
+              ref={massRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kg}" />
+            </span>
+          </label>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Resultante</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(resultante)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{kg}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
