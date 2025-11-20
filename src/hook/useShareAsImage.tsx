@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useToBlob } from "@hugocxl/react-to-image";
 
-export const useShareAsImage = <T extends HTMLElement>() => {
+export const useShareAsImage = <T extends HTMLElement>(): [
+  (domNode: T) => void,
+  () => void,
+  boolean,
+] => {
   const [state, capture, captureRef] = useToBlob<T>();
 
   useEffect(() => {
