@@ -11,6 +11,7 @@ export const DemoSwlBlock: Story<SWLBlockProps> = (props) => (
 );
 DemoSwlBlock.storyName = "SWL Block";
 DemoSwlBlock.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
 
@@ -19,5 +20,6 @@ export const DemoSwlSling: Story<SWLSlingProps> = (props) => (
 );
 DemoSwlSling.storyName = "SWL Sling";
 DemoSwlSling.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
