@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { InstalasiPenyalurPetir } from "@/component/calculator/instalasi_penyalur_petir/mod.tsx";
 import { Lingkungan } from "@/component/calculator/lingkungan/mod.tsx";
 import { Rope } from "@/component/calculator/rope/mod.tsx";
 import { TangkiTimbun } from "@/component/calculator/tangki_timbun/mod.tsx";
@@ -10,16 +9,12 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  InstalsiPenyalurPetir_RadiusConventional =
-    "Instalasi Penyalur Petir - Radius Conventional",
   Lingkungan_AnchorResultante = "Lingkungan - Anchor Resultante",
   Rope_SwlWireRope = "Rope - SWL Wire Rope",
   TangkiTimun_Thickness = "Tangki Timbun - Thickness",
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.InstalsiPenyalurPetir_RadiusConventional]:
-    InstalasiPenyalurPetir.RadiusConventional,
   [CalculatorKind.Lingkungan_AnchorResultante]: Lingkungan.AnchorResultante,
   [CalculatorKind.Rope_SwlWireRope]: Rope.SwlWireRope,
   [CalculatorKind.TangkiTimun_Thickness]: TangkiTimbun.Thickness,
