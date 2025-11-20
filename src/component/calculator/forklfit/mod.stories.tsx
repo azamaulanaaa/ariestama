@@ -10,5 +10,6 @@ export const DemoSWLFork: Story<SWLForkProps> = (props) => (
 );
 DemoSWLFork.storyName = "SWL Fork";
 DemoSWLFork.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
