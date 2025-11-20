@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { NumberFormatter } from "@internationalized/number";
-import configureMeasurements from "convert-units";
-import allMeasures from "convert-units/definitions/all";
 import { InlineMath } from "react-katex";
 
-import { General, Hydrant } from "@/util/calculator/mod.ts";
+import { Hydrant } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
 import {
@@ -14,29 +12,18 @@ import {
   CalculatorTitle,
 } from "@/component/card/calculator/mod.tsx";
 
-export type ReservoirProps = {
+export type ReservoirCapacityProps = {
   className?: string;
   locale: string;
 };
 
-const convert = configureMeasurements(allMeasures);
-
-const ReservoirPropsSchema = z.object({
+const ReservoirCapacityPropsSchema = z.object({
   className: z.string().optional(),
   locale: z.string(),
-}) as z.ZodType<ReservoirProps>;
+}) as z.ZodType<ReservoirCapacityProps>;
 
-export const Reservoir = (props: ReservoirProps) => {
-  const zProps = ReservoirPropsSchema.parse(props);
-
-  const [shape, setShape] = useState("cylinder");
-  const [diameterRef, diameter, diameterError] = useNumber(zProps.locale);
-  const [heightRef, height, heightError] = useNumber(zProps.locale);
-  const [widthRef, width, widthError] = useNumber(zProps.locale);
-  const [lengthRef, length, lengthError] = useNumber(zProps.locale);
-  const [directVolumeRef, directVolume, directVolumeError] = useNumber(
-    zProps.locale,
-  );
+export const ReservoirCapacity = (props: ReservoirCapacityProps) => {
+  const zProps = ReservoirCapacityPropsSchema.parse(props);
 
   const [duration, setDuration] = useState(45);
   const [
@@ -55,12 +42,6 @@ export const Reservoir = (props: ReservoirProps) => {
   useEffect(() => {
     setEdited(true);
   }, [
-    shape,
-    diameter,
-    height,
-    width,
-    length,
-    directVolume,
     duration,
     nozzleInletDiameter,
     waterPreasure,
@@ -72,24 +53,6 @@ export const Reservoir = (props: ReservoirProps) => {
   };
 
   const numberFormatter = new NumberFormatter(zProps.locale);
-
-  const volume = useMemo(() => {
-    try {
-      if (shape == "cylinder") {
-        return convert(General.volumeCylinder(diameter, height))
-          .from("m3")
-          .to("l");
-      } else if (shape == "cuboid") {
-        return convert(General.volumeCuboid(height, width, length))
-          .from("m3")
-          .to("l");
-      } else if (shape == "direct_input") return directVolume;
-
-      return NaN;
-    } catch {
-      return NaN;
-    }
-  }, [shape, directVolume, diameter, height, width, length]);
 
   const waterFlow = useMemo(() => {
     try {
@@ -106,122 +69,11 @@ export const Reservoir = (props: ReservoirProps) => {
 
   return (
     <CalculatorRoot className={zProps.className}>
-      <CalculatorTitle>Hydrant - Reservoir</CalculatorTitle>
+      <CalculatorTitle>Hydrant - Reservoir Capacity</CalculatorTitle>
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Reservoir - Shape</label>
-          <select
-            className="select w-full text-right"
-            value={shape}
-            onChange={(e) => {
-              setShape(e.target.value);
-            }}
-          >
-            <option value="cylinder">Cylinder</option>
-            <option value="cuboid">Cuboid</option>
-            <option value="direct_input">[Direct Input]</option>
-          </select>
-          <div
-            className={cn({
-              hidden: shape != "direct_input",
-            })}
-          >
-            <label className="label text-black">Reservoir - Volume</label>
-            <label
-              className={cn("input w-full", {
-                "input-error": directVolumeError != null,
-              })}
-            >
-              <input
-                ref={directVolumeRef}
-                className="text-right"
-                placeholder="0"
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{l}" />
-              </span>
-            </label>
-          </div>
-          <div
-            className={cn({
-              hidden: shape != "cylinder",
-            })}
-          >
-            <label className="label text-black">Reservoir - Diameter</label>
-            <label
-              className={cn("input w-full", {
-                "input-error": diameterError != null,
-              })}
-            >
-              <input
-                ref={diameterRef}
-                className="text-right"
-                placeholder="0"
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{m}" />
-              </span>
-            </label>
-          </div>
-          <div
-            className={cn({
-              hidden: shape != "cylinder" && shape != "cuboid",
-            })}
-          >
-            <label className="label text-black">Reservoir - Height</label>
-            <label
-              className={cn("input w-full", {
-                "input-error": heightError != null,
-              })}
-            >
-              <input
-                ref={heightRef}
-                className="text-right"
-                placeholder="0"
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{m}" />
-              </span>
-            </label>
-          </div>
-          <div
-            className={cn({
-              hidden: shape != "cuboid",
-            })}
-          >
-            <label className="label text-black">Reservoir - Width</label>
-            <label
-              className={cn("input w-full", {
-                "input-error": widthError != null,
-              })}
-            >
-              <input
-                ref={widthRef}
-                className="text-right"
-                placeholder="0"
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{m}" />
-              </span>
-            </label>
-            <label className="label text-black">Reservoir - Length</label>
-            <label
-              className={cn("input w-full", {
-                "input-error": lengthError != null,
-              })}
-            >
-              <input
-                ref={lengthRef}
-                className="text-right"
-                placeholder="0"
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{m}" />
-              </span>
-            </label>
-          </div>
-          <label className="label text-black">Nozzle - Inlet Diameter</label>
+          <label className="label text-black">Nozzle Inlet Diameter</label>
           <label
             className={cn("input w-full", {
               "input-error": nozzleInletDiameterError != null,
@@ -236,7 +88,7 @@ export const Reservoir = (props: ReservoirProps) => {
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Nozzle - Water Preasure</label>
+          <label className="label text-black">Nozzle Water Preasure</label>
           <label
             className={cn("input w-full", {
               "input-error": waterPreasureError != null,
@@ -251,7 +103,7 @@ export const Reservoir = (props: ReservoirProps) => {
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Nozzle - Number Open</label>
+          <label className="label text-black">Number Nozzle Open</label>
           <input
             ref={numberOpenNozzleRef}
             className={cn("input w-full text-right", {
@@ -259,7 +111,7 @@ export const Reservoir = (props: ReservoirProps) => {
             })}
             placeholder="0"
           />
-          <label className="label text-black">Nozzle - Open Duration</label>
+          <label className="label text-black">Open Duration</label>
           <select
             className="select w-full text-right"
             value={duration}
@@ -284,22 +136,8 @@ export const Reservoir = (props: ReservoirProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <div className={cn({ hidden: shape == "direct_input" })}>
-            <label className="label text-black">Reservoir - Volume</label>
-            <label className="input w-full">
-              <input
-                type="tel"
-                readOnly
-                className="text-right"
-                value={numberFormatter.format(volume)}
-              />
-              <span className="label text-black">
-                <InlineMath math="\mathrm{l}" />
-              </span>
-            </label>
-          </div>
           <label className="label text-black">
-            Nozzle - Water Flow per Nozzle
+            Water Flow per Nozzle
           </label>
           <label className="input w-full">
             <input
@@ -313,7 +151,7 @@ export const Reservoir = (props: ReservoirProps) => {
             </span>
           </label>
           <label className="label text-black">
-            Nozzle - Water Volume Needed for All Nozzle
+            Min Reservoir Capacity
           </label>
           <label className="input w-full">
             <input
@@ -323,7 +161,7 @@ export const Reservoir = (props: ReservoirProps) => {
               value={numberFormatter.format(waterFlow45MinAllNozzle)}
             />
             <span className="label text-black">
-              <InlineMath math={"\\mathrm{l}/" + duration + "\\mathrm{min}"} />
+              <InlineMath math="\mathrm{l}" />
             </span>
           </label>
         </fieldset>
