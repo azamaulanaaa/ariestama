@@ -10,5 +10,6 @@ export const DemoThickness: Story<ThicknessProps> = (props) => (
 );
 DemoThickness.storyName = "Thickness";
 DemoThickness.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
