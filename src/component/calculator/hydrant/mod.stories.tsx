@@ -1,8 +1,14 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { Hydrant } from "./mod.tsx";
+import { Reservoir, ReservoirProps } from "./reservoir.tsx";
 
 export default {
   title: "Component / Calculator / Hydrant",
 } as StoryDefault;
 
-export const Reservoir: Story = () => <Hydrant.Reservoir locale="id-ID" />;
+export const DemoReservoir: Story<ReservoirProps> = (props) => (
+  <Reservoir {...props} />
+);
+DemoReservoir.storyName = "Reservoir";
+DemoReservoir.args = {
+  locale: "id-ID",
+};
