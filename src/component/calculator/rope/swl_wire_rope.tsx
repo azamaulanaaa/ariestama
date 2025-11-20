@@ -8,16 +8,23 @@ import { InlineMath } from "react-katex";
 import { General, Rope } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
 
 const convert = configureMeasurements(allMeasures);
 
-const SwlWireRopePropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
 export type SwlWireRopeProps = {
-  locale?: string;
+  className?: string;
+  locale: string;
 };
+
+const SwlWireRopePropsSchema = z.object({
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<SwlWireRopeProps>;
 
 export const SwlWireRope = (props: SwlWireRopeProps) => {
   const zProps = SwlWireRopePropsSchema.parse(props);
@@ -69,100 +76,101 @@ export const SwlWireRope = (props: SwlWireRopeProps) => {
   }, [diameter, reavingNumber, grade]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Diameter</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": diameterError != null,
-          })}
-        >
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Rope - Swl Wire Rope</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Diameter</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": diameterError != null,
+            })}
+          >
+            <input
+              ref={diameterRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+          <label className="label text-black">Reaving</label>
           <input
-            ref={diameterRef}
-            className="text-right"
+            ref={reavingNumberRef}
+            className={cn("input w-full text-right", {
+              "input-error": reavingNumberError != null,
+            })}
             placeholder="0"
           />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Reaving</legend>
-        <input
-          ref={reavingNumberRef}
-          className={cn("input input-bordered w-full text-right", {
-            "input-error": reavingNumberError != null,
-          })}
-          placeholder="0"
-        />
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Grade</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={grade}
-          onChange={(e) => {
-            setGrade(parseFloat(e.target.value));
-          }}
-        >
-          <option value="1770">1770</option>
-        </select>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <div className="divider">Wire Rope Sling</div>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Safety Working Load (SWL)</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(swlSling)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{ton}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Breaking Strength</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(breakingStrenghSling)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{ton}" />
-          </span>
-        </label>
-      </fieldset>
-      <div className="divider">Running Wire Rope</div>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Safety Working Load (SWL)</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(swlRunning)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{ton}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+          <label className="label text-black">Grade</label>
+          <select
+            className="select w-full text-right"
+            value={grade}
+            onChange={(e) => {
+              setGrade(parseFloat(e.target.value));
+            }}
+          >
+            <option value="1770">1770</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <legend className="fieldset-legend">Result</legend>
+        <fieldset className="fieldset">
+          <label className="label text-black">
+            Wire Rope Sling - Safety Working Load (SWL)
+          </label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(swlSling)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{ton}" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Wire Rope Sling - Breaking Strength
+          </label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(breakingStrenghSling)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{ton}" />
+            </span>
+          </label>
+          <label className="label text-black">
+            Running Wire Rope - Safety Working Load (SWL)
+          </label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(swlRunning)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{ton}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
