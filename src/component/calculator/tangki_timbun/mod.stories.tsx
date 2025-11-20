@@ -1,8 +1,14 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { TangkiTimbun } from "./mod.tsx";
+import { Thickness, ThicknessProps } from "./thickness.tsx";
 
 export default {
   title: "Component / Calculator / Tangki Timbun",
 } as StoryDefault;
 
-export const Thickness: Story = () => <TangkiTimbun.Thickness locale="id-ID" />;
+export const DemoThickness: Story<ThicknessProps> = (props) => (
+  <Thickness {...props} />
+);
+DemoThickness.storyName = "Thickness";
+DemoThickness.args = {
+  locale: "id-ID",
+};
