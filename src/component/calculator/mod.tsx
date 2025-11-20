@@ -1,7 +1,6 @@
 import { forwardRef, ReactNode } from "react";
 import { z } from "zod";
 
-import { Girder } from "@/component/calculator/girder/mod.tsx";
 import { Hydrant } from "@/component/calculator/hydrant/mod.tsx";
 import { InstalasiPenyalurPetir } from "@/component/calculator/instalasi_penyalur_petir/mod.tsx";
 import { Lingkungan } from "@/component/calculator/lingkungan/mod.tsx";
@@ -12,7 +11,6 @@ type InnerCalculatorProps = { locale: string };
 type InnerCalculator = <T extends InnerCalculatorProps>(props: T) => ReactNode;
 
 export enum CalculatorKind {
-  Girder_Deflection = "Girder - Deflection",
   Hydrant_Reservoir = "Hydrant - Reservoir",
   InstalsiPenyalurPetir_RadiusConventional =
     "Instalasi Penyalur Petir - Radius Conventional",
@@ -22,7 +20,6 @@ export enum CalculatorKind {
 }
 
 const InnerCalculatorMap: Record<CalculatorKind, InnerCalculator> = {
-  [CalculatorKind.Girder_Deflection]: Girder.Deflection,
   [CalculatorKind.Hydrant_Reservoir]: Hydrant.Reservoir,
   [CalculatorKind.InstalsiPenyalurPetir_RadiusConventional]:
     InstalasiPenyalurPetir.RadiusConventional,
