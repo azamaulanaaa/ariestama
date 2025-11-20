@@ -1,8 +1,12 @@
 import { Story, StoryDefault } from "@ladle/react";
-import { General } from "./mod.tsx";
+import { Volume, VolumeProps } from "./volume.tsx";
 
 export default {
   title: "Component / Calculator / General",
 } as StoryDefault;
 
-export const Volume: Story = () => <General.Volume locale="id-ID" />;
+export const DemoVolume: Story<VolumeProps> = (props) => <Volume {...props} />;
+DemoVolume.storyName = "Volume";
+DemoVolume.args = {
+  locale: "id-ID",
+};
