@@ -13,5 +13,6 @@ export const DemoAnchorResultante: Story<AnchorResultanteProps> = (props) => (
 );
 DemoAnchorResultante.storyName = "Anchor Resultante";
 DemoAnchorResultante.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
