@@ -13,5 +13,6 @@ export const DemoRadiusConventional: Story<RadiusConvensionalProps> = (
 ) => <RadiusConventional {...props} />;
 DemoRadiusConventional.storyName = "Radius Conventional";
 DemoRadiusConventional.args = {
+  className: "max-w-100",
   locale: "id-ID",
 };
