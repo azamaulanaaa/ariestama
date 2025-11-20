@@ -6,12 +6,21 @@ import { InlineMath } from "react-katex";
 import { Chain } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
 import { useNumber } from "@/hook/useNumber.tsx";
+import {
+  CalculatorBody,
+  CalculatorRoot,
+  CalculatorTitle,
+} from "@/component/card/calculator/mod.tsx";
+
+export type SWLSlingProps = {
+  className?: string;
+  locale: string;
+};
 
 const SWLSlingPropsSchema = z.object({
-  locale: z.string().optional().default("en-US"),
-});
-
-export type SWLSlingProps = z.input<typeof SWLSlingPropsSchema>;
+  className: z.string().optional(),
+  locale: z.string(),
+}) as z.ZodType<SWLSlingProps>;
 
 export const SWLSling = (props: SWLSlingProps) => {
   const zProps = SWLSlingPropsSchema.parse(props);
@@ -39,61 +48,64 @@ export const SWLSling = (props: SWLSlingProps) => {
   }, [diameter, grade]);
 
   return (
-    <form>
-      <h2>Parameter</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Diameter</legend>
-        <label
-          className={cn("input input-bordered w-full", {
-            "input-error": diameterError != null,
-          })}
-        >
-          <input
-            ref={diameterRef}
-            className="text-right"
-            placeholder="0"
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{mm}" />
-          </span>
-        </label>
-      </fieldset>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Grade</legend>
-        <select
-          className="select select-bordered w-full text-right"
-          value={grade}
-          onChange={(e) => {
-            setGrade(parseInt(e.target.value));
-          }}
-        >
-          <option value="80">80</option>
-          <option value="100">100</option>
-        </select>
-      </fieldset>
-      <div className="divider">Note</div>
-      <textarea
-        className={cn("textarea textarea-bordered h-24 w-full", {
-          "textarea-error": edited,
-        })}
-        onClick={handleNoteClick}
-      >
-      </textarea>
-      <h2>Result</h2>
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">SWL</legend>
-        <label className="input input-bordered w-full">
-          <input
-            type="tel"
-            readOnly
-            className="text-right"
-            value={numberFormatter.format(swl)}
-          />
-          <span className="label">
-            <InlineMath math="\mathrm{ton}" />
-          </span>
-        </label>
-      </fieldset>
-    </form>
+    <CalculatorRoot className={zProps.className}>
+      <CalculatorTitle>Chain - SWL Sling</CalculatorTitle>
+      <CalculatorBody>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Parameter</legend>
+          <label className="label text-black">Diameter</label>
+          <label
+            className={cn("input w-full", {
+              "input-error": diameterError != null,
+            })}
+          >
+            <input
+              ref={diameterRef}
+              className="text-right"
+              placeholder="0"
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{mm}" />
+            </span>
+          </label>
+          <label className="label text-black">Grade</label>
+          <select
+            className="select w-full text-right"
+            value={grade}
+            onChange={(e) => {
+              setGrade(parseInt(e.target.value));
+            }}
+          >
+            <option value="80">80</option>
+            <option value="100">100</option>
+          </select>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Note</legend>
+          <textarea
+            className={cn("textarea h-24 w-full", {
+              "textarea-error": edited,
+            })}
+            onClick={handleNoteClick}
+          >
+          </textarea>
+        </fieldset>
+        <fieldset className="fieldset">
+          <legend className="fieldset-legend">Result</legend>
+          <label className="label text-black">Safety Working Load (SWL)</label>
+          <label className="input w-full">
+            <input
+              type="tel"
+              readOnly
+              className="text-right"
+              value={numberFormatter.format(swl)}
+            />
+            <span className="label text-black">
+              <InlineMath math="\mathrm{ton}" />
+            </span>
+          </label>
+        </fieldset>
+      </CalculatorBody>
+    </CalculatorRoot>
   );
 };
