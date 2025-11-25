@@ -19,100 +19,194 @@ import { LingkunganAnchorResultante } from "@/component/calculator/lingkungan/an
 import { RopeSWLWireRope } from "@/component/calculator/rope/swl_wire_rope.tsx";
 import { TangkiTimbunThickness } from "@/component/calculator/tangki_timbun/thickness.tsx";
 import { CalculatorLayout } from "@/page/calculator/layout.tsx";
+import { CalculatorEmbedLayout } from "@/page/calculator/embed/layout.tsx";
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="calculator" element={<CalculatorLayout />}>
-          <Route path="apar">
-            <Route
-              path="unit_count"
-              element={<APARUnitCount locale="id-ID" />}
-            />
+        <Route path="calculator">
+          <Route element={<CalculatorLayout />}>
+            <Route path="apar">
+              <Route
+                path="unit_count"
+                element={<APARUnitCount locale="id-ID" />}
+              />
+            </Route>
+            <Route path="bejana_tekan">
+              <Route
+                path="pipe_thickness"
+                element={<BejanaTekanPipeThickness locale="id-ID" />}
+              />
+            </Route>
+            <Route path="boiler">
+              <Route
+                path="drum_water_tube_thickness"
+                element={<BoilerDrumWaterTubeThickness locale="id-ID" />}
+              />
+              <Route
+                path="safety_valve_diameter"
+                element={<BoilerSafetyValveDiameter locale="id-ID" />}
+              />
+              <Route
+                path="shell_fire_tube_thickness"
+                element={<BoilerShellFireTubeThickness locale="id-ID" />}
+              />
+              <Route
+                path="pipe_thickness"
+                element={<BoilerPipeThickness locale="id-ID" />}
+              />
+              <Route
+                path="tube_hole_thickness"
+                element={<BoilerTubeHoleThickness locale="id-ID" />}
+              />
+            </Route>
+            <Route path="chain">
+              <Route
+                path="swl_block"
+                element={<ChainSWLBlock locale="id-ID" />}
+              />
+              <Route
+                path="swl_sling"
+                element={<ChainSWLSling locale="id-ID" />}
+              />
+            </Route>
+            <Route path="forklift">
+              <Route
+                path="swl_fork"
+                element={<ForkliftSWLFork locale="id-ID" />}
+              />
+            </Route>
+            <Route path="girder">
+              <Route
+                path="deflection"
+                element={<GirderDeflection locale="id-ID" />}
+              />
+            </Route>
+            <Route path="general">
+              <Route path="volume" element={<GeneralVolume locale="id-ID" />} />
+            </Route>
+            <Route path="hydrant">
+              <Route
+                path="reservoir_capacity"
+                element={<HydrantReservoirCapacity locale="id-ID" />}
+              />
+            </Route>
+            <Route path="ipp">
+              <Route
+                path="radius_conventional"
+                element={<IPPRadiusConventional locale="id-ID" />}
+              />
+            </Route>
+            <Route path="lingkungan">
+              <Route
+                path="anchor_resultante"
+                element={<LingkunganAnchorResultante locale="id-ID" />}
+              />
+            </Route>
+            <Route path="rope">
+              <Route
+                path="swl_wire_rope"
+                element={<RopeSWLWireRope locale="id-ID" />}
+              />
+            </Route>
+            <Route path="tangki_timbun">
+              <Route
+                path="thickness"
+                element={<TangkiTimbunThickness locale="id-ID" />}
+              />
+            </Route>
           </Route>
-          <Route path="bejana_tekan">
-            <Route
-              path="pipe_thickness"
-              element={<BejanaTekanPipeThickness locale="id-ID" />}
-            />
-          </Route>
-          <Route path="boiler">
-            <Route
-              path="drum_water_tube_thickness"
-              element={<BoilerDrumWaterTubeThickness locale="id-ID" />}
-            />
-            <Route
-              path="safety_valve_diameter"
-              element={<BoilerSafetyValveDiameter locale="id-ID" />}
-            />
-            <Route
-              path="shell_fire_tube_thickness"
-              element={<BoilerShellFireTubeThickness locale="id-ID" />}
-            />
-            <Route
-              path="pipe_thickness"
-              element={<BoilerPipeThickness locale="id-ID" />}
-            />
-            <Route
-              path="tube_hole_thickness"
-              element={<BoilerTubeHoleThickness locale="id-ID" />}
-            />
-          </Route>
-          <Route path="chain">
-            <Route
-              path="swl_block"
-              element={<ChainSWLBlock locale="id-ID" />}
-            />
-            <Route
-              path="swl_sling"
-              element={<ChainSWLSling locale="id-ID" />}
-            />
-          </Route>
-          <Route path="forklift">
-            <Route
-              path="swl_fork"
-              element={<ForkliftSWLFork locale="id-ID" />}
-            />
-          </Route>
-          <Route path="girder">
-            <Route
-              path="deflection"
-              element={<GirderDeflection locale="id-ID" />}
-            />
-          </Route>
-          <Route path="general">
-            <Route path="volume" element={<GeneralVolume locale="id-ID" />} />
-          </Route>
-          <Route path="hydrant">
-            <Route
-              path="reservoir_capacity"
-              element={<HydrantReservoirCapacity locale="id-ID" />}
-            />
-          </Route>
-          <Route path="ipp">
-            <Route
-              path="radius_conventional"
-              element={<IPPRadiusConventional locale="id-ID" />}
-            />
-          </Route>
-          <Route path="lingkungan">
-            <Route
-              path="anchor_resultante"
-              element={<LingkunganAnchorResultante locale="id-ID" />}
-            />
-          </Route>
-          <Route path="rope">
-            <Route
-              path="swl_wire_rope"
-              element={<RopeSWLWireRope locale="id-ID" />}
-            />
-          </Route>
-          <Route path="tangki_timbun">
-            <Route
-              path="thickness"
-              element={<TangkiTimbunThickness locale="id-ID" />}
-            />
+          <Route path="embed" element={<CalculatorEmbedLayout />}>
+            <Route path="apar">
+              <Route
+                path="unit_count"
+                element={<APARUnitCount locale="id-ID" />}
+              />
+            </Route>
+            <Route path="bejana_tekan">
+              <Route
+                path="pipe_thickness"
+                element={<BejanaTekanPipeThickness locale="id-ID" />}
+              />
+            </Route>
+            <Route path="boiler">
+              <Route
+                path="drum_water_tube_thickness"
+                element={<BoilerDrumWaterTubeThickness locale="id-ID" />}
+              />
+              <Route
+                path="safety_valve_diameter"
+                element={<BoilerSafetyValveDiameter locale="id-ID" />}
+              />
+              <Route
+                path="shell_fire_tube_thickness"
+                element={<BoilerShellFireTubeThickness locale="id-ID" />}
+              />
+              <Route
+                path="pipe_thickness"
+                element={<BoilerPipeThickness locale="id-ID" />}
+              />
+              <Route
+                path="tube_hole_thickness"
+                element={<BoilerTubeHoleThickness locale="id-ID" />}
+              />
+            </Route>
+            <Route path="chain">
+              <Route
+                path="swl_block"
+                element={<ChainSWLBlock locale="id-ID" />}
+              />
+              <Route
+                path="swl_sling"
+                element={<ChainSWLSling locale="id-ID" />}
+              />
+            </Route>
+            <Route path="forklift">
+              <Route
+                path="swl_fork"
+                element={<ForkliftSWLFork locale="id-ID" />}
+              />
+            </Route>
+            <Route path="girder">
+              <Route
+                path="deflection"
+                element={<GirderDeflection locale="id-ID" />}
+              />
+            </Route>
+            <Route path="general">
+              <Route path="volume" element={<GeneralVolume locale="id-ID" />} />
+            </Route>
+            <Route path="hydrant">
+              <Route
+                path="reservoir_capacity"
+                element={<HydrantReservoirCapacity locale="id-ID" />}
+              />
+            </Route>
+            <Route path="ipp">
+              <Route
+                path="radius_conventional"
+                element={<IPPRadiusConventional locale="id-ID" />}
+              />
+            </Route>
+            <Route path="lingkungan">
+              <Route
+                path="anchor_resultante"
+                element={<LingkunganAnchorResultante locale="id-ID" />}
+              />
+            </Route>
+            <Route path="rope">
+              <Route
+                path="swl_wire_rope"
+                element={<RopeSWLWireRope locale="id-ID" />}
+              />
+            </Route>
+            <Route path="tangki_timbun">
+              <Route
+                path="thickness"
+                element={<TangkiTimbunThickness locale="id-ID" />}
+              />
+            </Route>
           </Route>
         </Route>
       </Routes>
