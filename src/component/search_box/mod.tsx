@@ -19,14 +19,14 @@ export type SearchBoxData<
 };
 
 export type SearchBoxProps = {
-  classNames?: string;
+  className?: string;
   placeHolder?: string;
   items: Array<SearchBoxData>;
   onTitleClick: (title: string) => void;
 };
 
 export const SearchBoxPropsSchema = z.object({
-  classNames: z.string().optional(),
+  className: z.string().optional(),
   placeHolder: z.string().optional(),
   items: z.array(z.object({
     title: z.string(),
@@ -76,7 +76,7 @@ export function SearchBox(props: SearchBoxProps) {
   };
 
   return (
-    <div className={cn("dropdown", zProps.classNames)}>
+    <div className={cn("dropdown", zProps.className)}>
       <label className="input w-full">
         <input
           type="text"

@@ -10,7 +10,7 @@ export const Demo: Story<SearchBoxProps> = (props) => {
 };
 Demo.storyName = "Search Box";
 Demo.args = {
-  classNames: "w-100",
+  className: "w-100",
   placeHolder: "Search for person",
   items: [
     { title: "Antoni Yoshua", keywords: ["wrestler"] },
