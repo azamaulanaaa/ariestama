@@ -27,6 +27,7 @@ export function App() {
       <Routes>
         <Route path="calculator">
           <Route element={<CalculatorLayout />}>
+            <Route index element={<GeneralVolume locale="id-ID" />} />
             <Route path="apar">
               <Route
                 path="unit_count"
