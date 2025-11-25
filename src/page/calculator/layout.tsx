@@ -98,7 +98,7 @@ export const CalculatorLayout = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
+    <div className="flex flex-col gap-2 p-2 mx-auto max-w-[500px]">
       <div className="card bg-base-100 shadow-sm">
         <div className="card-body">
           <button type="button" className="btn" onClick={handleMenuClick}>
