@@ -1,17 +1,87 @@
-import { useEffect } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router";
 
 import { useShareAsImage } from "@/hook/useShareAsImage.tsx";
+import {
+  NaviationMenu,
+  NavigationMenuItem,
+} from "@/component/navigation_menu/mod.tsx";
+
+const NAVIGATION_MENU_ITEMS: Array<NavigationMenuItem> = [
+  { href: "apar/unit_count", value: "Alat Pemadam Api Ringan - Unit Count" },
+  {
+    href: "bejana_tekan/pipe_thickness",
+    value: "Bejana Tekan - Pipe Thickness",
+  },
+  {
+    href: "boiler/drum_water_tube_thickness",
+    value: "Boiler - Drum Water Tube Thickness",
+  },
+  { href: "boiler/pipe_thickness", value: "Boiler - Pipe Thickness" },
+  {
+    href: "boiler/safety_valve_diameter",
+    value: "Boiler - Safety Valve Diameter",
+  },
+  {
+    href: "boiler/shell_fire_tube_thickness",
+    value: "Boiler - Shell Fire Tube Thickness",
+  },
+  { href: "boiler/tube_hole_thickness", value: "Boiler - Tube Hole Thickness" },
+  { href: "chain/swl_block", value: "Chain - SWL Block" },
+  { href: "chain/swl_sling", value: "Chain - SWL Sling" },
+  { href: "forklift/swl_fork", value: "Forklift - SWL Fork" },
+  { href: "general/volume", value: "General - Volume" },
+  { href: "girder/deflection", value: "Girder - Deflection" },
+  { href: "hydrant/reservoir_capacity", value: "Hydrant - Reservoir Capacity" },
+  {
+    href: "ipp/radius_conventional",
+    value: "Instalasi Penyalur Petir - Radius Conventional",
+  },
+  {
+    href: "lingkungan/anchor_resultante",
+    value: "Lingkungan - Anchor Resultante",
+  },
+  { href: "rope/swl_wire_rope", value: "Rope - SWL Wire Rope" },
+  {
+    href: "tangki_timbun/thickness",
+    value: "Tangki Timbun - Thickness",
+  },
+];
 
 export const CalculatorLayout = () => {
   const [shareRef, share] = useShareAsImage();
+  const menuModalRef = useRef(null);
 
   useEffect(() => {
     document.title = "Calculator - Safety";
   }, []);
 
+  const handleMenuClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+
+    if (menuModalRef.current != null) {
+      const menuModal = menuModalRef.current as HTMLDialogElement;
+      menuModal.showModal();
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
+      <div className="card bg-base-100 shadow-sm">
+        <div className="card-body">
+          <button type="button" className="btn" onClick={handleMenuClick}>
+            Menu
+          </button>
+          <dialog ref={menuModalRef} className="modal">
+            <div className="modal-box">
+              <NaviationMenu className="w-full" items={NAVIGATION_MENU_ITEMS} />
+            </div>
+            <form method="dialog" className="modal-backdrop">
+              <button type="submit">Close</button>
+            </form>
+          </dialog>
+        </div>
+      </div>
       <div ref={shareRef}>
         <Outlet />
       </div>
