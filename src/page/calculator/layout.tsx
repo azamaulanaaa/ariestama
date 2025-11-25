@@ -95,6 +95,8 @@ export const CalculatorLayout = () => {
       const menuModal = menuModalRef.current as HTMLDialogElement;
       menuModal.close();
     }
+
+    setMenuQuery("");
   };
 
   return (
