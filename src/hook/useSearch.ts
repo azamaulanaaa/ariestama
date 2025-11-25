@@ -31,6 +31,10 @@ export function useSearch<I extends SearchItem>(
   );
 
   const filteredItem = useMemo(() => {
+    if (query.length == 0) {
+      return zProps.items;
+    }
+
     const result = fuse.search(query);
     const filteredItem = result.map((value) => value.item);
 
