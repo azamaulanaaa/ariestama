@@ -1,4 +1,10 @@
-import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Outlet } from "react-router";
 
 import { useShareAsImage } from "@/hook/useShareAsImage.ts";
@@ -6,6 +12,7 @@ import {
   NaviationMenu,
   NavigationMenuItem,
 } from "@/component/navigation_menu/mod.tsx";
+import { useSearch } from "../../hook/useSearch.ts";
 
 const NAVIGATION_MENU_ITEMS: Array<NavigationMenuItem> = [
   { href: "apar/unit_count", value: "Alat Pemadam Api Ringan - Unit Count" },
@@ -51,6 +58,14 @@ const NAVIGATION_MENU_ITEMS: Array<NavigationMenuItem> = [
 export const CalculatorLayout = () => {
   const [shareRef, share] = useShareAsImage();
   const menuModalRef = useRef(null);
+  const [menuQuery, setMenuQuery] = useState("");
+  const filteredItem = useSearch(
+    menuQuery,
+    NAVIGATION_MENU_ITEMS.map((value) => ({
+      keywords: [value.value],
+      ...value,
+    })),
+  );
 
   useEffect(() => {
     document.title = "Calculator - Safety";
@@ -65,6 +80,14 @@ export const CalculatorLayout = () => {
     }
   };
 
+  const handleMenuQueryChange: ChangeEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    const target = event.target as HTMLInputElement;
+
+    setMenuQuery(target.value);
+  };
+
   return (
     <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
       <div className="card bg-base-100 shadow-sm">
@@ -73,8 +96,15 @@ export const CalculatorLayout = () => {
             Menu
           </button>
           <dialog ref={menuModalRef} className="modal">
-            <div className="modal-box">
-              <NaviationMenu className="w-full" items={NAVIGATION_MENU_ITEMS} />
+            <div className="modal-box flex flex-col gap-2">
+              <label className="input w-full shrink-0">
+                <input
+                  type="text"
+                  value={menuQuery}
+                  onChange={handleMenuQueryChange}
+                />
+              </label>
+              <NaviationMenu className="w-full" items={filteredItem} />
             </div>
             <form method="dialog" className="modal-backdrop">
               <button type="submit">Close</button>
