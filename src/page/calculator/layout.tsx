@@ -88,6 +88,15 @@ export const CalculatorLayout = () => {
     setMenuQuery(target.value);
   };
 
+  const handleNavigationMenuClick: MouseEventHandler<HTMLDivElement> = (
+    _event,
+  ) => {
+    if (menuModalRef.current != null) {
+      const menuModal = menuModalRef.current as HTMLDialogElement;
+      menuModal.close();
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
       <div className="card bg-base-100 shadow-sm">
@@ -104,10 +113,12 @@ export const CalculatorLayout = () => {
                   onChange={handleMenuQueryChange}
                 />
               </label>
-              <NaviationMenu
-                className="w-full flex-nowrap overflow-y-auto"
-                items={filteredItem}
-              />
+              <div onClick={handleNavigationMenuClick}>
+                <NaviationMenu
+                  className="w-full flex-nowrap overflow-y-auto"
+                  items={filteredItem}
+                />
+              </div>
             </div>
             <form method="dialog" className="modal-backdrop">
               <button type="submit">Close</button>
