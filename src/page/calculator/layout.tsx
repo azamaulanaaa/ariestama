@@ -104,7 +104,10 @@ export const CalculatorLayout = () => {
                   onChange={handleMenuQueryChange}
                 />
               </label>
-              <NaviationMenu className="w-full" items={filteredItem} />
+              <NaviationMenu
+                className="w-full flex-nowrap overflow-y-auto"
+                items={filteredItem}
+              />
             </div>
             <form method="dialog" className="modal-backdrop">
               <button type="submit">Close</button>
