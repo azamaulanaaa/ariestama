@@ -84,7 +84,9 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Kapasitas (A)</label>
+          <label className="label text-black dark:text-white">
+            Kapasitas (A)
+          </label>
           <label
             className={cn("input input-bordered w-full", {
               "input-error": capacityError != null,
@@ -95,11 +97,11 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kg}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Jarak COG ke Muka Fork (B)
           </label>
           <label
@@ -112,11 +114,13 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{cm}" />
             </span>
           </label>
-          <label className="label text-black">Load Center Fork</label>
+          <label className="label text-black dark:text-white">
+            Load Center Fork
+          </label>
           <select
             className="select select-bordered w-full text-right"
             value={loadCenterFork}
@@ -127,7 +131,9 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
             <option value="55">55 cm</option>
             <option value="60">60 cm</option>
           </select>
-          <label className="label text-black">Berat Beban Uji (D)</label>
+          <label className="label text-black dark:text-white">
+            Berat Beban Uji (D)
+          </label>
           <label
             className={cn("input input-bordered w-full", {
               "input-error": weightError != null,
@@ -138,11 +144,13 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kg}" />
             </span>
           </label>
-          <label className="label text-black">Load Center Beban (E)</label>
+          <label className="label text-black dark:text-white">
+            Load Center Beban (E)
+          </label>
           <label
             className={cn("input input-bordered w-full", {
               "input-error": loadCenterWeightError != null,
@@ -153,7 +161,7 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{cm}" />
             </span>
           </label>
@@ -170,7 +178,7 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">SWL Fork</label>
+          <label className="label text-black dark:text-white">SWL Fork</label>
           <label className="input input-bordered w-full">
             <input
               type="tel"
@@ -178,11 +186,11 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               value={numberFormatter.format(swl)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kg}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Load Center ketika 100% SWL
           </label>
           <label className="input input-bordered w-full">
@@ -192,11 +200,13 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               value={numberFormatter.format(maxLoadCenterWeight)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{cm}" />
             </span>
           </label>
-          <label className="label text-black">Nilai Pengujian</label>
+          <label className="label text-black dark:text-white">
+            Nilai Pengujian
+          </label>
           <label className="input input-bordered w-full">
             <input
               type="tel"
@@ -204,7 +214,7 @@ export const ForkliftSWLFork = (props: ForkliftSWLForkProps) => {
               className="text-right"
               value={numberFormatter.format(weightPercentToSwl)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               % SWL
             </span>
           </label>

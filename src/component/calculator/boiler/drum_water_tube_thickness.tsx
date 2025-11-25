@@ -103,7 +103,9 @@ export const BoilerDrumWaterTubeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Tube Holes - Pitch</label>
+          <label className="label text-black dark:text-white">
+            Tube Holes - Pitch
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": pitchHoleError != null,
@@ -114,11 +116,11 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Tube Holes - Inner Diameter
           </label>
           <label
@@ -131,11 +133,13 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Drum - Pressure</label>
+          <label className="label text-black dark:text-white">
+            Drum - Pressure
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": pressureError != null,
@@ -146,11 +150,11 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Drum - Allowable Tensile Stress of The Material
           </label>
           <label
@@ -163,11 +167,13 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Drum - Steam Temperature</label>
+          <label className="label text-black dark:text-white">
+            Drum - Steam Temperature
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": temperatureError != null,
@@ -178,11 +184,13 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\degree\mathrm{C}" />
             </span>
           </label>
-          <label className="label text-black">Drum - Material Kind</label>
+          <label className="label text-black dark:text-white">
+            Drum - Material Kind
+          </label>
           <select
             className="select w-full"
             value={type}
@@ -193,7 +201,9 @@ export const BoilerDrumWaterTubeThickness = (
             <option value="ferritic_steel">Ferritic Steel</option>
             <option value="austenitic_steel">Austenitic Steel</option>
           </select>
-          <label className="label text-black">Drum - Diameter</label>
+          <label className="label text-black dark:text-white">
+            Drum - Diameter
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": diameterError != null,
@@ -204,11 +214,13 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Drum - Diameter Kind</label>
+          <label className="label text-black dark:text-white">
+            Drum - Diameter Kind
+          </label>
           <select className="select select-bordered w-full text-right">
             <option>Inner</option>
             <option>Outter</option>
@@ -226,7 +238,7 @@ export const BoilerDrumWaterTubeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Tube Holes - Efficiency of Ligament
           </label>
           <label className="input input-bordered w-full">
@@ -236,11 +248,13 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               value={numberFormatter.format(efficiencyHole)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Drum - Minimum Thickness</label>
+          <label className="label text-black dark:text-white">
+            Drum - Minimum Thickness
+          </label>
           <label className="input input-bordered w-full">
             <input
               type="tel"
@@ -248,7 +262,7 @@ export const BoilerDrumWaterTubeThickness = (
               className="text-right"
               value={numberFormatter.format(minDrumWaterTubeThickness)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

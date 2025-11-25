@@ -143,7 +143,7 @@ export const BoilerShellFireTubeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Pressure</label>
+          <label className="label text-black dark:text-white">Pressure</label>
           <label
             className={cn("input w-full", {
               "input-error": pressureError != null,
@@ -154,11 +154,13 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Weld Joint Efficiency</label>
+          <label className="label text-black dark:text-white">
+            Weld Joint Efficiency
+          </label>
           <input
             ref={weldJointEfficiencyRef}
             className={cn("input w-full text-right", {
@@ -166,7 +168,9 @@ export const BoilerShellFireTubeThickness = (
             })}
             placeholder="0"
           />
-          <label className="label text-black">Shell Reduction Factor</label>
+          <label className="label text-black dark:text-white">
+            Shell Reduction Factor
+          </label>
           <input
             ref={shellReductionFactorRef}
             className={cn("input w-full text-right", {
@@ -174,7 +178,7 @@ export const BoilerShellFireTubeThickness = (
             })}
             placeholder="0"
           />
-          <label className="label text-black">Constant C</label>
+          <label className="label text-black dark:text-white">Constant C</label>
           <input
             ref={constantCRef}
             className={cn("input w-full text-right", {
@@ -182,7 +186,9 @@ export const BoilerShellFireTubeThickness = (
             })}
             placeholder="0"
           />
-          <label className="label text-black">Temperature</label>
+          <label className="label text-black dark:text-white">
+            Temperature
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": temperatureError != null,
@@ -193,11 +199,13 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\degree\mathrm{C}" />
             </span>
           </label>
-          <label className="label text-black">Yield Strength</label>
+          <label className="label text-black dark:text-white">
+            Yield Strength
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": yieldStrengthError != null,
@@ -208,11 +216,13 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Corrosion Allowance</label>
+          <label className="label text-black dark:text-white">
+            Corrosion Allowance
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": corrosionAllowanceError != null,
@@ -223,11 +233,11 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Diameter
           </label>
           <label
@@ -240,11 +250,13 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Diameter Type</label>
+          <label className="label text-black dark:text-white">
+            Diameter Type
+          </label>
           <select className="select w-full text-right">
             <option>Inner</option>
             <option>Outter</option>
@@ -262,7 +274,9 @@ export const BoilerShellFireTubeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Minimum Thickness</label>
+          <label className="label text-black dark:text-white">
+            Minimum Thickness
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -270,7 +284,7 @@ export const BoilerShellFireTubeThickness = (
               className="text-right"
               value={numberFormatter.format(minShellFireTubeThickness)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

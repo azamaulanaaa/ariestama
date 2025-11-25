@@ -74,7 +74,7 @@ export const BoilerTubeHoleThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Pressure</label>
+          <label className="label text-black dark:text-white">Pressure</label>
           <label
             className={cn("input w-full", {
               "input-error": pressureError != null,
@@ -85,11 +85,11 @@ export const BoilerTubeHoleThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Allowable Tensile Stress of The Material
           </label>
           <label
@@ -102,11 +102,13 @@ export const BoilerTubeHoleThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Outter Diameter</label>
+          <label className="label text-black dark:text-white">
+            Outter Diameter
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": outterDiameterHoleError != null,
@@ -117,7 +119,7 @@ export const BoilerTubeHoleThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
@@ -134,7 +136,9 @@ export const BoilerTubeHoleThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Minimum Thickness</label>
+          <label className="label text-black dark:text-white">
+            Minimum Thickness
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -142,7 +146,7 @@ export const BoilerTubeHoleThickness = (
               className="text-right"
               value={numberFormatter.format(minTubeHoleThickness)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

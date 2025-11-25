@@ -75,7 +75,9 @@ export const HydrantReservoirCapacity = (
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Nozzle Inlet Diameter</label>
+          <label className="label text-black dark:text-white">
+            Nozzle Inlet Diameter
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": nozzleInletDiameterError != null,
@@ -86,11 +88,13 @@ export const HydrantReservoirCapacity = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Nozzle Water Preasure</label>
+          <label className="label text-black dark:text-white">
+            Nozzle Water Preasure
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": waterPreasureError != null,
@@ -101,11 +105,13 @@ export const HydrantReservoirCapacity = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Number Nozzle Open</label>
+          <label className="label text-black dark:text-white">
+            Number Nozzle Open
+          </label>
           <input
             ref={numberOpenNozzleRef}
             className={cn("input w-full text-right", {
@@ -113,7 +119,9 @@ export const HydrantReservoirCapacity = (
             })}
             placeholder="0"
           />
-          <label className="label text-black">Open Duration</label>
+          <label className="label text-black dark:text-white">
+            Open Duration
+          </label>
           <select
             className="select w-full text-right"
             value={duration}
@@ -138,7 +146,7 @@ export const HydrantReservoirCapacity = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Water Flow per Nozzle
           </label>
           <label className="input w-full">
@@ -148,11 +156,11 @@ export const HydrantReservoirCapacity = (
               className="text-right"
               value={numberFormatter.format(waterFlow)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{l}/\mathrm{min}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Min Reservoir Capacity
           </label>
           <label className="input w-full">
@@ -162,7 +170,7 @@ export const HydrantReservoirCapacity = (
               className="text-right"
               value={numberFormatter.format(waterFlow45MinAllNozzle)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{l}" />
             </span>
           </label>

@@ -53,7 +53,7 @@ export const ChainSWLSling = (props: ChainSWLSlingProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Diameter</label>
+          <label className="label text-black dark:text-white">Diameter</label>
           <label
             className={cn("input w-full", {
               "input-error": diameterError != null,
@@ -64,11 +64,11 @@ export const ChainSWLSling = (props: ChainSWLSlingProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Grade</label>
+          <label className="label text-black dark:text-white">Grade</label>
           <select
             className="select w-full text-right"
             value={grade}
@@ -92,7 +92,9 @@ export const ChainSWLSling = (props: ChainSWLSlingProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Safety Working Load (SWL)</label>
+          <label className="label text-black dark:text-white">
+            Safety Working Load (SWL)
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -100,7 +102,7 @@ export const ChainSWLSling = (props: ChainSWLSlingProps) => {
               className="text-right"
               value={numberFormatter.format(swl)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{ton}" />
             </span>
           </label>

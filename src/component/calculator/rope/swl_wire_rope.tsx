@@ -81,7 +81,7 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Diameter</label>
+          <label className="label text-black dark:text-white">Diameter</label>
           <label
             className={cn("input w-full", {
               "input-error": diameterError != null,
@@ -92,11 +92,11 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Reaving</label>
+          <label className="label text-black dark:text-white">Reaving</label>
           <input
             ref={reavingNumberRef}
             className={cn("input w-full text-right", {
@@ -104,7 +104,7 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
             })}
             placeholder="0"
           />
-          <label className="label text-black">Grade</label>
+          <label className="label text-black dark:text-white">Grade</label>
           <select
             className="select w-full text-right"
             value={grade}
@@ -127,7 +127,7 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
         </fieldset>
         <legend className="fieldset-legend">Result</legend>
         <fieldset className="fieldset">
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Wire Rope Sling - Safety Working Load (SWL)
           </label>
           <label className="input w-full">
@@ -137,11 +137,11 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
               className="text-right"
               value={numberFormatter.format(swlSling)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{ton}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Wire Rope Sling - Breaking Strength
           </label>
           <label className="input w-full">
@@ -151,11 +151,11 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
               className="text-right"
               value={numberFormatter.format(breakingStrenghSling)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{ton}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Running Wire Rope - Safety Working Load (SWL)
           </label>
           <label className="input w-full">
@@ -165,7 +165,7 @@ export const RopeSWLWireRope = (props: RopeSWLWireRopeProps) => {
               className="text-right"
               value={numberFormatter.format(swlRunning)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{ton}" />
             </span>
           </label>

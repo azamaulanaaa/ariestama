@@ -57,7 +57,7 @@ export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Diameter</label>
+          <label className="label text-black dark:text-white">Diameter</label>
           <label
             className={cn("input w-full", {
               "input-error": diameterError != null,
@@ -68,11 +68,13 @@ export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
-          <label className="label text-black">Reaving Number</label>
+          <label className="label text-black dark:text-white">
+            Reaving Number
+          </label>
           <input
             ref={reavingNumberRef}
             className={cn("input w-full text-right", {
@@ -80,7 +82,7 @@ export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
             })}
             placeholder="0"
           />
-          <label className="label text-black">Grade</label>
+          <label className="label text-black dark:text-white">Grade</label>
           <select
             className="select w-full text-right"
             value={grade}
@@ -104,7 +106,9 @@ export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Safety Working Load (SWL)</label>
+          <label className="label text-black dark:text-white">
+            Safety Working Load (SWL)
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -112,7 +116,7 @@ export const ChainSWLBlock = (props: ChainSWLBlockProps) => {
               className="text-right"
               value={numberFormatter.format(swl)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{ton}" />
             </span>
           </label>

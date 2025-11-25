@@ -55,7 +55,7 @@ export const IPPRadiusConventional = (props: IPPRadiusConvensionalProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Height</label>
+          <label className="label text-black dark:text-white">Height</label>
           <label
             className={cn("input w-full", {
               "input-error": heightError != null,
@@ -66,7 +66,7 @@ export const IPPRadiusConventional = (props: IPPRadiusConvensionalProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}" />
             </span>
           </label>
@@ -83,7 +83,7 @@ export const IPPRadiusConventional = (props: IPPRadiusConvensionalProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Radius</label>
+          <label className="label text-black dark:text-white">Radius</label>
           <label className="input w-full">
             <input
               type="tel"
@@ -91,7 +91,7 @@ export const IPPRadiusConventional = (props: IPPRadiusConvensionalProps) => {
               className="text-right"
               value={numberFormatter.format(radiusKonvensional)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}" />
             </span>
           </label>

@@ -56,7 +56,7 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Type</label>
+          <label className="label text-black dark:text-white">Type</label>
           <select
             className="select w-full text-right"
             value={typee}
@@ -67,7 +67,9 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
             <option value="single">Single</option>
             <option value="double">Double</option>
           </select>
-          <label className="label text-black">Length of Span</label>
+          <label className="label text-black dark:text-white">
+            Length of Span
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": lengthOfSpanError != null,
@@ -78,7 +80,7 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
@@ -95,7 +97,9 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Max Deflection</label>
+          <label className="label text-black dark:text-white">
+            Max Deflection
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -103,7 +107,7 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
               className="text-right"
               value={numberFormatter.format(deflection)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

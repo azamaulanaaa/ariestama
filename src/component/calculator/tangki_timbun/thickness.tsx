@@ -99,7 +99,7 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Diameter</label>
+          <label className="label text-black dark:text-white">Diameter</label>
           <label
             className={cn("input w-full", {
               "input-error": diameterError != null,
@@ -110,16 +110,20 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}" />
             </span>
           </label>
-          <label className="label text-black">Diameter Type</label>
+          <label className="label text-black dark:text-white">
+            Diameter Type
+          </label>
           <select className="select w-full text-right">
             <option>Inner</option>
             <option>Outter</option>
           </select>
-          <label className="label text-black">Design Liquid Level</label>
+          <label className="label text-black dark:text-white">
+            Design Liquid Level
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": designLiquidLevelError != null,
@@ -130,11 +134,11 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Design Specific Gravity Liquid
           </label>
           <input
@@ -144,7 +148,9 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
             })}
             placeholder="0"
           />
-          <label className="label text-black">Allowable Stress</label>
+          <label className="label text-black dark:text-white">
+            Allowable Stress
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": allowableStressError != null,
@@ -155,11 +161,13 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{MPa}" />
             </span>
           </label>
-          <label className="label text-black">Corrosion Allowance</label>
+          <label className="label text-black dark:text-white">
+            Corrosion Allowance
+          </label>
           <label
             className={cn("input w-full", {
               "input-error": corrosionAllowableError != null,
@@ -170,7 +178,7 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>
@@ -187,7 +195,9 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Minimum Required Thickness</label>
+          <label className="label text-black dark:text-white">
+            Minimum Required Thickness
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -195,7 +205,7 @@ export const TangkiTimbunThickness = (props: TangkiTimbunThicknessProps) => {
               className="text-right"
               value={numberFormatter.format(minimum_required_thickness)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

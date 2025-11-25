@@ -69,7 +69,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Shape</label>
+          <label className="label text-black dark:text-white">Shape</label>
           <select
             className="select w-full text-right"
             value={shape}
@@ -85,7 +85,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
               hidden: shape != "cylinder",
             })}
           >
-            <label className="label text-black">Diameter</label>
+            <label className="label text-black dark:text-white">Diameter</label>
             <label
               className={cn("input w-full", {
                 "input-error": diameterError != null,
@@ -96,12 +96,12 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
           </div>
-          <label className="label text-black">Height</label>
+          <label className="label text-black dark:text-white">Height</label>
           <label
             className={cn("input w-full", {
               "input-error": heightError != null,
@@ -112,7 +112,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}" />
             </span>
           </label>
@@ -121,7 +121,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
               hidden: shape != "cuboid",
             })}
           >
-            <label className="label text-black">Width</label>
+            <label className="label text-black dark:text-white">Width</label>
             <label
               className={cn("input w-full", {
                 "input-error": widthError != null,
@@ -132,11 +132,11 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
-            <label className="label text-black">Length</label>
+            <label className="label text-black dark:text-white">Length</label>
             <label
               className={cn("input w-full", {
                 "input-error": lengthError != null,
@@ -147,7 +147,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
@@ -165,7 +165,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Volume</label>
+          <label className="label text-black dark:text-white">Volume</label>
           <label className="input w-full">
             <input
               type="tel"
@@ -173,7 +173,7 @@ export const GeneralVolume = (props: GeneralVolumeProps) => {
               className="text-right"
               value={numberFormatter.format(volume)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{m}^3" />
             </span>
           </label>

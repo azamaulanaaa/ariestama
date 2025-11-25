@@ -143,7 +143,7 @@ export const BejanaTekanPipeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Maximum Allowable Working Preasure
           </label>
           <label
@@ -156,11 +156,11 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{psig}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Outer Diameter
           </label>
           <label
@@ -173,11 +173,11 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{inch}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Maximum Allowable Stress Relative to Weld Joint Efficiency Factor
           </label>
           <label
@@ -191,11 +191,11 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{psi}" />
             </span>
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Weld Strength Reduction Factor
           </label>
           <label
@@ -209,7 +209,7 @@ export const BejanaTekanPipeThickness = (
               placeholder="0"
             />
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Coefficient
           </label>
           <label
@@ -223,7 +223,7 @@ export const BejanaTekanPipeThickness = (
               placeholder="0"
             />
           </label>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Additional Thickness
           </label>
           <label
@@ -236,7 +236,7 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{inch}" />
             </span>
           </label>
@@ -253,7 +253,9 @@ export const BejanaTekanPipeThickness = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Minimum Thickness</label>
+          <label className="label text-black dark:text-white">
+            Minimum Thickness
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -261,7 +263,7 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               value={numberFormatter.format(minPipeThickness)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{inch}" />
             </span>
           </label>
@@ -272,7 +274,7 @@ export const BejanaTekanPipeThickness = (
               className="text-right"
               value={numberFormatter.format(minPipeThickness_mm)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

@@ -56,7 +56,7 @@ export const LingkunganAnchorResultante = (
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Alpha</label>
+          <label className="label text-black dark:text-white">Alpha</label>
           <label
             className={cn("input w-full", {
               "input-error": alphaError != null,
@@ -67,11 +67,11 @@ export const LingkunganAnchorResultante = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{degree}" />
             </span>
           </label>
-          <label className="label text-black">Mass</label>
+          <label className="label text-black dark:text-white">Mass</label>
           <label
             className={cn("input w-full", {
               "input-error": massError != null,
@@ -82,7 +82,7 @@ export const LingkunganAnchorResultante = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kg}" />
             </span>
           </label>
@@ -99,7 +99,7 @@ export const LingkunganAnchorResultante = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
-          <label className="label text-black">Resultante</label>
+          <label className="label text-black dark:text-white">Resultante</label>
           <label className="input w-full">
             <input
               type="tel"
@@ -107,7 +107,7 @@ export const LingkunganAnchorResultante = (
               className="text-right"
               value={numberFormatter.format(resultante)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kg}" />
             </span>
           </label>

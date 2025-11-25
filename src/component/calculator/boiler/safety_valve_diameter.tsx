@@ -92,7 +92,7 @@ export const BoilerSafetyValveDiameter = (
         </fieldset>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">Pressure</label>
+          <label className="label text-black dark:text-white">Pressure</label>
           <label
             className={cn("input w-full", {
               "input-error": pressureError != null,
@@ -103,11 +103,13 @@ export const BoilerSafetyValveDiameter = (
               className="text-right"
               placeholder="0"
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{kgf}/\mathrm{cm}^2" />
             </span>
           </label>
-          <label className="label text-black">Chamber Area Kind</label>
+          <label className="label text-black dark:text-white">
+            Chamber Area Kind
+          </label>
           <select
             className="select w-full"
             value={areaChamberKind}
@@ -123,7 +125,9 @@ export const BoilerSafetyValveDiameter = (
               hidden: areaChamberKind != "direct_input",
             })}
           >
-            <label className="label text-black">Chamber Area</label>
+            <label className="label text-black dark:text-white">
+              Chamber Area
+            </label>
             <label
               className={cn("input w-full", {
                 "input-error": directInputAreaChamberError != null,
@@ -134,7 +138,7 @@ export const BoilerSafetyValveDiameter = (
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}^2" />
               </span>
             </label>
@@ -144,7 +148,9 @@ export const BoilerSafetyValveDiameter = (
               hidden: areaChamberKind != "calculate",
             })}
           >
-            <label className="label text-black">Chamber Radius</label>
+            <label className="label text-black dark:text-white">
+              Chamber Radius
+            </label>
             <label
               className={cn("input w-full", {
                 "input-error": radiusChamberError != null,
@@ -155,7 +161,7 @@ export const BoilerSafetyValveDiameter = (
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
@@ -178,7 +184,9 @@ export const BoilerSafetyValveDiameter = (
               hidden: areaChamberKind != "calculate",
             })}
           >
-            <label className="label text-black">Chamber Area</label>
+            <label className="label text-black dark:text-white">
+              Chamber Area
+            </label>
             <label className="input w-full">
               <input
                 type="tel"
@@ -186,12 +194,14 @@ export const BoilerSafetyValveDiameter = (
                 className="text-right"
                 value={numberFormatter.format(areaChamber)}
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{mm}" />
               </span>
             </label>
           </div>
-          <label className="label text-black">Minimum Diameter</label>
+          <label className="label text-black dark:text-white">
+            Minimum Diameter
+          </label>
           <label className="input w-full">
             <input
               type="tel"
@@ -199,7 +209,7 @@ export const BoilerSafetyValveDiameter = (
               className="text-right"
               value={numberFormatter.format(minDiameterSafetyValve)}
             />
-            <span className="label text-black">
+            <span className="label text-black dark:text-white">
               <InlineMath math="\mathrm{mm}" />
             </span>
           </label>

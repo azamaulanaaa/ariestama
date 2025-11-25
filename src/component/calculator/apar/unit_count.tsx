@@ -68,7 +68,7 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
-          <label className="label text-black">
+          <label className="label text-black dark:text-white">
             Kind of Coverage Area
           </label>
           <select
@@ -82,7 +82,7 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
             <option value="calculate">Calculate</option>
           </select>
           <div className={cn({ hidden: kind != "direct_input" })}>
-            <label className="label text-black">
+            <label className="label text-black dark:text-white">
               Coverage Area
             </label>
             <label
@@ -95,13 +95,15 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
                 className="text-right"
                 placeholder="0"
               />{" "}
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}^2" />
               </span>
             </label>
           </div>
           <div className={cn({ hidden: kind != "calculate" })}>
-            <label className="label text-black">Coverage Height</label>
+            <label className="label text-black dark:text-white">
+              Coverage Height
+            </label>
             <label
               className={cn("input w-full", {
                 "input-error": heightError !== null,
@@ -112,11 +114,13 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
-            <label className="label text-black">Coverage Width</label>
+            <label className="label text-black dark:text-white">
+              Coverage Width
+            </label>
             <label
               className={cn("input w-full", {
                 "input-error": widthError !== null,
@@ -127,7 +131,7 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
                 className="text-right"
                 placeholder="0"
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}" />
               </span>
             </label>
@@ -146,7 +150,7 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Result</legend>
           <div className={cn({ hidden: kind != "calculate" })}>
-            <label className="label text-black">
+            <label className="label text-black dark:text-white">
               Coverage Area
             </label>
             <label className="input w-full">
@@ -156,12 +160,14 @@ export const APARUnitCount = (props: APARUnitCountProps) => {
                 className="text-right"
                 value={numberFormatter.format(area)}
               />
-              <span className="label text-black">
+              <span className="label text-black dark:text-white">
                 <InlineMath math="\mathrm{m}^2" />
               </span>
             </label>
           </div>
-          <label className="label text-black">Minimum Unit Count</label>
+          <label className="label text-black dark:text-white">
+            Minimum Unit Count
+          </label>
           <input
             type="tel"
             readOnly
