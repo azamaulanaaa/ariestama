@@ -25,7 +25,7 @@ export function useSearch<I extends SearchItem>(
 
   const fuse = useMemo(
     () => {
-      return new Fuse(zProps.items, { keys: ["keywords"] });
+      return new Fuse(zProps.items, { keys: ["keywords"], shouldSort: true });
     },
     [zProps.items],
   );
