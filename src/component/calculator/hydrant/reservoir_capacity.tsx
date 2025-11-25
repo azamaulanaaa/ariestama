@@ -5,7 +5,7 @@ import { InlineMath } from "react-katex";
 
 import { Hydrant } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
-import { useNumber } from "@/hook/useNumber.tsx";
+import { useNumber } from "@/hook/useNumber.ts";
 import {
   CalculatorBody,
   CalculatorRoot,

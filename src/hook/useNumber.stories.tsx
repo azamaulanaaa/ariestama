@@ -2,7 +2,7 @@ import { Story, StoryDefault } from "@ladle/react";
 import { z } from "zod";
 
 import { cn } from "@/util/classname.ts";
-import { useNumber } from "./useNumber.tsx";
+import { useNumber } from "./useNumber.ts";
 
 export default {
   title: "Hook / useNumber",

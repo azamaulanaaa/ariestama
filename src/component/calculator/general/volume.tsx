@@ -7,7 +7,7 @@ import allMeasures from "convert-units/definitions/all";
 
 import { General } from "@/util/calculator/mod.ts";
 import { cn } from "@/util/classname.ts";
-import { useNumber } from "@/hook/useNumber.tsx";
+import { useNumber } from "@/hook/useNumber.ts";
 import {
   CalculatorBody,
   CalculatorRoot,

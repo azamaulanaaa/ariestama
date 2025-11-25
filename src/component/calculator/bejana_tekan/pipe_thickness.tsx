@@ -7,7 +7,7 @@ import allMeasures from "convert-units/definitions/all";
 
 import { cn } from "@/util/classname.ts";
 import { BejanaTekan } from "@/util/calculator/mod.ts";
-import { useNumber } from "@/hook/useNumber.tsx";
+import { useNumber } from "@/hook/useNumber.ts";
 import {
   CalculatorBody,
   CalculatorRoot,

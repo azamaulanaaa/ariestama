@@ -1,7 +1,7 @@
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router";
 
-import { useShareAsImage } from "@/hook/useShareAsImage.tsx";
+import { useShareAsImage } from "@/hook/useShareAsImage.ts";
 import {
   NaviationMenu,
   NavigationMenuItem,
