@@ -12,7 +12,7 @@ import {
   NaviationMenu,
   NavigationMenuItem,
 } from "@/component/navigation_menu/mod.tsx";
-import { useSearch } from "../../hook/useSearch.ts";
+import { useSearch } from "@/hook/useSearch.ts";
 
 const NAVIGATION_MENU_ITEMS: Array<NavigationMenuItem> = [
   { href: "apar/unit_count", value: "Alat Pemadam Api Ringan - Unit Count" },
