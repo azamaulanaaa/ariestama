@@ -113,6 +113,7 @@ export const CalculatorLayout = () => {
                   type="text"
                   value={menuQuery}
                   onChange={handleMenuQueryChange}
+                  placeHolder="Search"
                 />
               </label>
               <div onClick={handleNavigationMenuClick}>
