@@ -11,7 +11,7 @@ export const CalculatorEmbedLayout = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 m-2 mx-auto max-w-[500px]">
+    <div className="flex flex-col gap-2 p-2 mx-auto max-w-[500px]">
       <div ref={shareRef}>
         <Outlet />
       </div>
