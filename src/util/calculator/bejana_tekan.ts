@@ -55,3 +55,65 @@ export function minPipeThickness_ASME_B3_1(
 
   return t;
 }
+
+export type minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27Params =
+  {
+    /**
+     * joint efficiency for, or the efficiency of, appropriate
+     * joint in cylindrical or spherical shells, or the efficiency of
+     * ligaments between openings, whichever is less.
+     * For welded vessels, use the efficiency specified in UW-12.
+     * For ligaments between openings, use the efficiency
+     * calculated by the rules given in UG-53.
+     */
+    E: number;
+    /* internal design pressure (see UG-21) */
+    P: number;
+    /*  inside radius of the shell course under consideration */
+    R: number;
+    /*  maximumallowable stress value (see UG-23 and the stress limitations specified in UG-24 */
+    S: number;
+  };
+
+export const minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27Schema =
+  z.object({
+    E: z.number(),
+    P: z.number(),
+    R: z.number(),
+    S: z.number(),
+  }) as z.ZodType<
+    minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27Params
+  >;
+
+/**
+ * Minimum shell thickness given circumferential stress on cylindrical shell based on ASME UG-27
+ *
+ * @returns {number} Minimum thickness in inch
+ *
+ * # Example
+ *
+ * ```ts
+ * import { assertAlmostEquals } from "@std/assert";
+ *
+ * const t = minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27({
+ *     E: 0.85,
+ *     P: 142,
+ *     R: 21.7,
+ *     S: 14939
+ * });
+ * assertAlmostEquals(t, 0.244, 0.0005);
+ * ```
+ */
+export function minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27(
+  params:
+    minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27Params,
+) {
+  const zParams =
+    minShellThickness_cicumferentialStress_cylindricalShell_ASME_UG_27Schema
+      .parse(params);
+
+  const min_t = (zParams.P * zParams.R) /
+    (zParams.S * zParams.E - 0.6 * zParams.P);
+
+  return z.number().max(zParams.R * 1.5).parse(min_t);
+}
