@@ -36,10 +36,10 @@ export const minPipeThicknessParamsSchema_ASME_B31_1 = z.object({
  *
  * const t = minPipeThickness_ASME_B3_1({
  *     P: 10,
- *     d: 2,
+ *     D: 2,
  *     SE: 1489,
  *     W: 1,
- *     Y: 0.4,
+ *     y: 0.4,
  *     A: 3,
  * });
  * assertAlmostEquals(t, 3.007, 0.0005);
