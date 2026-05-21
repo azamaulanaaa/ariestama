@@ -52,7 +52,7 @@ export const GirderDeflection = (props: GirderDeflectionProps) => {
 
   return (
     <CalculatorRoot className={zProps.className}>
-      <CalculatorTitle>Gider - Deflection</CalculatorTitle>
+      <CalculatorTitle>Girder - Deflection</CalculatorTitle>
       <CalculatorBody>
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Parameter</legend>
